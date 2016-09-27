@@ -1,0 +1,51 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class MainCharacterController : MonoBehaviour {
+
+	public float moveSpeed = 10;
+	public int health = 1000;
+
+	private int currentHealth;
+	private Vector2 characterVector;
+	private Rigidbody2D player;
+
+
+	// Use this for initialization
+	void Start () {
+		player = this.GetComponent<Rigidbody2D> ();
+		player.gravityScale = 0;
+		currentHealth = health;
+	}
+
+	// Update is called once per frame
+	void Update () {
+		characterVector.y = Input.GetAxis ("Vertical");
+		characterVector.x = Input.GetAxis ("Horizontal");
+		//this.GetComponent<Rigidbody2D> ().AddForce (characterVector * moveSpeed);
+		player.transform.Translate (characterVector.x * moveSpeed * Time.deltaTime, characterVector.y * moveSpeed * Time.deltaTime, 0);
+
+		//this line will need to change
+		//this.transform.LookAt((Vector2)this.transform.position +characterVector);
+
+		Vector3 lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		lookDirection.z = 0f;
+		RaycastHit2D hit;
+		float distance = 100000;
+		int layerDepth = 1;
+		int layerMask = layerDepth << 9; //enemies on 9th layer
+		if (Physics2D.Raycast(this.transform.position, lookDirection, distance)) {
+			hit = Physics2D.Raycast (this.transform.position, lookDirection, distance);
+			this.GetComponent<Attack>().Aim (lookDirection);
+
+		}
+		if (Input.GetAxis ("Fire1") > 0) {
+			this.GetComponent<Attack> ().Fire ();
+		}
+
+	}
+
+	public void EnemyDamage(int damageDone){
+		currentHealth -= damageDone;
+	}
+}
