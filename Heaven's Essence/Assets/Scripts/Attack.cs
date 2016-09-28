@@ -24,10 +24,9 @@ public class Attack : MonoBehaviour {
 
 	public void Aim(Vector2 aimTarget){
 		aimLocation = aimTarget;
-		Debug.Log ("Next position is x= " + aimLocation.x + "," + aimLocation.y);
 		weaponPosition.transform.LookAt (aimLocation);
 		attackAngle = weaponPosition.transform.forward;
-		Debug.Log ("Next position is x= " + attackAngle.x + "," + attackAngle.y);
+
 	}
 
 	public void Fire(){
