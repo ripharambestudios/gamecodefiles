@@ -32,8 +32,7 @@ public class MainCharacterController : MonoBehaviour {
 		lookDirection.z = 0f;
 		RaycastHit2D hit;
 		float distance = 100000;
-		int layerDepth = 1;
-		int layerMask = layerDepth << 9; //enemies on 9th layer
+
 		if (Physics2D.Raycast(this.transform.position, lookDirection, distance)) {
 			hit = Physics2D.Raycast (this.transform.position, lookDirection, distance);
 			this.GetComponent<Attack>().Aim (lookDirection);
@@ -47,5 +46,9 @@ public class MainCharacterController : MonoBehaviour {
 
 	public void EnemyDamage(int damageDone){
 		currentHealth -= damageDone;
+		Debug.Log ("My current health: " + currentHealth);
+		if (currentHealth <= 0) {
+			Destroy (this.gameObject);
+		}
 	}
 }

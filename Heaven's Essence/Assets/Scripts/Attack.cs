@@ -10,8 +10,9 @@ public class Attack : MonoBehaviour {
 
 	//public float damage = 10;
 	public float projectileSpeed = 10f;
-	public float rateOfFire = 1.1f;
+	public float rateOfFire = 50.0f;
 
+	private float _rateOfFire;
 	private Vector2 attackAngle = Vector2.zero;
 	private Vector2 aimLocation = Vector2.zero;
 	private bool canAttack = true;
@@ -19,7 +20,7 @@ public class Attack : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		_rateOfFire = 1 / rateOfFire;
 	}
 
 	public void Aim(Vector2 aimTarget){
@@ -33,7 +34,7 @@ public class Attack : MonoBehaviour {
 		if (canAttack) {
 			canAttack = false;
 			StartCoroutine (fireProjectile ((Vector2)attackSpawn.transform.position, attackAngle, projectileSpeed));
-			StartCoroutine (Cooldown (rateOfFire));
+			StartCoroutine (Cooldown (_rateOfFire));
 		}
 	}
 

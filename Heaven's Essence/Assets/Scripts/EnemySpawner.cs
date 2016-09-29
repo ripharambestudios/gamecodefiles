@@ -3,6 +3,10 @@ using System.Collections;
 
 public class EnemySpawner : MonoBehaviour {
 
+	public GameObject enemyType;
+
+	private int numberOfEnemies;
+
 	// Use this for initialization
 	void Start () {
 	
