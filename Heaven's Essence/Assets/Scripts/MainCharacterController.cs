@@ -22,7 +22,7 @@ public class MainCharacterController : MonoBehaviour {
 	void Update () {
 		characterVector.y = Input.GetAxis ("Vertical");
 		characterVector.x = Input.GetAxis ("Horizontal");
-		//this.GetComponent<Rigidbody2D> ().AddForce (characterVector * moveSpeed);
+
 		player.transform.Translate (characterVector.x * moveSpeed * Time.deltaTime, characterVector.y * moveSpeed * Time.deltaTime, 0);
 
 		//this line will need to change

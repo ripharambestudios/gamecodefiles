@@ -7,7 +7,7 @@ public class MeteorAI : MonoBehaviour {
 	public float sightRadius = 40f; //max distance can be from player and still in view
 	public float damage = 20f;
 	public float waitTime =0.5f;
-	public float inverseTravelSpeed = 10f; //bigger number means slower enemy
+	public float travelSpeed = 10f; //bigger number means slower enemy
 	public float attackCooldown = 1f;
 
 	private GameObject target;
@@ -18,7 +18,7 @@ public class MeteorAI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
-		launchSpeed = 1 / inverseTravelSpeed;
+		launchSpeed = 1 / travelSpeed;
 
 	}
 	
@@ -53,7 +53,7 @@ public class MeteorAI : MonoBehaviour {
 			distanceToGo = 50f;
 		}
 		while(distanceCovered < distanceToGo){
-			nextPosition += look * launchSpeed;
+			nextPosition += look * launchSpeed; //try time.detlatime to see if that can make it better, also look into better name for enemyspeed
 			distanceCovered += Math.Abs (Vector2.Distance (this.transform.position, nextPosition));
 			if (Physics2D.Linecast (this.transform.position, nextPosition, layerMask) && !hasHit) {
 				impact = Physics2D.Linecast (this.transform.position, nextPosition, layerMask);
