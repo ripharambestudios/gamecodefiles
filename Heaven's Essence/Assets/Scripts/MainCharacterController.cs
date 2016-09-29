@@ -51,4 +51,8 @@ public class MainCharacterController : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 	}
+
+	public int GetHealth(){
+		return currentHealth;
+	}
 }

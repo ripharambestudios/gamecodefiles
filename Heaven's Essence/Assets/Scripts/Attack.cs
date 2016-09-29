@@ -41,7 +41,7 @@ public class Attack : MonoBehaviour {
 	IEnumerator fireProjectile(Vector2 start, Vector2 next, float attackSpeed){
 		yield return null;
 		//destroy object if it doesn't collide with anything after timeout amout of time
-		float timeout = 5f;
+		float timeout = 3f;
 
 		GameObject createProjectile = (GameObject)Instantiate (projectile, start, Quaternion.Euler (new Vector3(0,0,0))); //make it kinda work: Euler (new Vector3(0,0,0))
 		Vector2 nextPosition = start;
