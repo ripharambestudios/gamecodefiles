@@ -5,11 +5,6 @@ public class CameraFollow : MonoBehaviour {
 
 	public GameObject target;
 	public float trackingSpeed = 5;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 	
 	// Update is called once per frame at the end of the update
 	void LateUpdate () {
