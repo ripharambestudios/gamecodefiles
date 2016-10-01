@@ -19,7 +19,7 @@ public class EnemySpawner : MonoBehaviour {
 	}
 
 	void Update(){
-		if (numberOfEnemies == 0 && numberOfEnemies != 0) {
+		if (numberOfEnemies == 0) {
 			StartCoroutine (BeginSpawn ()); //calls coroutine to allow for a delay between waves
 		}
 	}
