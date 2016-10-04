@@ -8,7 +8,7 @@ public class BigBoomAI : MonoBehaviour {
 	public float waitTime = 0.5f;
 	public float inverseLaunchSpeed = 10f;
 
-	public GameObject target;
+	private GameObject target;
 	private float distanceToTarget;
 	private bool isAttacking = false;
 
@@ -23,6 +23,7 @@ public class BigBoomAI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		isAttacking = false;
+		target = GameObject.FindWithTag ("Player");
 	}
 
 	// Update is called once per frame

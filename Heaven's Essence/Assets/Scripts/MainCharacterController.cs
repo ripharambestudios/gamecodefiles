@@ -55,4 +55,20 @@ public class MainCharacterController : MonoBehaviour {
 	public int GetHealth(){
 		return currentHealth;
 	}
+
+	void OnTriggerEnter2D(Collider2D coll)
+	{
+		Debug.Log("collision name = " + coll.gameObject.name);
+		if (coll.gameObject.tag != null) {
+			if (coll.gameObject.tag == "Enemy") {
+				Debug.Log ("Enemy Collision");
+				DestroyObject (coll.gameObject);
+			} else if (coll.gameObject.tag == "Explosion") {
+				Debug.Log ("Explosion Collision");
+				DestroyObject (coll.gameObject);
+			}
+		} else {
+			Debug.Log ("Object has no tag: " + coll.gameObject.name);
+		}		
+	}
 }

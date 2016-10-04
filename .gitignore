@@ -28,3 +28,14 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+
+Heaven game/Library/
+
+Heaven game/Library/
+
+Heaven game/ProjectSettings/
+
+Heaven game/Temp/UnityLockfile
+
+Heaven's Essence/Assets/.DS_Store
