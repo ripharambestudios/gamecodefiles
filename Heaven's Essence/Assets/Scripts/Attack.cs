@@ -25,8 +25,9 @@ public class Attack : MonoBehaviour {
 
 	public void Aim(Vector2 aimTarget){
 		aimLocation = aimTarget;
-		weaponPosition.transform.LookAt (aimLocation);
-		attackAngle = weaponPosition.transform.forward;
+		attackSpawn.transform.position = weaponPosition.transform.position;
+		attackSpawn.transform.LookAt (aimLocation);
+		attackAngle = attackSpawn.transform.forward;
 
 	}
 
