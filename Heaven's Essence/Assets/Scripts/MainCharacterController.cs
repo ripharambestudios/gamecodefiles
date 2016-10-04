@@ -61,8 +61,7 @@ public class MainCharacterController : MonoBehaviour {
 		Debug.Log("collision name = " + coll.gameObject.name);
 		if (coll.gameObject.tag != null) {
 			if (coll.gameObject.tag == "Enemy") {
-				Debug.Log ("Enemy Collision");
-				DestroyObject (coll.gameObject);
+				EnemyDamage (50);
 			} else if (coll.gameObject.tag == "Explosion") {
 				Debug.Log ("Explosion Collision");
 				DestroyObject (coll.gameObject);
