@@ -28,3 +28,34 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+
+Heaven game/Library/
+
+Heaven game/Library/
+
+Heaven game/ProjectSettings/
+
+Heaven game/Temp/UnityLockfile
+
+Heaven's Essence/Assets/.DS_Store
+
+Heaven's Essence/Library/
+
+Heaven's Essence/ProjectSettings/
+Heaven's Essence/ProjectSettings/ProjectVersion.txt
+
+Heaven's Essence/ProjectSettings/ProjectSettings.asset
+
+Heaven's Essence/obj/Debug/Assembly-CSharp.csproj.FilesWrittenAbsolute.txt
+
+Heaven's Essence/obj/Debug/Assembly-CSharp.dll
+
+Heaven's Essence/obj/Debug/Assembly-CSharp.dll.mdb
+
+Heaven's Essence/ProjectSettings/ProjectSettings.asset
+
+Heaven's Essence/ProjectSettings/ProjectSettings.asset
+
+Heaven's Essence/ProjectSettings/*
+
