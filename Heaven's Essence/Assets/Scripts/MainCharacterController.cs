@@ -56,6 +56,7 @@ public class MainCharacterController : MonoBehaviour {
 		return currentHealth;
 	}
 
+	/*
 	void OnTriggerEnter2D(Collider2D coll)
 	{
 		Debug.Log("collision name = " + coll.gameObject.name);
@@ -70,5 +71,5 @@ public class MainCharacterController : MonoBehaviour {
 		} else {
 			Debug.Log ("Object has no tag: " + coll.gameObject.name);
 		}		
-	}
+	}*/
 }

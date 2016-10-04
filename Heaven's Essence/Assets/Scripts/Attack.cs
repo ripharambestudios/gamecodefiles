@@ -44,6 +44,7 @@ public class Attack : MonoBehaviour {
 		float timeout = 3f;
 
 		GameObject createProjectile = (GameObject)Instantiate (projectile, start, Quaternion.Euler (new Vector3(0,0,0))); //make it kinda work: Euler (new Vector3(0,0,0))
+		createProjectile.transform.parent = this.transform;
 		Vector2 nextPosition = start;
 		bool hit = false;
 		while (timeout > 0f && !hit) {
