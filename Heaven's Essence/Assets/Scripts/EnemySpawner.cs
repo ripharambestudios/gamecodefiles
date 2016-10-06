@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour {
 
@@ -12,10 +13,13 @@ public class EnemySpawner : MonoBehaviour {
 	//public GameObject enemyType4;
 	public float waveTime = 6f;
 	public int numberOfEnemiesPerWave = 4;
+	public Text waveText;
+	public Text enemiesLeftText;
 
 	private System.Random randNum;
 	private int numberOfEnemies;
 	private List<char> enemyPossibilities = new List<char>() {'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'g'}; //, 'g', 'g', 'f'   for spooky guy and fallen guy
+	private int waveNum;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +29,10 @@ public class EnemySpawner : MonoBehaviour {
 		numberOfEnemies = 0;
 		randNum = new System.Random ();
 		randNum.Next ();
+		waveNum = 1;
+		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
+		waveText.text = "";
+
 
 	}
 
@@ -39,6 +47,8 @@ public class EnemySpawner : MonoBehaviour {
 		int typeOfEnemy;
 		numberOfEnemies += numberOfEnemiesPerWave;
 											//this.GetComponent<TotalEnemies>().incrementNumEnemies (numberOfEnemiesPerWave);
+		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString();
+		waveText.text = "Wave " + waveNum;
 		yield return new WaitForSeconds (waveTime);
 		for (int i = 0; i < numberOfEnemiesPerWave; i++) {
 			typeOfEnemy = randNum.Next (0,9);
@@ -46,7 +56,9 @@ public class EnemySpawner : MonoBehaviour {
 
 			//yield return null;
 		}
+		waveText.text = "";
 		numberOfEnemiesPerWave += 2;
+		waveNum++;
 	}
 
 	//Code to randomly spawn enemies in the map
@@ -77,6 +89,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	public void decrementNumOfEnemies(){
 		numberOfEnemies--;
+		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString();
 							//this.GetComponent<TotalEnemies>().decrementNumEnemies ();
 	}
 }

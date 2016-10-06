@@ -88,24 +88,30 @@ public class DistantShooterAI : MonoBehaviour {
 		for (int i = 0; i < numberOfProjectiles; i++) {
 			yield return new WaitForSeconds (actualRateOfFire);
 			StartCoroutine (DistantAttack (distance));
-			numberOfProjectilesLaunched++;
+			numberOfProjectilesLaunched += 2;
 		}
 	}
 
 	IEnumerator DistantAttack(float distance){
 		//yield return null;
 		//destroy object if it doesn't collide with anything after timeout amout of time
-		float timeout = 2f;
+		float timeout = 2.5f;
 		Vector2 aim = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
-		GameObject createProjectile = (GameObject)Instantiate (projectile, launchPosition.transform.position, Quaternion.Euler (new Vector3(0,0,0))); //make it kinda work: Euler (new Vector3(0,0,0))
+		GameObject createProjectile = (GameObject)Instantiate (projectile, launchPosition.transform.position, Quaternion.Euler (new Vector3(0,0,0))); 
+		GameObject createProjectile2 = (GameObject)Instantiate (projectile, launchPosition.transform.position + new Vector3 (0, -1, 0), Quaternion.Euler (new Vector3 (0, 0, 0))); 
+
+			
 		createProjectile.transform.parent = this.transform;
+		createProjectile2.transform.parent = this.transform;
 		Vector2 nextPosition = launchPosition.transform.position;
+		Vector2 nextPosition2 = launchPosition.transform.position + new Vector3(0,-1,0);
 		bool hit = false;
 		while (timeout > 0f && !hit) {
 			timeout -= Time.deltaTime;
 			nextPosition += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
-
+			nextPosition2 += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
 			RaycastHit2D impact;
+			RaycastHit2D impact2;
 			int layerDepth = 1;
 			int layerMask = layerDepth << 8; //enemies on 9th layer
 			if (Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask)) {
@@ -114,12 +120,20 @@ public class DistantShooterAI : MonoBehaviour {
 				impact.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
 				hit = true;
 			}
+			if (Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask)) {
+
+				impact2 = Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask);
+				impact2.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
+				hit = true;
+			}
 
 			createProjectile.transform.position = nextPosition;
+			createProjectile2.transform.position = nextPosition2;
 			yield return null;
 		}
 		Destroy (createProjectile);
-		numberOfProjectilesLaunched--;
+		Destroy (createProjectile2);
+		numberOfProjectilesLaunched -= 2;
 		//yield return new WaitForSeconds (attackCooldown);
 		if (numberOfProjectilesLaunched == 0) {
 			isAttacking = false;

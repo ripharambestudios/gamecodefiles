@@ -54,6 +54,7 @@ public class BigBoomAI : MonoBehaviour {
 			{
 				Debug.Log ("Teleporting");
 				transform.position = new Vector3(target.transform.position.x - teleDistance, target.transform.position.y, 0);
+				//add check if on top of other enemies to move off slightly
 				yield return new WaitForSeconds (1f);
 				Instantiate(attackType, transform.position, Quaternion.identity);
 				timer = 0f;

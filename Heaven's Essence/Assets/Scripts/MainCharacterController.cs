@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class MainCharacterController : MonoBehaviour {
 
 	public float moveSpeed = 10;
 	public int health = 1000;
+
+	public GameObject gameOverPanel;
+	public Text healthText;
 
 	private int currentHealth;
 	private Vector2 characterVector;
@@ -16,6 +20,7 @@ public class MainCharacterController : MonoBehaviour {
 		player = this.GetComponent<Rigidbody2D> ();
 		player.gravityScale = 0;
 		currentHealth = health;
+		gameOverPanel.SetActive (false);
 	}
 
 	// Update is called once per frame
@@ -48,8 +53,11 @@ public class MainCharacterController : MonoBehaviour {
 		currentHealth -= damageDone;
 		Debug.Log ("My current health: " + currentHealth);
 		if (currentHealth <= 0) {
+			currentHealth = 0;
+			gameOverPanel.SetActive (true);
 			Destroy (this.gameObject);
 		}
+		healthText.text = "Health: " + currentHealth.ToString ();
 	}
 
 	public int GetHealth(){
