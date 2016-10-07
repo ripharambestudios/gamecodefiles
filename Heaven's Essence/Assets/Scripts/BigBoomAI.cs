@@ -11,7 +11,7 @@ public class BigBoomAI : MonoBehaviour {
 	private GameObject target;
 	private float distanceToTarget;
 	private bool isAttacking = false;
-
+    private Animator animator;
 
 	public GameObject createProjectile;
 	public GameObject attackType;
@@ -24,7 +24,9 @@ public class BigBoomAI : MonoBehaviour {
 	void Start () {
 		isAttacking = false;
 		target = GameObject.FindWithTag ("Player");
-	}
+        animator = this.GetComponent<Animator>();
+        animator.SetInteger("Port", 0);
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -56,12 +58,16 @@ public class BigBoomAI : MonoBehaviour {
 				transform.position = new Vector3(target.transform.position.x - teleDistance, target.transform.position.y, 0);
 				//add check if on top of other enemies to move off slightly
 				yield return new WaitForSeconds (1f);
+                animator.SetInteger("Port", 1);
 				Instantiate(attackType, transform.position, Quaternion.identity);
 				timer = 0f;
 			}
 			yield return null;
 
 		}
+        animator.SetInteger("Port", 2);
+        yield return new WaitForSeconds(.5f);
+        animator.SetInteger("Port", 0);
 		isAttacking = false;
 	}    
 }

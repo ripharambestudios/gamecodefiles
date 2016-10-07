@@ -13,6 +13,7 @@ public class MeteorAI : MonoBehaviour {
 	private float distanceToTarget;
 	private bool isAttacking = false;
 	private float launchSpeed = 1f;
+    private bool track = true;
 
 	// Use this for initialization
 	void Start () {
@@ -22,8 +23,25 @@ public class MeteorAI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
+        if (track)
+        {
+            Vector2 endLocation = target.transform.position;
+            Vector2 nextPosition = this.transform.position;
+            Vector2 look = endLocation - nextPosition;
 
-		if(distanceToTarget <= sightRadius && !isAttacking){
+            //THIS SHOULD ALL BE PUT INTO A HELPER METHOD FOR ROTATION
+            //get the sign of the direction of the aim
+            float signOfLook = 1;
+            if (this.transform.position.y > target.transform.position.y)
+            {
+                signOfLook = Mathf.Sign(look.y); //this will be negative if the player is below demonic sonic, rotating him appropriately
+            }
+            float angle = Vector3.Angle(Vector3.right, new Vector3(look.x, look.y, 0));
+            angle *= signOfLook;
+            //rotate demonic sonic
+            this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+        if (distanceToTarget <= sightRadius && !isAttacking){
 			isAttacking = true;
 			StartCoroutine (LaunchAttack (distanceToTarget));
 
@@ -36,14 +54,16 @@ public class MeteorAI : MonoBehaviour {
 		//yield return null;
 		Vector2 endLocation = target.transform.position;
 		Vector2 nextPosition = this.transform.position;
-		Vector2 look = endLocation - nextPosition;
-		float distanceCovered = 0;
+        Vector2 look = endLocation - nextPosition;
+        track = false;
+        float distanceCovered = 0;
 		int maxDistance = 10000;
 		int layerDepth = 1;
 		int layerMask = layerDepth << 8; //player on 8th layer
 		RaycastHit2D impact = Physics2D.Raycast(nextPosition, endLocation, maxDistance, layerMask);
 		Debug.Log (impact.point + "TARGETING PLAYER");
 		yield return new WaitForSeconds (waitTime);
+        
 		bool hasHit = false;
 		float distanceToGo = Math.Abs (distance) * 2f;
 		if (distanceToGo > 50f) {
@@ -62,6 +82,7 @@ public class MeteorAI : MonoBehaviour {
 			this.transform.position = nextPosition;
 			yield return null;
 		}
+        track = true;
 		yield return new WaitForSeconds (attackCooldown);
 		isAttacking = false;
 	}
