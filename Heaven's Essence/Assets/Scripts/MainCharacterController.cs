@@ -6,9 +6,9 @@ public class MainCharacterController : MonoBehaviour {
 
 	public float moveSpeed = 10;
 	public int health = 1000;
+	public GameObject healthBar;
 
 	public GameObject gameOverPanel;
-	public Text healthText;
 
 	private int currentHealth;
 	private Vector2 characterVector;
@@ -57,11 +57,28 @@ public class MainCharacterController : MonoBehaviour {
 			gameOverPanel.SetActive (true);
 			Destroy (this.gameObject);
 		}
-		healthText.text = "Health: " + currentHealth.ToString ();
+		setHealthBar ();
 	}
 
 	public int GetHealth(){
 		return currentHealth;
+	}
+
+
+
+	private void setHealthBar()
+	{
+		if (currentHealth > 0) 
+		{
+			float normalizedHealth = (float)currentHealth / (float)health;
+			healthBar.GetComponent<RectTransform> ().sizeDelta = new Vector2 (normalizedHealth * 256, 32);
+			float lostHealth = health - currentHealth;
+		} 
+		else 
+		{
+			healthBar.GetComponent<RectTransform> ().sizeDelta = new Vector2 (0, 0);
+		}
+
 	}
 
 	/*
