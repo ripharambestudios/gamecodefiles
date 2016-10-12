@@ -6,7 +6,8 @@ public class ShotGunAI : MonoBehaviour {
 	public float sightRadius = 3f;
 	public float damage = 20f;
 	public float waitTime = 0.5f;
-	public float inverseLaunchSpeed = 2000f;
+    public float movementSpeed = 100f;
+	public float launchSpeed = 2000f;
 	Vector2 changes = new Vector2 (5, 5);
 	private GameObject target;
 	private float distanceToTarget;
@@ -38,6 +39,7 @@ public class ShotGunAI : MonoBehaviour {
         {
             Debug.Log("Seen");
             isAttacking = true;
+            setAttackingAnimation(true);
             StartCoroutine(LaunchAttack());
         }
 
@@ -54,7 +56,7 @@ public class ShotGunAI : MonoBehaviour {
             {//move if distance from target is greater than 1
 
                 //transform.Translate(new Vector3(inverseLaunchSpeed * Time.deltaTime, 0, 0));
-                GetComponent<Rigidbody2D>().AddRelativeForce(transform.right * 100f);
+                GetComponent<Rigidbody2D>().AddRelativeForce(transform.right * movementSpeed);
 
             }
             else
@@ -100,7 +102,14 @@ public class ShotGunAI : MonoBehaviour {
                 stopped = true;
                 //yield return new WaitForSeconds(0.15f);
 				GameObject bullet = (GameObject)Instantiate(attackType, transform.position + 1.0f*transform.right, transform.rotation);
-                bullet.GetComponent<Rigidbody2D>().AddForce(bullet.transform.right * 5000f);
+                bullet.GetComponent<Rigidbody2D>().AddForce(bullet.transform.right * launchSpeed);
+                if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
+                {
+
+                    impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
+                    impact.collider.gameObject.SendMessage("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
+                    
+                }
                 yield return new WaitForSeconds(1);
                 stopped = false;
 				timer = 0f;
@@ -109,5 +118,12 @@ public class ShotGunAI : MonoBehaviour {
 
 		}
 		isAttacking = false;
-	}    
+        setAttackingAnimation(false);
+
+    }
+
+    void setAttackingAnimation(bool status)
+    {
+        this.GetComponent<EnemyAnimationScript>().isAttacking = status;
+    }
 }

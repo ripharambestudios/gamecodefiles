@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour {
 	public GameObject enemyType;
 	public GameObject enemyType2;
 	public GameObject enemyType3;
-	//public GameObject enemyType4;
+	public GameObject enemyType4;
 	public float waveTime = 6f;
 	public int numberOfEnemiesPerWave = 4;
 	public Text waveText;
@@ -18,7 +18,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private System.Random randNum;
 	private int numberOfEnemies;
-	private List<char> enemyPossibilities = new List<char>() {'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'g'}; //, 'g', 'g', 'f'   for spooky guy and fallen guy
+	private List<char> enemyPossibilities = new List<char>() {'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'}; //, 'g', 'g', 'f'   for spooky guy and fallen guy
 	private int waveNum;
 
 	// Use this for initialization
@@ -80,11 +80,11 @@ public class EnemySpawner : MonoBehaviour {
 		else if (enemyChar == 'g') {
 			Instantiate (enemyType3, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
 		}
-		/*
+		
 		else if (enemyChar == 'f') {
-			Instantiate (enemyType4`, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+			Instantiate (enemyType4, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
 		}
-		*/
+		
 	}
 
 	public void decrementNumOfEnemies(){

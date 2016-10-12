@@ -96,6 +96,7 @@ public class DistantShooterAI : MonoBehaviour {
 		//yield return null;
 		//destroy object if it doesn't collide with anything after timeout amout of time
 		float timeout = 2.5f;
+        setAttackingAnimation(true);
 		Vector2 aim = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
 		GameObject createProjectile = (GameObject)Instantiate (projectile, launchPosition.transform.position, Quaternion.Euler (new Vector3(0,0,0))); 
 		GameObject createProjectile2 = (GameObject)Instantiate (projectile, launchPosition.transform.position + new Vector3 (0, -1, 0), Quaternion.Euler (new Vector3 (0, 0, 0))); 
@@ -137,6 +138,12 @@ public class DistantShooterAI : MonoBehaviour {
 		//yield return new WaitForSeconds (attackCooldown);
 		if (numberOfProjectilesLaunched == 0) {
 			isAttacking = false;
-		}
+            setAttackingAnimation(false);
+        }
 	}
+
+    void setAttackingAnimation(bool status)
+    {
+        this.GetComponent<EnemyAnimationScript>().isAttacking = status;
+    }
 }

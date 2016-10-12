@@ -7,7 +7,7 @@ public class MainCharacterController : MonoBehaviour {
 	public float moveSpeed = 10;
 	public int health = 1000;
 	public GameObject healthBar;
-
+    public Text healthText;
 	public GameObject gameOverPanel;
 
 	private int currentHealth;
@@ -57,7 +57,8 @@ public class MainCharacterController : MonoBehaviour {
 			gameOverPanel.SetActive (true);
 			Destroy (this.gameObject);
 		}
-		setHealthBar ();
+        healthText.text = "Health: " + currentHealth;
+		//setHealthBar ();
 	}
 
 	public int GetHealth(){

@@ -3,12 +3,15 @@ using System.Collections;
 
 public class EnemyAnimationScript : MonoBehaviour {
 
+    public bool isAttacking { get; set; }
+
 	private Animator animator;
 	private GameObject player;
 	// Use this for initialization
 	void Start () {
 		animator = this.GetComponent<Animator> ();
 		player = GameObject.FindGameObjectWithTag ("Player");
+        isAttacking = false;
 	}
 
 	// Update is called once per frame
@@ -66,7 +69,7 @@ public class EnemyAnimationScript : MonoBehaviour {
 
 	void fire(int value)
 	{
-		if (Input.GetAxis ("Fire1") > 0) {
+		if (isAttacking) {
 			animator.SetInteger ("Direction", value);
 			animator.SetBool ("Shoot", true);
 		} 
