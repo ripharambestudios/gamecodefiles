@@ -22,30 +22,34 @@ public class MeteorAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
-        if (track)
+        if (target.gameObject != null)
         {
-            Vector2 endLocation = target.transform.position;
-            Vector2 nextPosition = this.transform.position;
-            Vector2 look = endLocation - nextPosition;
-
-            //THIS SHOULD ALL BE PUT INTO A HELPER METHOD FOR ROTATION
-            //get the sign of the direction of the aim
-            float signOfLook = 1;
-            if (this.transform.position.y > target.transform.position.y)
+            distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
+            if (track)
             {
-                signOfLook = Mathf.Sign(look.y); //this will be negative if the player is below demonic sonic, rotating him appropriately
-            }
-            float angle = Vector3.Angle(Vector3.right, new Vector3(look.x, look.y, 0));
-            angle *= signOfLook;
-            //rotate demonic sonic
-            this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        }
-        if (distanceToTarget <= sightRadius && !isAttacking){
-			isAttacking = true;
-			StartCoroutine (LaunchAttack (distanceToTarget));
+                Vector2 endLocation = target.transform.position;
+                Vector2 nextPosition = this.transform.position;
+                Vector2 look = endLocation - nextPosition;
 
-		}
+                //THIS SHOULD ALL BE PUT INTO A HELPER METHOD FOR ROTATION
+                //get the sign of the direction of the aim
+                float signOfLook = 1;
+                if (this.transform.position.y > target.transform.position.y)
+                {
+                    signOfLook = Mathf.Sign(look.y); //this will be negative if the player is below demonic sonic, rotating him appropriately
+                }
+                float angle = Vector3.Angle(Vector3.right, new Vector3(look.x, look.y, 0));
+                angle *= signOfLook;
+                //rotate demonic sonic
+                this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+            if (distanceToTarget <= sightRadius && !isAttacking)
+            {
+                isAttacking = true;
+                StartCoroutine(LaunchAttack(distanceToTarget));
+
+            }
+        }
 	}
 
 	//start method for enemy to launch at player

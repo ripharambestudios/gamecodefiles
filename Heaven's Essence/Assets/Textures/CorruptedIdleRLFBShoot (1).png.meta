@@ -1,9 +1,41 @@
 fileFormatVersion: 2
 guid: 253fa6c10368dd649b61b22331e8455e
-timeCreated: 1475568140
+timeCreated: 1475883274
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: CorruptedIdleRLFBShoot (1)_0
+    21300002: CorruptedIdleRLFBShoot (1)_1
+    21300004: CorruptedIdleRLFBShoot (1)_2
+    21300006: CorruptedIdleRLFBShoot (1)_3
+    21300008: CorruptedIdleRLFBShoot (1)_4
+    21300010: CorruptedIdleRLFBShoot (1)_5
+    21300012: CorruptedIdleRLFBShoot (1)_6
+    21300014: CorruptedIdleRLFBShoot (1)_7
+    21300016: CorruptedIdleRLFBShoot (1)_8
+    21300018: CorruptedIdleRLFBShoot (1)_9
+    21300020: CorruptedIdleRLFBShoot (1)_10
+    21300022: CorruptedIdleRLFBShoot (1)_11
+    21300024: CorruptedIdleRLFBShoot (1)_12
+    21300026: CorruptedIdleRLFBShoot (1)_13
+    21300028: CorruptedIdleRLFBShoot (1)_14
+    21300030: CorruptedIdleRLFBShoot (1)_15
+    21300032: CorruptedIdleRLFBShoot (1)_16
+    21300034: CorruptedIdleRLFBShoot (1)_17
+    21300036: CorruptedIdleRLFBShoot (1)_18
+    21300038: CorruptedIdleRLFBShoot (1)_19
+    21300040: CorruptedIdleRLFBShoot (1)_20
+    21300042: CorruptedIdleRLFBShoot (1)_21
+    21300044: CorruptedIdleRLFBShoot (1)_22
+    21300046: CorruptedIdleRLFBShoot (1)_23
+    21300048: CorruptedIdleRLFBShoot (1)_24
+    21300050: CorruptedIdleRLFBShoot (1)_25
+    21300052: CorruptedIdleRLFBShoot (1)_26
+    21300054: CorruptedIdleRLFBShoot (1)_27
+    21300056: CorruptedIdleRLFBShoot (1)_28
+    21300058: CorruptedIdleRLFBShoot (1)_29
+    21300060: CorruptedIdleRLFBShoot (1)_30
+    21300062: CorruptedIdleRLFBShoot (1)_31
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +62,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,7 +70,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -51,7 +83,423 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 370
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_1
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 370
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_2
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 370
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_3
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 370
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_4
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 370
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_5
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 370
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 296
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_7
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 296
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_8
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 296
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_9
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 296
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_10
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 296
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_11
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 296
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_13
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_14
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_15
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_16
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_17
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_19
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_20
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_21
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_22
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_23
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_25
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_26
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_27
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_28
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_29
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: CorruptedIdleRLFBShoot (1)_31
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 0
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 
