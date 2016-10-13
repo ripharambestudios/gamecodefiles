@@ -78,4 +78,10 @@ public class Attack : MonoBehaviour {
 		}
 		canAttack = true;
 	}
+
+    public void EnemyAbsorbed(string attackType)
+    {
+        //projectile = GameObject.f
+        //attackType = GameObject
+    }
 }

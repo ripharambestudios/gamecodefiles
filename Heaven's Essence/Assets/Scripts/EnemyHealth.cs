@@ -23,4 +23,22 @@ public class EnemyHealth : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 	}
+
+    public int GetEnemyHealth()
+    {
+        return currentHealth;
+    }
+
+    public bool IsBelowTenPercent()
+    {
+        int aTenth = startHealth / 10;
+        if(currentHealth <= aTenth)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
