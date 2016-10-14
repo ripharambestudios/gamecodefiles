@@ -13,17 +13,19 @@ public class Absorption : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         int layerMask = 1;
-        int layerDepth = layerMask >> 8;  //enemies on eigth layer
+        int layerDepth = layerMask << 9;  //enemies on ninth layer
         if (coll.IsTouchingLayers(layerDepth))
         {
             float angle = 0;
             Collider2D[] hits = Physics2D.OverlapBoxAll(new Vector2(this.transform.position.x, this.transform.position.y), new Vector2(coll.size.x, coll.size.y), angle, layerDepth);
             foreach(Collider2D hit in hits)
             {
-                if (hit.GetComponent<EnemyHealth>().IsBelowTenPercent())
+                Debug.Log("I have collided with an enemy and its name is " + hit.name);
+                if (hit.GetComponent<EnemyHealth>().IsBelowTwentyPercent())
                 {
                     string attackType = hit.name;
                     this.gameObject.SendMessage("EnemyAbsorbed", attackType, SendMessageOptions.DontRequireReceiver);
+                    hit.gameObject.SendMessage("DealDamage", 1000, SendMessageOptions.DontRequireReceiver);
                 }
             }
         }

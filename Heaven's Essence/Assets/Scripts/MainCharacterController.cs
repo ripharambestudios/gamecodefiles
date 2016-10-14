@@ -47,6 +47,11 @@ public class MainCharacterController : MonoBehaviour {
 			this.GetComponent<Attack> ().Fire ();
 		}
 
+        if (Input.GetKeyUp("r"))
+        {
+            this.gameObject.SendMessage("EnemyAbsorbed", "Energy", SendMessageOptions.DontRequireReceiver);
+        }
+
 	}
 
 	public void EnemyDamage(int damageDone){

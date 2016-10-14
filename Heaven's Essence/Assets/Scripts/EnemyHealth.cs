@@ -29,10 +29,10 @@ public class EnemyHealth : MonoBehaviour {
         return currentHealth;
     }
 
-    public bool IsBelowTenPercent()
+    public bool IsBelowTwentyPercent()
     {
         int aTenth = startHealth / 10;
-        if(currentHealth <= aTenth)
+        if(currentHealth <= aTenth*2)
         {
             return true;
         }

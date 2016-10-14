@@ -114,7 +114,7 @@ public class DistantShooterAI : MonoBehaviour {
 			RaycastHit2D impact;
 			RaycastHit2D impact2;
 			int layerDepth = 1;
-			int layerMask = layerDepth << 8; //enemies on 9th layer
+			int layerMask = layerDepth << 8; //player on 8th layer
 			if (Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask)) {
 				
 				impact = Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask);

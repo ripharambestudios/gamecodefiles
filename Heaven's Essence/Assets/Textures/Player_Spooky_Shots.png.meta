@@ -1,0 +1,283 @@
+fileFormatVersion: 2
+guid: 5f9de508f14b84049aafdb9c34b6cdce
+timeCreated: 1476410791
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Player_Spooky_Shots_0
+    21300002: Player_Spooky_Shots_1
+    21300004: Player_Spooky_Shots_2
+    21300006: Player_Spooky_Shots_3
+    21300008: Player_Spooky_Shots_4
+    21300010: Player_Spooky_Shots_5
+    21300012: Player_Spooky_Shots_6
+    21300014: Player_Spooky_Shots_7
+    21300016: Player_Spooky_Shots_8
+    21300018: Player_Spooky_Shots_9
+    21300020: Player_Spooky_Shots_10
+    21300022: Player_Spooky_Shots_11
+    21300024: Player_Spooky_Shots_12
+    21300026: Player_Spooky_Shots_13
+    21300028: Player_Spooky_Shots_14
+    21300030: Player_Spooky_Shots_15
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_1
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_2
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_3
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 222
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_5
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_6
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_7
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 148
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_9
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_10
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_11
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 74
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_13
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 0
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_14
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 0
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Player_Spooky_Shots_15
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 0
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

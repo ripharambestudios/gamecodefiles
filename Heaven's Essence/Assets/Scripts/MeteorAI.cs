@@ -14,6 +14,7 @@ public class MeteorAI : MonoBehaviour {
 	private bool isAttacking = false;
 	private float launchSpeed = 1f;
     private bool track = true;
+    private bool weakenedOnce = false;
 
 	// Use this for initialization
 	void Start () {
@@ -43,14 +44,27 @@ public class MeteorAI : MonoBehaviour {
                 //rotate demonic sonic
                 this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
-            if (distanceToTarget <= sightRadius && !isAttacking)
+            //should only attack if in range, isn't attacking, health isn't below ten percent health, or if it is it has already entered its weakened state and can attack again
+            if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
             {
                 isAttacking = true;
                 StartCoroutine(LaunchAttack(distanceToTarget));
 
             }
+            else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+            {
+                StartCoroutine(WeakenedState());
+                
+            }
         }
 	}
+
+    IEnumerator WeakenedState()
+    {
+        yield return new WaitForSeconds(5);
+        weakenedOnce = true;
+        yield return null;
+    }
 
 	//start method for enemy to launch at player
 	IEnumerator LaunchAttack(float distance)
