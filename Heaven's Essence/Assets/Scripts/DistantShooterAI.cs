@@ -8,7 +8,7 @@ public class DistantShooterAI : MonoBehaviour {
 	public float projectileSpeed = 10f; //bigger number means slower enemy
 	public float attackCooldown = 1f;
 	public float rateOfFire = 50f;
-	public int numberOfProjectiles = 10000;
+	public int numberOfProjectiles = 2;
 	public GameObject projectile;
 	public GameObject launchPosition;
 
@@ -20,6 +20,8 @@ public class DistantShooterAI : MonoBehaviour {
 	private float minTether;
 	private float maxTether;
 	private int numberOfProjectilesLaunched;
+	private bool weakenedOnce = false;
+	private bool canMove = true;
 
 	// Use this for initialization
 	void Start () {
@@ -39,49 +41,40 @@ public class DistantShooterAI : MonoBehaviour {
 		distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
 		Vector2 tether = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
 		float tetherMagnitude = Mathf.Sqrt ((tether.x * tether.x) + (tether.y * tether.y));
-		if(tetherMagnitude <= sightRadius && !isAttacking){
+
+		if(tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce)){
 			isAttacking = true;
-			StartCoroutine (VolleyOfAttacks (distanceToTarget));
+			StartCoroutine (VolleyOfAttacks (distanceToTarget)); // test
+			//StartCoroutine (DistantAttack (distanceToTarget));
+		}
+		else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+		{
+			canMove = false;
+			StartCoroutine(WeakenedState());
+
+		}
+		if (canMove) {
+			//motion slightly jerky still
+			if (tetherMagnitude < minTether) { 
 			
+				this.GetComponent<Rigidbody2D> ().velocity = -tether; 
+			} else if (tetherMagnitude > maxTether) {
+			
+				this.GetComponent<Rigidbody2D> ().velocity = tether;
+			} else {
+			
+				this.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+			}
 		}
 
-		//motion slightly jerky still
-		if (tetherMagnitude < minTether) { 
-			
-			this.GetComponent<Rigidbody2D> ().velocity = -tether ; 
-		} else if (tetherMagnitude > maxTether) {
-			
-			this.GetComponent<Rigidbody2D> ().velocity = tether;
-		} else {
-			
-			this.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
-		}
-		/*
-		if (distanceToTarget <= sightRadius && (Input.GetAxis ("Vertical") != 0 || Input.GetAxis ("Horizontal") != 0)) {
-			spookyGuyVector.y = Input.GetAxis ("Vertical");
-			spookyGuyVector.x = Input.GetAxis ("Horizontal");
-			if (Input.GetAxis ("Vertical") != 0) {
-				tempLook.y = spookyGuyVector.y;
-			}
-			if (Input.GetAxis ("Horizontal") != 0) {
-				tempLook.x = spookyGuyVector.x;
-			}
-			this.transform.Translate (spookyGuyVector.x * travelSpeed * Time.deltaTime, spookyGuyVector.y * travelSpeed * Time.deltaTime, 0);
-			
-		} else if (distanceToTarget <= sightRadius / 2) {
-			Vector2 endLocation = target.transform.position;
-			Vector2 nextPosition = this.transform.position;
-			Vector2 look = endLocation - nextPosition;
-			this.transform.Translate (look.x * travelSpeed * Time.deltaTime * -1, look.y * travelSpeed * Time.deltaTime * -1, 0);
-			//this.transform.Translate (tempLook.x * travelSpeed / 2, tempLook.y * travelSpeed / 2, 0);
-		}
-		else if (distanceToTarget > sightRadius) {
-			Vector2 endLocation = target.transform.position;
-			Vector2 nextPosition = this.transform.position;
-			Vector2 look = endLocation - nextPosition;
-			this.transform.Translate (look.x * travelSpeed * Time.deltaTime, look.y * travelSpeed * Time.deltaTime, 0);
-		}
-		*/
+	}
+
+	IEnumerator WeakenedState()
+	{
+		yield return new WaitForSeconds(5);
+		weakenedOnce = true;
+		canMove = true;
+		yield return null;
 	}
 
 	IEnumerator VolleyOfAttacks(float distance){
@@ -135,7 +128,7 @@ public class DistantShooterAI : MonoBehaviour {
 		Destroy (createProjectile);
 		Destroy (createProjectile2);
 		numberOfProjectilesLaunched -= 2;
-		//yield return new WaitForSeconds (attackCooldown);
+		yield return new WaitForSeconds (attackCooldown);
 		if (numberOfProjectilesLaunched == 0) {
 			isAttacking = false;
             setAttackingAnimation(false);

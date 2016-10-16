@@ -24,8 +24,8 @@ public class Attack : MonoBehaviour
     public GameObject attackTypeShotgun;
 
     //public float damage = 10;
-    public float speedOfProjectile = 10f;
-    public float rateOfFire = 50.0f;
+    public float speedOfProjectile = 1f;
+    public float rateOfFire = 4.0f;
 
     private GameObject projectile;
     private GameObject attackType;
@@ -38,7 +38,7 @@ public class Attack : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _rateOfFire = 1 / rateOfFire;
+        
         projectile = projectileEnergy;
         attackType = attackTypeEnergy;
     }
@@ -63,9 +63,24 @@ public class Attack : MonoBehaviour
                 StartCoroutine(Cooldown(_rateOfFire));
             }
             else {
-                canAttack = false;
-                StartCoroutine(fireProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
-                StartCoroutine(Cooldown(_rateOfFire));
+				if (projectile.name == projectileBomb.name) {
+					speedOfProjectile = .25f;
+					rateOfFire = 1.0f;
+
+				} else if (projectile.name == projectileSpeed.name) {
+					speedOfProjectile = 1.2f;
+					rateOfFire = 6.0f;
+				} else if (projectile.name == projectileShotgun.name) {
+					speedOfProjectile = .7f;
+					rateOfFire = 3.0f;
+				} else {
+					speedOfProjectile = 1f;
+					rateOfFire = 4.0f;
+				}
+				_rateOfFire = 1 / rateOfFire;
+				canAttack = false;
+				StartCoroutine (fireProjectile ((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
+				StartCoroutine (Cooldown (_rateOfFire));
             }
         }
     }

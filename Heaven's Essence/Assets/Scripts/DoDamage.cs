@@ -12,7 +12,8 @@ public class DoDamage : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.transform.localScale = Vector2.one * radius * 2;
+		//this.transform.localScale = Vector2.one * radius * 2;
+		this.transform.localScale *= (radius/2);
 		Collider2D[] colliders = Physics2D.OverlapCircleAll (this.transform.position, radius);
 		foreach (Collider2D hit in colliders) {
 			Rigidbody2D rigid = hit.GetComponent<Rigidbody2D> ();

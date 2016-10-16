@@ -26,7 +26,7 @@ public class ExplosionScript : MonoBehaviour {
 	}
 
 	IEnumerator Duration(){
-		float timer = 2;
+		float timer = 0;
 		while (timer < duration) {
 			timer += Time.deltaTime;
 			yield return null;

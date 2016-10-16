@@ -18,7 +18,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private System.Random randNum;
 	private int numberOfEnemies;
-	private List<char> enemyPossibilities = new List<char>() {'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'}; //'b', 'b', 'b', 'g', 'g', 'f'   for spooky guy and fallen guy
+	private List<char> enemyPossibilities = new List<char>() {'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'}; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     private int waveNum;
 
 	// Use this for initialization
@@ -73,14 +73,16 @@ public class EnemySpawner : MonoBehaviour {
 		if (enemyChar == 's') {
 			
 			Instantiate (enemyType, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
-		} else if (enemyChar == 'b') {
+		}
+		//bomb guy
+		else if (enemyChar == 'b') {
 			Instantiate (enemyType2, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
 		}
-
+		//spooky guy
 		else if (enemyChar == 'g') {
 			Instantiate (enemyType3, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
 		}
-		
+		//fallen guy
 		else if (enemyChar == 'f') {
 			Instantiate (enemyType4, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
 		}

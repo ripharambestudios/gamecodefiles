@@ -13,12 +13,13 @@ public class BigBoomAI : MonoBehaviour {
 	private bool isAttacking = false;
     private Animator animator;
 
-	public GameObject createProjectile;
 	public GameObject attackType;
 
 	public float teleportTime = 2f;
 
 	public int teleDistance = 5;
+
+	private bool weakenedOnce = false;
 
 	// Use this for initialization
 	void Start () {
@@ -32,13 +33,26 @@ public class BigBoomAI : MonoBehaviour {
 	void Update () {
 		distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
 
-		if (distanceToTarget <= sightRadius && !isAttacking) 
+		if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce)) 
 		{
 			Debug.Log ("Seen");
 			isAttacking = true;
 			StartCoroutine(LaunchAttack());
 		}
+		else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+		{
+			StartCoroutine(WeakenedState());
+
+		}
 	}
+
+	IEnumerator WeakenedState()
+	{
+		yield return new WaitForSeconds(5);
+		weakenedOnce = true;
+		yield return null;
+	}
+
 
 	//start method for enemy to launch at player
 	IEnumerator LaunchAttack()
