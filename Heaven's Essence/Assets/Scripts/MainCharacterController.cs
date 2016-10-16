@@ -8,6 +8,7 @@ public class MainCharacterController : MonoBehaviour {
 	public int health = 1000;
 	public GameObject healthBar;
 	public GameObject gameOverPanel;
+	public Text HealthText;
 
 	private int currentHealth;
 	private Vector2 characterVector;
@@ -19,6 +20,7 @@ public class MainCharacterController : MonoBehaviour {
 		player = this.GetComponent<Rigidbody2D> ();
 		player.gravityScale = 0;
 		currentHealth = health;
+		HealthText.text = "Health: ";   //+ currentHealth;
 		gameOverPanel.SetActive (false);
 	}
 
@@ -74,9 +76,9 @@ public class MainCharacterController : MonoBehaviour {
 	{
 		if (currentHealth > 0) 
 		{
-			float normalizedHealth = (float)currentHealth / (float)health;
-			healthBar.GetComponent<RectTransform> ().sizeDelta = new Vector2 (normalizedHealth * 256, 32);
-			float lostHealth = health - currentHealth;
+			//float normalizedHealth = (float)currentHealth / (float)health;
+			healthBar.GetComponent<RectTransform> ().sizeDelta = new Vector2 (currentHealth, 32);
+			//float lostHealth = health - currentHealth;
 		} 
 		else 
 		{
