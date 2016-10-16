@@ -3,11 +3,11 @@ using System.Collections;
 
 public class ShotGunAI : MonoBehaviour {
 
-	public float sightRadius = 3f;
+	private float sightRadius = 10f;
 	public float damage = 20f;
 	public float waitTime = 0.5f;
-    public float movementSpeed = 100f;
-	public float launchSpeed = 2000f;
+    private float movementSpeed = 100f;
+	private float launchSpeed = 2000f;
 	Vector2 changes = new Vector2 (5, 5);
 	private GameObject target;
 	private float distanceToTarget;
@@ -18,10 +18,11 @@ public class ShotGunAI : MonoBehaviour {
 	public GameObject createProjectile;
 	public GameObject attackType;
 
-	public float attackTime = 2f;
+	public float attackTime = 3f;
 
     public int rotateSpeed = 3;
-
+    private float timeout = 2.5f;
+    private bool attacked = false;
 	// Use this for initialization
 	void Start () {
 		isAttacking = false;
@@ -33,13 +34,13 @@ public class ShotGunAI : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
+        distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
 
-        if (distanceToTarget <= sightRadius && !isAttacking)
+        if (distanceToTarget < sightRadius && !isAttacking)
         {
-            Debug.Log("Seen");
+            Debug.Log(distanceToTarget + "Distance to Target ," + sightRadius + " ,Sight Radius");
             isAttacking = true;
-            setAttackingAnimation(true);
+            //setAttackingAnimation(true);
             StartCoroutine(LaunchAttack());
         }
 
@@ -52,7 +53,7 @@ public class ShotGunAI : MonoBehaviour {
             transform.LookAt(target.transform.position);
             transform.Rotate(new Vector3(0, -90, 0), Space.Self);
 
-            if (distanceToTarget > 10f)
+            if (distanceToTarget >= 10f)
             {//move if distance from target is greater than 1
 
                 //transform.Translate(new Vector3(inverseLaunchSpeed * Time.deltaTime, 0, 0));
@@ -85,31 +86,24 @@ public class ShotGunAI : MonoBehaviour {
 
 		float timer = attackTime;
 
-		int maxDistance = 10000;
+		
 		int layerDepth = 1;
 		int layerMask = layerDepth << 8; //player on 8th layer
-		RaycastHit2D impact = Physics2D.Raycast(nextPosition, endLocation, maxDistance, layerMask);
-		Debug.Log (impact.point + "TARGETING PLAYER SHOTGUN");
+	
+		
 		//this.transform.LookAt(target);
 		//yield return new WaitForSeconds (waitTime);
 		//yield return new WaitForSeconds (waitTime);
 		while (distanceToTarget <= sightRadius)
 		{
 			timer += Time.deltaTime;
-            			
-			if (timer >= attackTime)
+            if (timer >= attackTime && !attacked)
 			{
+                attacked = true;
+                createProjectile = (GameObject)Instantiate(attackType, transform.position + 1.0f * transform.right, transform.rotation);
+                createProjectile.GetComponent<Rigidbody2D>().AddForce(createProjectile.transform.right * launchSpeed);
                 stopped = true;
-                //yield return new WaitForSeconds(0.15f);
-				GameObject bullet = (GameObject)Instantiate(attackType, transform.position + 1.0f*transform.right, transform.rotation);
-                bullet.GetComponent<Rigidbody2D>().AddForce(bullet.transform.right * launchSpeed);
-                if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
-                {
-
-                    impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
-                    impact.collider.gameObject.SendMessage("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
-                    
-                }
+                Debug.Log("attacked");
                 yield return new WaitForSeconds(1);
                 stopped = false;
 				timer = 0f;
@@ -118,7 +112,10 @@ public class ShotGunAI : MonoBehaviour {
 
 		}
 		isAttacking = false;
-        setAttackingAnimation(false);
+        attacked = false;
+        timeout = 2.5f;
+        Debug.Log("done attacking");
+        //setAttackingAnimation(false);
 
     }
 
