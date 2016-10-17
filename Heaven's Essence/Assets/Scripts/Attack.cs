@@ -134,6 +134,7 @@ public class Attack : MonoBehaviour
             signOfLook = Mathf.Sign(next.y); //this will be negative if the mouse is below bullet, rotating it appropriately
         }
         float angle = Vector3.Angle(Vector3.right, new Vector3(next.x, next.y, 0));
+
         angle *= signOfLook;
         if (this.transform.position.y < 0 && next.y < 0)
         {
