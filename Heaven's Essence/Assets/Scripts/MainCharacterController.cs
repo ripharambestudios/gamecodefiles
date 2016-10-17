@@ -41,7 +41,6 @@ public class MainCharacterController : MonoBehaviour {
 		lookDirection.z = 0f;
 		RaycastHit2D hit;
 		float distance = 100000;
-
 		if (Physics2D.Raycast(this.transform.position, lookDirection, distance)) {
 			hit = Physics2D.Raycast (this.transform.position, lookDirection, distance);
 			this.GetComponent<Attack>().Aim (lookDirection);

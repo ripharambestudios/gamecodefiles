@@ -7,14 +7,12 @@ public class ShotGunAI : MonoBehaviour {
 	public float damage = 20f;
 	public float waitTime = 0.5f;
     private float movementSpeed = 100f;
-	private float launchSpeed = 2000f;
-	Vector2 changes = new Vector2 (5, 5);
+	private float launchSpeed = 1000f;
 	private GameObject target;
 	private float distanceToTarget;
 	private bool isAttacking = false;
 	private bool weakenedOnce = false;
 
-	private float attackDistance = 10f;
     private bool stopped = false;
 	public GameObject createProjectile;
 	public GameObject attackType;
@@ -22,7 +20,7 @@ public class ShotGunAI : MonoBehaviour {
 	public float attackTime = 3f;
 
     public int rotateSpeed = 3;
-    private float timeout = 2.5f;
+
     private bool attacked = false;
 	// Use this for initialization
 	void Start () {
@@ -99,11 +97,6 @@ public class ShotGunAI : MonoBehaviour {
 
 		float timer = attackTime;
 
-		
-		int layerDepth = 1;
-		int layerMask = layerDepth << 8; //player on 8th layer
-	
-		
 		//this.transform.LookAt(target);
 		//yield return new WaitForSeconds (waitTime);
 		//yield return new WaitForSeconds (waitTime);
@@ -126,7 +119,7 @@ public class ShotGunAI : MonoBehaviour {
 		}
 		isAttacking = false;
         attacked = false;
-        timeout = 2.5f;
+
         Debug.Log("done attacking");
         //setAttackingAnimation(false);
 

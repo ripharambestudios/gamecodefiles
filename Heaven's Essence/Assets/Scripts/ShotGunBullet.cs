@@ -4,11 +4,9 @@ using System.Collections;
 public class ShotGunBullet : MonoBehaviour {
 
 	public float expandSize = 3f;
-	public int speed = 10;
 	private float timer = 0f;
     private float destroyTimer = 0f;
     private float maxSize = 5f;
-    private int waitTime = 2;
     public float damage = 20f;
     // Use this for initialization
     void Start () {

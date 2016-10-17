@@ -58,8 +58,6 @@ public class BigBoomAI : MonoBehaviour {
 	IEnumerator LaunchAttack()
 	{
 		yield return null;
-		Vector2 endLocation = target.transform.position;
-		Vector2 nextPosition = this.transform.position;
 		float timer = teleportTime;
 		//yield return new WaitForSeconds (waitTime);
 		while (transform.position != target.transform.position && distanceToTarget <= sightRadius)

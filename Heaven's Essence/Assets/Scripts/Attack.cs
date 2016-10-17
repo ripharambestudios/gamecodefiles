@@ -105,11 +105,8 @@ public class Attack : MonoBehaviour
         }
         //rotate shot
         createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        Transform middle = this.transform.GetChild(1);
-        Vector2 nextPosition = start;
         float maxLaser = 100f;
 
-        RaycastHit2D impact;
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
         RaycastHit2D[] hits = Physics2D.RaycastAll(createProjectile.transform.position, next, maxLaser, layerMask);
