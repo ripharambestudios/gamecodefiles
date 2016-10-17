@@ -9,10 +9,12 @@ public class MainCharacterController : MonoBehaviour {
 	public GameObject healthBar;
 	public GameObject gameOverPanel;
 	public Text HealthText;
+	public Text ScoreText;
 
 	private int currentHealth;
 	private Vector2 characterVector;
 	private Rigidbody2D player;
+	private int totalScore = 0;
 
 
 	// Use this for initialization
@@ -22,6 +24,7 @@ public class MainCharacterController : MonoBehaviour {
 		currentHealth = health;
 		HealthText.text = "Health: ";   //+ currentHealth;
 		gameOverPanel.SetActive (false);
+		ScoreText.text = "Score: 0";
 	}
 
 	// Update is called once per frame
@@ -70,7 +73,10 @@ public class MainCharacterController : MonoBehaviour {
 		return currentHealth;
 	}
 
-
+	public void UpdateScore(int score){
+		totalScore += score;
+		ScoreText.text = "Score: " + totalScore;
+	}
 
 	private void setHealthBar()
 	{

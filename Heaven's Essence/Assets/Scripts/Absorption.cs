@@ -4,6 +4,7 @@ using System.Collections;
 public class Absorption : MonoBehaviour {
 
     private BoxCollider2D coll;
+	private int killEnemy = 1000000;
 
     // Use this for initialization
     void Start () {
@@ -25,7 +26,7 @@ public class Absorption : MonoBehaviour {
                 {
                     string attackType = hit.name;
                     this.gameObject.SendMessage("EnemyAbsorbed", attackType, SendMessageOptions.DontRequireReceiver);
-                    hit.gameObject.SendMessage("DealDamage", 1000, SendMessageOptions.DontRequireReceiver);
+                    hit.gameObject.SendMessage("DealDamage", killEnemy, SendMessageOptions.DontRequireReceiver);
                 }
             }
         }
