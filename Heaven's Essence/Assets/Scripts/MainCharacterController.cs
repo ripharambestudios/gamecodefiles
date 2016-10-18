@@ -49,7 +49,10 @@ public class MainCharacterController : MonoBehaviour {
 		if (Input.GetAxis ("Fire1") > 0) {
 			this.GetComponent<Attack> ().Fire ();
 		}
-
+        if (Input.GetAxis("Fire2") > 0)
+        {
+            this.GetComponent<Attack>().AltFire();
+        }
         if (Input.GetKeyUp("r"))
         {
             this.gameObject.SendMessage("EnemyAbsorbed", "Energy", SendMessageOptions.DontRequireReceiver);
