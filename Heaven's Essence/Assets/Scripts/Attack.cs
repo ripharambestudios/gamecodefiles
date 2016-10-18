@@ -60,7 +60,7 @@ public class Attack : MonoBehaviour
             if (projectile.name == projectileBeam.name)
             {
                 //canAttack = false;
-				float beamTimer = 10f; //10 seconds
+				float beamTimer = 2f; //2 seconds
 				if (!startedOnce) {
 					StartCoroutine (BeamTimeLeft (beamTimer));
 					startedOnce = true;
