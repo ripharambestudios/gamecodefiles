@@ -18,7 +18,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private System.Random randNum;
 	private int numberOfEnemies;
-	private List<char> enemyPossibilities = new List<char>() {'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f'}; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
+	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     private int waveNum;
 
 	// Use this for initialization

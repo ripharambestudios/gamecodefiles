@@ -100,7 +100,7 @@ public class ShotGunAI : MonoBehaviour {
 		//this.transform.LookAt(target);
 		//yield return new WaitForSeconds (waitTime);
 		//yield return new WaitForSeconds (waitTime);
-		while (distanceToTarget <= sightRadius)
+		while (distanceToTarget <= sightRadius && !attacked)
 		{
 			timer += Time.deltaTime;
             if (timer >= attackTime && !attacked)
