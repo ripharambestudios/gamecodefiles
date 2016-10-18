@@ -85,6 +85,17 @@ public class Attack : MonoBehaviour
         }
     }
 
+    public void AltFire()
+    {
+        if (canAttack)
+        {
+            if(projectile.name == projectileBomb.name)
+            {
+                //nothing
+            }
+        }
+    }
+
     IEnumerator fireBeam(Vector2 start, Vector2 next)
     {
         yield return null;
