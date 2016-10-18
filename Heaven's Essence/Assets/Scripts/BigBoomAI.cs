@@ -8,6 +8,7 @@ public class BigBoomAI : MonoBehaviour {
 	public float waitTime = 0.5f;
 	public float inverseLaunchSpeed = 10f;
 
+	static private int direction = 0;
 	private GameObject target;
 	private float distanceToTarget;
 	private bool isAttacking = false;
@@ -67,7 +68,8 @@ public class BigBoomAI : MonoBehaviour {
 			if (timer >= teleportTime)
 			{
 				Debug.Log ("Teleporting");
-				transform.position = new Vector3(target.transform.position.x - teleDistance, target.transform.position.y, 0);
+
+				enemyPlacement ();
 				//add check if on top of other enemies to move off slightly
 				yield return new WaitForSeconds (1f);
                 animator.SetInteger("Port", 1);
@@ -82,4 +84,29 @@ public class BigBoomAI : MonoBehaviour {
         animator.SetInteger("Port", 0);
 		isAttacking = false;
 	}    
+
+
+	private void enemyPlacement()
+	{
+
+		if (direction == 0) { // on top
+			transform.position = new Vector3 (target.transform.position.x, target.transform.position.y + teleDistance, 0);
+		} 
+		else if (direction == 1) { // on right
+			transform.position = new Vector3 (target.transform.position.x + teleDistance, target.transform.position.y, 0);
+		} 
+		else if (direction == 2) { // on bottom
+			transform.position = new Vector3 (target.transform.position.x, target.transform.position.y - teleDistance, 0);
+		} 
+		else { //on left
+			transform.position = new Vector3 (target.transform.position.x - teleDistance, target.transform.position.y, 0);
+		}
+			
+		if (direction < 3) {
+			direction++;
+		} 
+		else {
+			direction = 0;
+		}
+	}
 }
