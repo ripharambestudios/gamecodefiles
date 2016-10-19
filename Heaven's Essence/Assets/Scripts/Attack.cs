@@ -45,6 +45,55 @@ public class Attack : MonoBehaviour
         attackType = attackTypeEnergy;
     }
 
+    void Update()
+    {
+        if(projectile.name == projectileBeam.name)
+        {
+            //red skin
+            this.transform.GetChild(0).gameObject.SetActive(false);
+            this.transform.GetChild(1).gameObject.SetActive(false);
+            this.transform.GetChild(2).gameObject.SetActive(false);
+            this.transform.GetChild(3).gameObject.SetActive(true);
+            this.transform.GetChild(4).gameObject.SetActive(false);
+        }
+        else if(projectile.name == projectileEnergy.name)
+        {
+            //blue skin
+            this.transform.GetChild(0).gameObject.SetActive(true);
+            this.transform.GetChild(1).gameObject.SetActive(false);
+            this.transform.GetChild(2).gameObject.SetActive(false);
+            this.transform.GetChild(3).gameObject.SetActive(false);
+            this.transform.GetChild(4).gameObject.SetActive(false);
+        }
+        else if(projectile.name == projectileShotgun.name)
+        {
+            //green skin
+            this.transform.GetChild(0).gameObject.SetActive(false);
+            this.transform.GetChild(1).gameObject.SetActive(true);
+            this.transform.GetChild(2).gameObject.SetActive(false);
+            this.transform.GetChild(3).gameObject.SetActive(false);
+            this.transform.GetChild(4).gameObject.SetActive(false);
+        }
+        else if(projectile.name == projectileSpeed.name)
+        {
+            //yellow skin
+            this.transform.GetChild(0).gameObject.SetActive(false);
+            this.transform.GetChild(1).gameObject.SetActive(false);
+            this.transform.GetChild(2).gameObject.SetActive(false);
+            this.transform.GetChild(3).gameObject.SetActive(false);
+            this.transform.GetChild(4).gameObject.SetActive(true);
+        }
+        else if(projectile.name == projectileBomb.name)
+        {
+            //purple skin
+            this.transform.GetChild(0).gameObject.SetActive(false);
+            this.transform.GetChild(1).gameObject.SetActive(false);
+            this.transform.GetChild(2).gameObject.SetActive(true);
+            this.transform.GetChild(3).gameObject.SetActive(false);
+            this.transform.GetChild(4).gameObject.SetActive(false);
+        }
+    }
+
     public void Aim(Vector2 aimTarget)
     {
         aimLocation = aimTarget;

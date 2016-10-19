@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class AnimatorScript : MonoBehaviour {
-	
+    
+
 	private Animator animator;
 	// Use this for initialization
 	void Start () {
