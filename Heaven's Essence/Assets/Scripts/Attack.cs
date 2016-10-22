@@ -106,17 +106,17 @@ public class Attack : MonoBehaviour
     {
         if (canAttack)
         {
-            if (projectile.name == projectileBeam.name)
-            {
-                //canAttack = false;
+			if (projectile.name == projectileBeam.name)
+			{
+				//canAttack = false;
 				float beamTimer = 2f; //2 seconds
 				if (!startedOnce) {
 					StartCoroutine (BeamTimeLeft (beamTimer));
 					startedOnce = true;
 				}
-                StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
-                //StartCoroutine(Cooldown(_rateOfFire));
-            }
+				StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
+				//StartCoroutine(Cooldown(_rateOfFire));
+			}
             else {
 				if (projectile.name == projectileBomb.name) {
 					speedOfProjectile = .4f;
@@ -164,6 +164,16 @@ public class Attack : MonoBehaviour
 				StartCoroutine (altEnergy ((Vector2)attackSpawn.transform.position, attackAngle));
 
 			} else if (projectile.name == projectileBeam.name) {
+				
+					//canAttack = false;
+					float beamTimer = 1f; //1 seconds
+					if (!startedOnce) {
+						StartCoroutine (BeamTimeLeft (beamTimer));
+						startedOnce = true;
+					}
+					StartCoroutine(altBeam((Vector2)attackSpawn.transform.position, attackAngle));
+					//StartCoroutine(Cooldown(_rateOfFire));
+
 				canAttack = false;
 				StartCoroutine (altBeam ((Vector2)attackSpawn.transform.position, attackAngle));
 
@@ -272,6 +282,7 @@ public class Attack : MonoBehaviour
 		yield return null;
 		//destroy object if it doesn't collide with anything after timeout amout of time
 		GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
+		createProjectile.transform.localScale *= 10;
 		createProjectile.transform.parent = this.transform;
 		//get the sign of the direction of the aim
 		float signOfLook = 1;
