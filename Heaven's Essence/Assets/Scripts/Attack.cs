@@ -36,6 +36,8 @@ public class Attack : MonoBehaviour
 	private int ammunition;
 	private bool startedOnce = false;
 	private bool ammoSet = false;
+	private float chargeTime = 0;
+	private float maxCharge = 6f;
 
     // Use this for initialization
     void Start()
@@ -143,6 +145,7 @@ public class Attack : MonoBehaviour
 					speedOfProjectile = 1f;
 					rateOfFire = 4.0f;
 					ammunition = 1000;
+					attackType.GetComponent<DoDamage> ().damage = 20;
 				}
 				_rateOfFire = 1 / rateOfFire;
 				canAttack = false;
@@ -152,41 +155,61 @@ public class Attack : MonoBehaviour
         }
     }
 
-    public void AltFire()
+	public void AltFire()
     {
+		chargeTime += .1f;
         if (canAttack)
         {
-			
 			if (projectile.name == projectileBomb.name) {
 				//nothing, done in different script
-			} else if (projectile.name == projectileEnergy.name) {
+			} else if (projectile.name == projectileEnergy.name && chargeTime >= maxCharge) {
 				canAttack = false;
-				StartCoroutine (altEnergy ((Vector2)attackSpawn.transform.position, attackAngle));
+				speedOfProjectile = 1f;
+				rateOfFire = 4f;
+				_rateOfFire = 1 / rateOfFire;
+				attackType.GetComponent<DoDamage> ().damage = 40;
+				StartCoroutine (Cooldown (_rateOfFire));
+				StartCoroutine (altEnergy ((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
 
 			} else if (projectile.name == projectileBeam.name) {
-				
-					//canAttack = false;
-					float beamTimer = 1f; //1 seconds
-					if (!startedOnce) {
-						StartCoroutine (BeamTimeLeft (beamTimer));
-						startedOnce = true;
-					}
-					StartCoroutine(altBeam((Vector2)attackSpawn.transform.position, attackAngle));
-					//StartCoroutine(Cooldown(_rateOfFire));
 
-				canAttack = false;
-				StartCoroutine (altBeam ((Vector2)attackSpawn.transform.position, attackAngle));
-
+				float beamTimer = 1f; //1 seconds
+				if (!startedOnce) {
+					StartCoroutine (BeamTimeLeft (beamTimer));
+					startedOnce = true;
+				}
+				StartCoroutine(altBeam((Vector2)attackSpawn.transform.position, attackAngle));
+					
 			} else if (projectile.name == projectileSpeed.name) {
+				speedOfProjectile = 1.2f;
+				rateOfFire = 6.0f;
+				if (!ammoSet) {
+					ammunition = 100;
+					ammoSet = true;
+				}
+				_rateOfFire = 1 / rateOfFire;
 				canAttack = false;
-				StartCoroutine (altSpeed ((Vector2)attackSpawn.transform.position, attackAngle));
+				StartCoroutine (altSpeed ((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
+				StartCoroutine (Cooldown (_rateOfFire));
 			} else if (projectile.name == projectileShotgun.name) {
+				speedOfProjectile = .7f;
+				rateOfFire = 3.0f;
+				if (!ammoSet) {
+					ammunition = 30;
+					ammoSet = true;
+				}
+				_rateOfFire = 1 / rateOfFire;
 				canAttack = false;
-				StartCoroutine (altShotgun ());
+				StartCoroutine (altShotgun (speedOfProjectile));
+				StartCoroutine (Cooldown (_rateOfFire));
 			}
         }
+		if (chargeTime >= maxCharge) {
+			chargeTime = 0;
+		}
     }
 
+	//fire super powerful red beam for 2 seconds in any direction
     IEnumerator fireBeam(Vector2 start, Vector2 next)
     {
         yield return null;
@@ -221,7 +244,7 @@ public class Attack : MonoBehaviour
         Destroy(createProjectile);
     }
 		
-
+	//fires variety of projectiles from the player
     IEnumerator fireProjectile(Vector2 start, Vector2 next, float attackSpeed)
     {
         yield return null;
@@ -278,6 +301,7 @@ public class Attack : MonoBehaviour
     }
 
 	//shoots bigger laser that instantly drains whole timer
+	//HIT BOX IS NOT CORRECT CURRENTLY
 	IEnumerator altBeam(Vector2 start, Vector2 next){
 		yield return null;
 		//destroy object if it doesn't collide with anything after timeout amout of time
@@ -313,17 +337,141 @@ public class Attack : MonoBehaviour
 	}
 
 	//charges up large shot
-	IEnumerator altEnergy(Vector2 start, Vector2 next){
-		yield return null;
+	//Needs to be adjusted
+	IEnumerator altEnergy(Vector2 start, Vector2 next, float attackSpeed){
+		
+		//destroy object if it doesn't collide with anything after timeout amout of time
+		float timeout = 3f;
+		GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
+		createProjectile.transform.parent = this.transform;
+		createProjectile.transform.localScale *= maxCharge;
+		//get the sign of the direction of the aim
+		float signOfLook = 1;
+		if (createProjectile.transform.position.y > next.y)
+		{
+			signOfLook = Mathf.Sign(next.y); //this will be negative if the mouse is below bullet, rotating it appropriately
+		}
+		float angle = Vector3.Angle(Vector3.right, new Vector3(next.x, next.y, 0));
+
+		angle *= signOfLook;
+		if (this.transform.position.y < 0 && next.y < 0)
+		{
+			angle = angle * -1;
+		}
+		//rotate shot
+		createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+		Vector2 nextPosition = start;
+		bool hit = false;
+		while (createProjectile != null && timeout > 0f && !hit)
+		{
+			timeout -= Time.deltaTime;
+			nextPosition += next * attackSpeed;
+
+			RaycastHit2D impact;
+			int layerDepth = 1;
+			int layerMask = layerDepth << 9; //enemies on 9th layer
+			if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
+			{
+				impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
+
+				Instantiate(attackType, impact.point, Quaternion.identity);
+				hit = true;
+
+			}
+
+			createProjectile.transform.position = nextPosition;
+			yield return null;
+		}
+
+		Destroy(createProjectile);
 	}
 
 	//shoots double bullets, drains off ammunition twice as fast
-	IEnumerator altSpeed(Vector2 start, Vector2 next){
+	IEnumerator altSpeed(Vector2 start, Vector2 next, float attackSpeed){
 		yield return null;
+		//destroy object if it doesn't collide with anything after timeout amout of time
+		float timeout = 3f;
+
+		GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
+		createProjectile.transform.parent = this.transform;
+		GameObject createProjectile2 = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
+		createProjectile2.transform.parent = this.transform;
+		ammunition -= 2;
+		Debug.Log ("AMMO LEFT " + ammunition);
+		//get the sign of the direction of the aim
+		float signOfLook = 1;
+		if (createProjectile.transform.position.y > next.y)
+		{
+			signOfLook = Mathf.Sign(next.y); //this will be negative if the mouse is below bullet, rotating it appropriately
+		}
+		float angle = Vector3.Angle(Vector3.right, new Vector3(next.x, next.y, 0));
+
+		angle *= signOfLook;
+		if (this.transform.position.y < 0 && next.y < 0)
+		{
+			angle = angle * -1;
+		}
+		//rotate shot
+		createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+		createProjectile2.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+		Vector2 nextPosition = start;
+		Vector2 nextPosition2 = start + new Vector2(0,-1);
+		bool hit = false;
+		bool hit2 = false;
+		while ((createProjectile != null || createProjectile2 != null) &&  timeout > 0f && (!hit|| !hit2))
+		{
+			timeout -= Time.deltaTime;
+			nextPosition += next * attackSpeed;
+			nextPosition2 += next * attackSpeed;
+			RaycastHit2D impact;
+			RaycastHit2D impact2;
+			int layerDepth = 1;
+			int layerMask = layerDepth << 9; //enemies on 9th layer
+			if (createProjectile != null && Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask) && !hit)
+			{
+				impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
+				Instantiate(attackType, impact.point, Quaternion.identity);
+				hit = true;
+			}
+			if (createProjectile2 != null && Physics2D.Linecast(createProjectile2.transform.position, nextPosition2, layerMask) && !hit2)
+			{
+				impact2 = Physics2D.Linecast(createProjectile2.transform.position, nextPosition2, layerMask);
+				Instantiate(attackType, impact2.point, Quaternion.identity);
+				hit2 = true;
+			}
+
+			if (createProjectile != null) {	
+				createProjectile.transform.position = nextPosition;
+			}
+			if (createProjectile2 != null) {
+				createProjectile2.transform.position = nextPosition2;
+			}
+			if (hit) {
+				Destroy (createProjectile);
+			}
+			if (hit2) {
+				Destroy (createProjectile2);
+			}
+			yield return null;
+		}
+
+		if (ammunition <= 0) {
+			ammoSet = false;
+			projectile = projectileEnergy;
+			attackType = attackTypeEnergy;
+		}
+		if (createProjectile != null) {
+			Destroy (createProjectile);
+		}
+		if (createProjectile2 != null) {
+			Destroy (createProjectile2);
+		}
 	}
 
-	//
-	IEnumerator altShotgun(){
+	//fires four shots, one above, one below, and to the left and right of the player
+	IEnumerator altShotgun(float attackSpeed){
 		yield return null;
 	}
 
