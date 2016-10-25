@@ -10,10 +10,10 @@ public class CameraFollow : MonoBehaviour {
     void LateUpdate()
     {
         //change camera speed at a rate between the position of the camera and its target, with a multiplier of time last called and tracking speed
-        //delta time is a small numberi
+        //delta time is a small number
         if (target != null)
         {
-            this.transform.position = Vector2.Lerp(this.transform.position, target.transform.position, Time.deltaTime * trackingSpeed);
+            this.transform.position = Vector2.Lerp(this.transform.position, target.transform.position, Time.deltaTime *trackingSpeed);
         }
     }
 }

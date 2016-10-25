@@ -33,16 +33,30 @@ public class Attack : MonoBehaviour
     private Vector2 attackAngle = Vector2.zero;
     private Vector2 aimLocation = Vector2.zero;
     private bool canAttack = true;
-	private int ammunition;
-	private bool startedOnce = false;
-	private bool ammoSet = false;
-	private float chargeTime = 0;
-	private float maxCharge = 6f;
+
+	private bool startedOnce = false; //for beam timer
+
+	private float chargeTime = 0; //used to track how long right click is held for energy attack alternate attack
+	private float maxCharge = 6f;  //time player needs to hold down for alt attack to fire
+    //Number of souls player has obtained
+    private int energySouls = 0;
+    private int beamSouls = 0;
+    private int bombSouls = 0;
+    private int shotgunSouls = 0;
+    private int spookyGuySouls = 0;
+    //attack power of the different attacks
+    private int energyAttackLevel = 1;
+    private int beamAttackLevel = 0;
+    private int bombAttackLevel = 0;
+    private int shotgunAttackLevel = 0;
+    private int spookyGuyAttackLevel = 0;
+    //max number of upgrades
+    private int maxNumOfUpgrades = 10;
+
 
     // Use this for initialization
     void Start()
     {
-        
         projectile = projectileEnergy;
         attackType = attackTypeEnergy;
     }
@@ -108,7 +122,7 @@ public class Attack : MonoBehaviour
     {
         if (canAttack)
         {
-			if (projectile.name == projectileBeam.name)
+			if (projectile.name == projectileBeam.name && beamAttackLevel > 0)
 			{
 				//canAttack = false;
 				float beamTimer = 2f; //2 seconds
@@ -120,31 +134,22 @@ public class Attack : MonoBehaviour
 				//StartCoroutine(Cooldown(_rateOfFire));
 			}
             else {
-				if (projectile.name == projectileBomb.name) {
+				if (projectile.name == projectileBomb.name && bombAttackLevel >0) {
 					speedOfProjectile = .4f;
 					rateOfFire = 1.0f;
-					if (!ammoSet) {
-						ammunition = 20;
-						ammoSet = true;
-					}
-				} else if (projectile.name == projectileSpeed.name) {
+					
+				} else if (projectile.name == projectileSpeed.name && spookyGuyAttackLevel >0) {
 					speedOfProjectile = 1.2f;
 					rateOfFire = 6.0f;
-					if (!ammoSet) {
-						ammunition = 100;
-						ammoSet = true;
-					}
-				} else if (projectile.name == projectileShotgun.name) {
+					
+				} else if (projectile.name == projectileShotgun.name && shotgunAttackLevel > 0) {
 					speedOfProjectile = .7f;
 					rateOfFire = 3.0f;
-					if (!ammoSet) {
-						ammunition = 30;
-						ammoSet = true;
-					}
+					
 				} else {
 					speedOfProjectile = 1f;
 					rateOfFire = 4.0f;
-					ammunition = 1000;
+
 					attackType.GetComponent<DoDamage> ().damage = 20;
 				}
 				_rateOfFire = 1 / rateOfFire;
@@ -171,7 +176,7 @@ public class Attack : MonoBehaviour
 				StartCoroutine (Cooldown (_rateOfFire));
 				StartCoroutine (altEnergy ((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
 
-			} else if (projectile.name == projectileBeam.name) {
+			} else if (projectile.name == projectileBeam.name && beamAttackLevel > 0) {
 
 				float beamTimer = 1f; //1 seconds
 				if (!startedOnce) {
@@ -180,24 +185,16 @@ public class Attack : MonoBehaviour
 				}
 				StartCoroutine(altBeam((Vector2)attackSpawn.transform.position, attackAngle));
 					
-			} else if (projectile.name == projectileSpeed.name) {
+			} else if (projectile.name == projectileSpeed.name && spookyGuyAttackLevel > 0) {
 				speedOfProjectile = 1.2f;
 				rateOfFire = 6.0f;
-				if (!ammoSet) {
-					ammunition = 100;
-					ammoSet = true;
-				}
 				_rateOfFire = 1 / rateOfFire;
 				canAttack = false;
 				StartCoroutine (altSpeed ((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
 				StartCoroutine (Cooldown (_rateOfFire));
-			} else if (projectile.name == projectileShotgun.name) {
+			} else if (projectile.name == projectileShotgun.name && shotgunAttackLevel > 0) {
 				speedOfProjectile = .7f;
 				rateOfFire = 3.0f;
-				if (!ammoSet) {
-					ammunition = 30;
-					ammoSet = true;
-				}
 				_rateOfFire = 1 / rateOfFire;
 				canAttack = false;
 				StartCoroutine (altShotgun (speedOfProjectile));
@@ -253,8 +250,8 @@ public class Attack : MonoBehaviour
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
-		ammunition -= 1;
-		Debug.Log ("AMMO LEFT " + ammunition);
+		
+		
         //get the sign of the direction of the aim
         float signOfLook = 1;
         if (createProjectile.transform.position.y > next.y)
@@ -292,11 +289,7 @@ public class Attack : MonoBehaviour
             yield return null;
         }
 
-		if (ammunition <= 0) {
-			ammoSet = false;
-			projectile = projectileEnergy;
-			attackType = attackTypeEnergy;
-		}
+
         Destroy(createProjectile);
     }
 
@@ -397,8 +390,7 @@ public class Attack : MonoBehaviour
 		createProjectile.transform.parent = this.transform;
 		GameObject createProjectile2 = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
 		createProjectile2.transform.parent = this.transform;
-		ammunition -= 2;
-		Debug.Log ("AMMO LEFT " + ammunition);
+
 		//get the sign of the direction of the aim
 		float signOfLook = 1;
 		if (createProjectile.transform.position.y > next.y)
@@ -456,12 +448,7 @@ public class Attack : MonoBehaviour
 			}
 			yield return null;
 		}
-
-		if (ammunition <= 0) {
-			ammoSet = false;
-			projectile = projectileEnergy;
-			attackType = attackTypeEnergy;
-		}
+        
 		if (createProjectile != null) {
 			Destroy (createProjectile);
 		}
@@ -504,28 +491,58 @@ public class Attack : MonoBehaviour
     {
         if (attackTypeString == "Energy")
         {
-            projectile = projectileEnergy;
-            attackType = attackTypeEnergy;
+            //projectile = projectileEnergy;
+            //attackType = attackTypeEnergy;
         }
         else if (attackTypeString == "DemonicSonic(Clone)")
         {
-            projectile = projectileBeam;
-            attackType = attackTypeBeam;
+            //projectile = projectileBeam;
+            //attackType = attackTypeBeam;
+            energySouls += 10;
+            beamSouls += 10;
         }
         else if (attackTypeString == "BoomEnemy(Clone)")
         {
-            projectile = projectileBomb;
-            attackType = attackTypeBomb;
+            //projectile = projectileBomb;
+            //attackType = attackTypeBomb;
+            energySouls += 20;
+            bombSouls += 10;
         }
         else if (attackTypeString == "SpookyGuy(Clone)")
         {
-            projectile = projectileSpeed;
-            attackType = attackTypeSpeed;
+            //projectile = projectileSpeed;
+            //attackType = attackTypeSpeed;
+            energySouls += 25;
+            spookyGuySouls += 10;
         }
         else if (attackTypeString == "FallenGuy(Clone)")
         {
-            projectile = projectileShotgun;
-            attackType = attackTypeShotgun;
+            //projectile = projectileShotgun;
+            //attackType = attackTypeShotgun;
+            energySouls += 15;
+            shotgunSouls += 10;
         }
+    }
+
+    public int GetEnergyNumberOfSouls()
+    {
+        return energySouls;
+    }
+
+    public int GetBombNumberOfSouls()
+    {
+        return bombSouls;
+    }
+    public int GetSpookyNumberOfSouls()
+    {
+        return spookyGuySouls;
+    }
+    public int GetShotgunNumberOfSouls()
+    {
+        return shotgunSouls;
+    }
+    public int GetBeamNumberOfSouls()
+    {
+        return beamSouls;
     }
 }

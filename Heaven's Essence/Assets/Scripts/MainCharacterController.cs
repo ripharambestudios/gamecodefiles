@@ -57,6 +57,10 @@ public class MainCharacterController : MonoBehaviour {
         {
             this.gameObject.SendMessage("EnemyAbsorbed", "Energy", SendMessageOptions.DontRequireReceiver);
         }
+        if (Input.GetKeyUp("1"))
+        {
+
+        }
 
 	}
 
