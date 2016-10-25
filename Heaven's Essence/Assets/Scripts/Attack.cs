@@ -50,8 +50,16 @@ public class Attack : MonoBehaviour
     private int bombAttackLevel = 0;
     private int shotgunAttackLevel = 0;
     private int spookyGuyAttackLevel = 0;
+    //upgrade cost for each attack
+    private int energyUpgradeCost = 50;
+    private int beamUpgradeCost = 20;
+    private int bombUpgradeCost = 20;
+    private int shotgunUpgradeCost = 20;
+    private int spookyGuyUpgradeCost = 20;
     //max number of upgrades
-    private int maxNumOfUpgrades = 10;
+    private int maxNumOfUpgrades = 12;
+    private int maxUpgradeForWeapon = 8;
+    private int numberOfUpgrades = 0;
 
 
     // Use this for initialization
@@ -124,6 +132,7 @@ public class Attack : MonoBehaviour
         {
 			if (projectile.name == projectileBeam.name && beamAttackLevel > 0)
 			{
+                //may be wrong right now
 				//canAttack = false;
 				float beamTimer = 2f; //2 seconds
 				if (!startedOnce) {
@@ -131,7 +140,7 @@ public class Attack : MonoBehaviour
 					startedOnce = true;
 				}
 				StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
-				//StartCoroutine(Cooldown(_rateOfFire));
+				
 			}
             else {
 				if (projectile.name == projectileBomb.name && bombAttackLevel >0) {
@@ -482,46 +491,135 @@ public class Attack : MonoBehaviour
 			timer += Time.deltaTime;
 			yield return null;
 		}
-		projectile = projectileEnergy;
-		attackType = attackTypeEnergy;
+		
 		startedOnce = false;
-	}
+        canAttack = false;
+        StartCoroutine(Cooldown(_rateOfFire));
+    }
 
     public void EnemyAbsorbed(string attackTypeString)
     {
         if (attackTypeString == "Energy")
         {
-            //projectile = projectileEnergy;
-            //attackType = attackTypeEnergy;
+
         }
         else if (attackTypeString == "DemonicSonic(Clone)")
         {
-            //projectile = projectileBeam;
-            //attackType = attackTypeBeam;
+
             energySouls += 10;
             beamSouls += 10;
         }
         else if (attackTypeString == "BoomEnemy(Clone)")
         {
-            //projectile = projectileBomb;
-            //attackType = attackTypeBomb;
+
             energySouls += 20;
             bombSouls += 10;
         }
         else if (attackTypeString == "SpookyGuy(Clone)")
         {
-            //projectile = projectileSpeed;
-            //attackType = attackTypeSpeed;
+
             energySouls += 25;
             spookyGuySouls += 10;
         }
         else if (attackTypeString == "FallenGuy(Clone)")
         {
-            //projectile = projectileShotgun;
-            //attackType = attackTypeShotgun;
+
             energySouls += 15;
             shotgunSouls += 10;
         }
+    }
+
+    public void SwitchAttacks(string attackTypeString)
+    {
+
+        if (attackTypeString == "Energy")
+        {
+            projectile = projectileEnergy;
+            attackType = attackTypeEnergy;
+        }
+        else if (attackTypeString == "Beam" && beamAttackLevel >0)
+        {
+            projectile = projectileBeam;
+            attackType = attackTypeBeam;
+            
+        }
+        else if (attackTypeString == "Bomb" && bombAttackLevel >0)
+        {
+            projectile = projectileBomb;
+            attackType = attackTypeBomb;
+            
+        }
+        else if (attackTypeString == "Speed" && spookyGuyAttackLevel > 0)
+        {
+            projectile = projectileSpeed;
+            attackType = attackTypeSpeed;
+            
+        }
+        else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
+        {
+            projectile = projectileShotgun;
+            attackType = attackTypeShotgun;
+        }
+        else
+        {
+            //case occurs when player selects weapon that is not unlocked
+            projectile = projectileEnergy;
+            attackType = attackTypeEnergy;
+            //instantiate here a warning that the player has not unlocked that attack yet
+        }
+    }
+
+    public void UpgradeAttack(string upgradeType)
+    {
+        numberOfUpgrades += 1;
+        if (numberOfUpgrades <= maxNumOfUpgrades)
+        {
+            if (upgradeType == "Energy" && energySouls >= energyUpgradeCost && energyAttackLevel < maxUpgradeForWeapon)
+            {
+                energyAttackLevel += 1;
+                energySouls -= energyUpgradeCost;
+                energyUpgradeCost *= 2;
+            }
+            else if (upgradeType == "Beam" && beamSouls >= beamUpgradeCost && beamAttackLevel < maxUpgradeForWeapon)
+            {
+                beamAttackLevel += 1;
+                beamSouls -= beamUpgradeCost;
+                beamUpgradeCost *= 2;
+
+            }
+            else if (upgradeType == "Bomb" && bombSouls >= bombUpgradeCost && bombAttackLevel < maxUpgradeForWeapon)
+            {
+                bombAttackLevel += 1;
+                bombSouls -= bombUpgradeCost;
+                bombUpgradeCost *= 2;
+
+            }
+            else if (upgradeType == "Speed" && spookyGuySouls >= spookyGuyUpgradeCost && spookyGuyAttackLevel < maxUpgradeForWeapon)
+            {
+                spookyGuyAttackLevel += 1;
+                spookyGuySouls -= spookyGuyUpgradeCost;
+                spookyGuyUpgradeCost *= 2;
+
+            }
+            else if (upgradeType == "Shotgun" && shotgunSouls >= shotgunUpgradeCost && shotgunAttackLevel < maxUpgradeForWeapon)
+            {
+                shotgunAttackLevel += 1;
+                shotgunSouls -= shotgunUpgradeCost;
+                shotgunUpgradeCost *= 2;
+            }
+            else
+            {
+                //case occurs when player selects weapon that they do not have enough to upgrade
+                Debug.Log("You do not have enough " + upgradeType + " type souls to upgrade this attack.");
+                //instantiate here a warning that the player does not have enough souls for the attack upgrade
+                numberOfUpgrades -= 1;
+            }
+        }
+        else
+        {
+            //display that the player has reached their max number of upgrades
+        }
+
     }
 
     public int GetEnergyNumberOfSouls()
