@@ -60,6 +60,12 @@ public class Attack : MonoBehaviour
     private int maxNumOfUpgrades = 12;
     private int maxUpgradeForWeapon = 8;
     private int numberOfUpgrades = 0;
+    //starting damage values
+    private int energyInitialDamage;
+    private int beamInitialDamage;
+    private int bombInitialDamage;
+    private int shotgunInitialDamage;
+    private int spookyGuyInitialDamage;
 
 
     // Use this for initialization
@@ -67,6 +73,11 @@ public class Attack : MonoBehaviour
     {
         projectile = projectileEnergy;
         attackType = attackTypeEnergy;
+        energyInitialDamage = attackTypeEnergy.GetComponent<DoDamage>().damage;
+        beamInitialDamage = attackTypeBeam.GetComponent<DoDamage>().damage;
+        bombInitialDamage = attackTypeBomb.GetComponent<DoDamage>().damage;
+        shotgunInitialDamage = attackTypeShotgun.GetComponent<DoDamage>().damage;
+        spookyGuyInitialDamage = attackTypeSpeed.GetComponent<DoDamage>().damage;
     }
 
     void Update()
@@ -139,27 +150,27 @@ public class Attack : MonoBehaviour
 					StartCoroutine (BeamTimeLeft (beamTimer));
 					startedOnce = true;
 				}
-				StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
+                attackType.GetComponent<DoDamage>().damage = beamInitialDamage * beamAttackLevel;
+                StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
 				
 			}
             else {
 				if (projectile.name == projectileBomb.name && bombAttackLevel >0) {
 					speedOfProjectile = .4f;
 					rateOfFire = 1.0f;
-					
-				} else if (projectile.name == projectileSpeed.name && spookyGuyAttackLevel >0) {
+                    attackType.GetComponent<DoDamage>().damage = bombInitialDamage * bombAttackLevel;
+                } else if (projectile.name == projectileSpeed.name && spookyGuyAttackLevel >0) {
 					speedOfProjectile = 1.2f;
 					rateOfFire = 6.0f;
-					
-				} else if (projectile.name == projectileShotgun.name && shotgunAttackLevel > 0) {
+                    attackType.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * spookyGuyAttackLevel;
+                } else if (projectile.name == projectileShotgun.name && shotgunAttackLevel > 0) {
 					speedOfProjectile = .7f;
 					rateOfFire = 3.0f;
-					
-				} else {
+                    attackType.GetComponent<DoDamage>().damage = shotgunInitialDamage*shotgunAttackLevel;
+                } else {
 					speedOfProjectile = 1f;
 					rateOfFire = 4.0f;
-
-					attackType.GetComponent<DoDamage> ().damage = 20;
+					attackType.GetComponent<DoDamage> ().damage = energyInitialDamage*energyAttackLevel;
 				}
 				_rateOfFire = 1 / rateOfFire;
 				canAttack = false;
@@ -169,6 +180,9 @@ public class Attack : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Currently not set in stone.
+    /// </summary>
 	public void AltFire()
     {
 		chargeTime += .1f;
@@ -565,6 +579,7 @@ public class Attack : MonoBehaviour
             //case occurs when player selects weapon that is not unlocked
             projectile = projectileEnergy;
             attackType = attackTypeEnergy;
+            Debug.Log("Attack is not unlocked");
             //instantiate here a warning that the player has not unlocked that attack yet
         }
     }
@@ -576,12 +591,14 @@ public class Attack : MonoBehaviour
         {
             if (upgradeType == "Energy" && energySouls >= energyUpgradeCost && energyAttackLevel < maxUpgradeForWeapon)
             {
+                
                 energyAttackLevel += 1;
                 energySouls -= energyUpgradeCost;
                 energyUpgradeCost *= 2;
             }
             else if (upgradeType == "Beam" && beamSouls >= beamUpgradeCost && beamAttackLevel < maxUpgradeForWeapon)
             {
+                Debug.Log("Attack upgraded");
                 beamAttackLevel += 1;
                 beamSouls -= beamUpgradeCost;
                 beamUpgradeCost *= 2;

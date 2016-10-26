@@ -70,59 +70,56 @@ public class MainCharacterController : MonoBehaviour
             this.gameObject.SendMessage("EnemyAbsorbed", "Energy", SendMessageOptions.DontRequireReceiver);
         }
 
-        if (Input.GetKeyUp("" + 1))
+        if (Input.GetKeyUp(KeyCode.Alpha1) && !Input.GetKey(KeyCode.LeftShift))
         {
             this.GetComponent<Attack>().SwitchAttacks(attackTypes[0]);
             //check for numbers 1-5 and also for numbers plus control key.  send signal to upgrade attack or change attack
         }
-        if (Input.GetKeyUp("" + 2))
+        if (Input.GetKeyUp(KeyCode.Alpha2) && !Input.GetKey(KeyCode.LeftShift))
         {
             this.GetComponent<Attack>().SwitchAttacks(attackTypes[1]);
         }
-        if (Input.GetKeyUp("" + 3))
+        if (Input.GetKeyUp(KeyCode.Alpha3) && !Input.GetKey(KeyCode.LeftShift))
         {
             this.GetComponent<Attack>().SwitchAttacks(attackTypes[2]);
         }
-        if (Input.GetKeyUp("" + 4))
+        if (Input.GetKeyUp(KeyCode.Alpha4) && !Input.GetKey(KeyCode.LeftShift))
         {
             this.GetComponent<Attack>().SwitchAttacks(attackTypes[3]);
         }
-        if (Input.GetKeyUp("" + 5))
+        if (Input.GetKeyUp(KeyCode.Alpha5) && !Input.GetKey(KeyCode.LeftShift))
         {
             this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+
+        if (Input.GetKey(KeyCode.LeftShift) && (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1)))
         {
-            if (!upgraded)
-            {
-                if (Input.GetKeyDown("" + 1))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
-                    upgraded = true;
-                }
-                if (Input.GetKeyDown("" + 2))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
-                    upgraded = true;
-                }
-                if (Input.GetKeyDown("" + 3))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
-                    upgraded = true;
-                }
-                if (Input.GetKeyDown("" + 4))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
-                    upgraded = true;
-                }
-                if (Input.GetKeyDown("" + 5))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
-                    upgraded = true;
-                }
-            }
+            this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
+            upgraded = true;
+
         }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
+            upgraded = true;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
+            upgraded = true;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
+            upgraded = true;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
+            upgraded = true;
+        }
+
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             upgraded = false;
