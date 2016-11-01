@@ -51,7 +51,7 @@ public class Attack : MonoBehaviour
     private int spookyGuySouls = 0;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
-    private int beamAttackLevel = 3;
+    private int beamAttackLevel = 0;
     private int bombAttackLevel = 0;
     private int shotgunAttackLevel = 0;
     private int spookyGuyAttackLevel = 0;
@@ -88,6 +88,8 @@ public class Attack : MonoBehaviour
         shotgunInitialDamage = attackTypeShotgun.GetComponent<DoDamage>().damage;
         spookyGuyInitialDamage = attackTypeSpeed.GetComponent<DoDamage>().damage;
 
+		//soulsText = GameObject.FindGameObjectsWithTag ("SoulsText");
+		//soulsText = GameObject.FindGameObjectsWithTag ("AttackText");
         soulsText.text = "Souls: Energy= 0 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
         upgradeLevels.text = "Attack Levels: Energy= 1 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
     }

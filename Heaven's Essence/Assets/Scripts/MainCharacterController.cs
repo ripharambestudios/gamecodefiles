@@ -18,7 +18,7 @@ public class MainCharacterController : MonoBehaviour
     private Rigidbody2D player;
     private int totalScore = 0;
     private List<string> attackTypes = new List<string>();
-    private bool upgraded = false;
+
 
     // Use this for initialization
     void Start()
@@ -96,35 +96,31 @@ public class MainCharacterController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1)))
         {
             this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
-            upgraded = true;
+            
 
         }
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha2))
         {
             this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
-            upgraded = true;
+            
         }
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha3))
         {
             this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
-            upgraded = true;
+            
         }
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha4))
         {
             this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
-            upgraded = true;
+            
         }
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha5))
         {
             this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
-            upgraded = true;
-        }
-
-        if (Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            upgraded = false;
-        }
-    }
+            
+		}
+	}
+			
 
     public void EnemyDamage(int damageDone)
     {
