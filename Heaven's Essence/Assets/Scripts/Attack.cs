@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Attack : MonoBehaviour
 {
@@ -26,6 +27,10 @@ public class Attack : MonoBehaviour
     //public float damage = 10;
     public float speedOfProjectile = 1f;
     public float rateOfFire = 4.0f;
+
+    //Attack upgrades and souls text
+    public Text soulsText;
+    public Text upgradeLevels;
 
     private GameObject projectile;
     private GameObject attackType;
@@ -71,13 +76,20 @@ public class Attack : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //set attack to initial energy ball with start properties
         projectile = projectileEnergy;
         attackType = attackTypeEnergy;
+        speedOfProjectile = 1f;
+        rateOfFire = 4.0f;
+        //save initial damage done by attacks
         energyInitialDamage = attackTypeEnergy.GetComponent<DoDamage>().damage;
         beamInitialDamage = attackTypeBeam.GetComponent<DoDamage>().damage;
         bombInitialDamage = attackTypeBomb.GetComponent<DoDamage>().damage;
         shotgunInitialDamage = attackTypeShotgun.GetComponent<DoDamage>().damage;
         spookyGuyInitialDamage = attackTypeSpeed.GetComponent<DoDamage>().damage;
+
+        soulsText.text = "Souls: Energy= 0 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
+        upgradeLevels.text = "Attack Levels: Energy= 1 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
     }
 
     void Update()
@@ -150,27 +162,25 @@ public class Attack : MonoBehaviour
 					StartCoroutine (BeamTimeLeft (beamTimer));
 					startedOnce = true;
 				}
-                attackType.GetComponent<DoDamage>().damage = beamInitialDamage * beamAttackLevel;
+                canAttack = false;
+                
                 StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
-				
-			}
+                StartCoroutine(Cooldown(_rateOfFire));
+
+            }
             else {
 				if (projectile.name == projectileBomb.name && bombAttackLevel >0) {
-					speedOfProjectile = .4f;
-					rateOfFire = 1.0f;
-                    attackType.GetComponent<DoDamage>().damage = bombInitialDamage * bombAttackLevel;
+					
+                    
                 } else if (projectile.name == projectileSpeed.name && spookyGuyAttackLevel >0) {
-					speedOfProjectile = 1.2f;
-					rateOfFire = 6.0f;
-                    attackType.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * spookyGuyAttackLevel;
+					
+                    
                 } else if (projectile.name == projectileShotgun.name && shotgunAttackLevel > 0) {
-					speedOfProjectile = .7f;
-					rateOfFire = 3.0f;
-                    attackType.GetComponent<DoDamage>().damage = shotgunInitialDamage*shotgunAttackLevel;
+					
+                    
                 } else {
-					speedOfProjectile = 1f;
-					rateOfFire = 4.0f;
-					attackType.GetComponent<DoDamage> ().damage = energyInitialDamage*energyAttackLevel;
+					
+					
 				}
 				_rateOfFire = 1 / rateOfFire;
 				canAttack = false;
@@ -195,7 +205,7 @@ public class Attack : MonoBehaviour
 				speedOfProjectile = 1f;
 				rateOfFire = 4f;
 				_rateOfFire = 1 / rateOfFire;
-				attackType.GetComponent<DoDamage> ().damage = 40;
+				attackTypeEnergy.GetComponent<DoDamage> ().damage = energyInitialDamage * energyAttackLevel * 2;
 				StartCoroutine (Cooldown (_rateOfFire));
 				StartCoroutine (altEnergy ((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
 
@@ -507,8 +517,7 @@ public class Attack : MonoBehaviour
 		}
 		
 		startedOnce = false;
-        canAttack = false;
-        StartCoroutine(Cooldown(_rateOfFire));
+        
     }
 
     public void EnemyAbsorbed(string attackTypeString)
@@ -519,13 +528,11 @@ public class Attack : MonoBehaviour
         }
         else if (attackTypeString == "DemonicSonic(Clone)")
         {
-
             energySouls += 10;
             beamSouls += 10;
         }
         else if (attackTypeString == "BoomEnemy(Clone)")
         {
-
             energySouls += 20;
             bombSouls += 10;
         }
@@ -537,10 +544,10 @@ public class Attack : MonoBehaviour
         }
         else if (attackTypeString == "FallenGuy(Clone)")
         {
-
             energySouls += 15;
             shotgunSouls += 10;
         }
+        soulsText.text = "Souls: Energy= " + energySouls.ToString() + " Beam= " + beamSouls + " Bomb= " + bombSouls + " Speed= " + spookyGuySouls + " Shotgun= " + shotgunSouls;
     }
 
     public void SwitchAttacks(string attackTypeString)
@@ -550,6 +557,8 @@ public class Attack : MonoBehaviour
         {
             projectile = projectileEnergy;
             attackType = attackTypeEnergy;
+            speedOfProjectile = 1f;
+            rateOfFire = 4.0f;
         }
         else if (attackTypeString == "Beam" && beamAttackLevel >0)
         {
@@ -561,24 +570,32 @@ public class Attack : MonoBehaviour
         {
             projectile = projectileBomb;
             attackType = attackTypeBomb;
-            
+            speedOfProjectile = .4f;
+            rateOfFire = 1.0f;
+
         }
         else if (attackTypeString == "Speed" && spookyGuyAttackLevel > 0)
         {
             projectile = projectileSpeed;
             attackType = attackTypeSpeed;
-            
+            speedOfProjectile = 1.2f;
+            rateOfFire = 6.0f;
+
         }
         else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
         {
             projectile = projectileShotgun;
             attackType = attackTypeShotgun;
+            speedOfProjectile = .7f;
+            rateOfFire = 3.0f;
         }
         else
         {
             //case occurs when player selects weapon that is not unlocked
             projectile = projectileEnergy;
             attackType = attackTypeEnergy;
+            speedOfProjectile = 1f;
+            rateOfFire = 4.0f;
             Debug.Log("Attack is not unlocked");
             //instantiate here a warning that the player has not unlocked that attack yet
         }
@@ -593,6 +610,7 @@ public class Attack : MonoBehaviour
             {
                 
                 energyAttackLevel += 1;
+                attackTypeEnergy.GetComponent<DoDamage>().damage = energyInitialDamage * energyAttackLevel;
                 energySouls -= energyUpgradeCost;
                 energyUpgradeCost *= 2;
             }
@@ -600,6 +618,7 @@ public class Attack : MonoBehaviour
             {
                 Debug.Log("Attack upgraded");
                 beamAttackLevel += 1;
+                attackTypeBeam.GetComponent<DoDamage>().damage = beamInitialDamage * beamAttackLevel;
                 beamSouls -= beamUpgradeCost;
                 beamUpgradeCost *= 2;
 
@@ -607,6 +626,7 @@ public class Attack : MonoBehaviour
             else if (upgradeType == "Bomb" && bombSouls >= bombUpgradeCost && bombAttackLevel < maxUpgradeForWeapon)
             {
                 bombAttackLevel += 1;
+                attackTypeBomb.GetComponent<DoDamage>().damage = bombInitialDamage * bombAttackLevel;
                 bombSouls -= bombUpgradeCost;
                 bombUpgradeCost *= 2;
 
@@ -614,6 +634,7 @@ public class Attack : MonoBehaviour
             else if (upgradeType == "Speed" && spookyGuySouls >= spookyGuyUpgradeCost && spookyGuyAttackLevel < maxUpgradeForWeapon)
             {
                 spookyGuyAttackLevel += 1;
+                attackTypeSpeed.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * spookyGuyAttackLevel;
                 spookyGuySouls -= spookyGuyUpgradeCost;
                 spookyGuyUpgradeCost *= 2;
 
@@ -621,6 +642,7 @@ public class Attack : MonoBehaviour
             else if (upgradeType == "Shotgun" && shotgunSouls >= shotgunUpgradeCost && shotgunAttackLevel < maxUpgradeForWeapon)
             {
                 shotgunAttackLevel += 1;
+                attackTypeShotgun.GetComponent<DoDamage>().damage = shotgunInitialDamage * shotgunAttackLevel;
                 shotgunSouls -= shotgunUpgradeCost;
                 shotgunUpgradeCost *= 2;
             }
@@ -631,6 +653,8 @@ public class Attack : MonoBehaviour
                 //instantiate here a warning that the player does not have enough souls for the attack upgrade
                 numberOfUpgrades -= 1;
             }
+            
+            upgradeLevels.text = "Attack Levels: Energy= " + energyAttackLevel + " Beam= " + beamAttackLevel + " Bomb= "+ bombAttackLevel+ " Speed= " + spookyGuyAttackLevel + " Shotgun= " + shotgunAttackLevel;
         }
         else
         {

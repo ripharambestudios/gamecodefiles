@@ -89,41 +89,46 @@ public class DistantShooterAI : MonoBehaviour {
 		//yield return null;
 		//destroy object if it doesn't collide with anything after timeout amout of time
 		float timeout = 2.5f;
-        setAttackingAnimation(true);
+		setAttackingAnimation (true);
 		Vector2 aim = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
-		GameObject createProjectile = (GameObject)Instantiate (projectile, launchPosition.transform.position, Quaternion.Euler (new Vector3(0,0,0))); 
+		GameObject createProjectile = (GameObject)Instantiate (projectile, launchPosition.transform.position, Quaternion.Euler (new Vector3 (0, 0, 0))); 
 		GameObject createProjectile2 = (GameObject)Instantiate (projectile, launchPosition.transform.position + new Vector3 (0, -1, 0), Quaternion.Euler (new Vector3 (0, 0, 0))); 
 
 			
 		createProjectile.transform.parent = this.transform;
 		createProjectile2.transform.parent = this.transform;
 		Vector2 nextPosition = launchPosition.transform.position;
-		Vector2 nextPosition2 = launchPosition.transform.position + new Vector3(0,-1,0);
+		Vector2 nextPosition2 = launchPosition.transform.position + new Vector3 (0, -1, 0);
 		bool hit = false;
 		while (timeout > 0f && !hit) {
 			timeout -= Time.deltaTime;
-			nextPosition += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
-			nextPosition2 += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
-			RaycastHit2D impact;
-			RaycastHit2D impact2;
 			int layerDepth = 1;
 			int layerMask = layerDepth << 8; //player on 8th layer
-			if (Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask)) {
-				
-				impact = Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask);
-				impact.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
-				hit = true;
-			}
-			if (Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask)) {
 
-				impact2 = Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask);
-				impact2.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
-				hit = true;
+			if (createProjectile != null) {
+				nextPosition += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
+				RaycastHit2D impact;
+				if (Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask)) {
+
+					impact = Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask);
+					impact.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
+					hit = true;
+				}
+				createProjectile.transform.position = nextPosition;
 			}
 
-			createProjectile.transform.position = nextPosition;
-			createProjectile2.transform.position = nextPosition2;
-			yield return null;
+			if (createProjectile2 != null) {
+				nextPosition2 += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
+				RaycastHit2D impact2;
+				if (Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask)) {
+
+					impact2 = Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask);
+					impact2.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
+					hit = true;
+				}
+				createProjectile2.transform.position = nextPosition2;
+				yield return null;
+			}
 		}
 		Destroy (createProjectile);
 		Destroy (createProjectile2);
@@ -131,8 +136,8 @@ public class DistantShooterAI : MonoBehaviour {
 		yield return new WaitForSeconds (attackCooldown);
 		if (numberOfProjectilesLaunched == 0) {
 			isAttacking = false;
-            setAttackingAnimation(false);
-        }
+			setAttackingAnimation (false);
+		}
 	}
 
     void setAttackingAnimation(bool status)
