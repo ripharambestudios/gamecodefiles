@@ -18,11 +18,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private System.Random randNum;
 	static private int numberOfEnemies;
-<<<<<<< HEAD
-	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 's', 's', 'b', 'b', 'g', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
-=======
 	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 'b', 'b', 'g', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
->>>>>>> a25ce4432d3943d5c53c102b3bb0331ad590379a
     static private int waveNum;
 
 

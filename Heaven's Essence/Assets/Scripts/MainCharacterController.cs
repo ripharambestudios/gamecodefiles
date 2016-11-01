@@ -118,9 +118,9 @@ public class MainCharacterController : MonoBehaviour
         {
             this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
             upgraded = true;
-        }
-
-<<<<<<< HEAD
+		}
+	}
+			
 	public void EnemyDamage(int damageDone){
 		currentHealth -= damageDone;
 		//Debug.Log ("My current health: " + currentHealth);
@@ -130,26 +130,10 @@ public class MainCharacterController : MonoBehaviour
 			Destroy (this.gameObject);
 		}
 		setHealthBar ();
-	}
-=======
-        if (Input.GetKeyUp(KeyCode.LeftControl))
+	    if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             upgraded = false;
         }
-    }
->>>>>>> a25ce4432d3943d5c53c102b3bb0331ad590379a
-
-    public void EnemyDamage(int damageDone)
-    {
-        currentHealth -= damageDone;
-        Debug.Log("My current health: " + currentHealth);
-        if (currentHealth <= 0)
-        {
-            currentHealth = 0;
-            gameOverPanel.SetActive(true);
-            Destroy(this.gameObject);
-        }
-        setHealthBar();
     }
 
     public int GetHealth()
