@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour {
 	public GameObject enemyType3;
 	public GameObject enemyType4;
 	public float waveTime = 6f;
-	public int numberOfEnemiesPerWave = 4;
+	
 	public Text waveText;
 	public Text enemiesLeftText;
 
@@ -20,10 +20,12 @@ public class EnemySpawner : MonoBehaviour {
 	static private int numberOfEnemies;
 	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 'b', 'b', 'g', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     static private int waveNum;
+    private int healthReturned = -150;
+    private int numberOfEnemiesPerWave = 4;
 
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 		//A repeating call to the spawning method, at a rate decided by spawn time
 		//Invoke("Spawn", waveTime);
@@ -33,9 +35,8 @@ public class EnemySpawner : MonoBehaviour {
 		waveNum = 1;
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
 		waveText.text = "";
-
-
-	}
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5);
+    }
 
 	void Update(){
 		if (numberOfEnemies == 0) { 		//&& this.GetComponent<TotalEnemies>().enemiesGone()
@@ -49,6 +50,7 @@ public class EnemySpawner : MonoBehaviour {
 		numberOfEnemies += numberOfEnemiesPerWave;
 											//this.GetComponent<TotalEnemies>().incrementNumEnemies (numberOfEnemiesPerWave);
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString();
+        waveText.enabled = true;
 		waveText.text = "Wave " + waveNum;
 		yield return new WaitForSeconds (waveTime);
 		for (int i = 0; i < numberOfEnemiesPerWave; i++) {
@@ -57,9 +59,11 @@ public class EnemySpawner : MonoBehaviour {
 
 			//yield return null;
 		}
-		waveText.text = "";
-		numberOfEnemiesPerWave += 2;
+        waveText.enabled = false;
+        //waveText.text = "";
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5); //increases number of enemies quickly initially and then slows down as it gets further
 		waveNum++;
+        player.SendMessage("EnemyDamage", healthReturned, SendMessageOptions.DontRequireReceiver); //returns a set amount of health to the player to give a little amount of longevity to the player's life
 	}
 
 	//Code to randomly spawn enemies in the map

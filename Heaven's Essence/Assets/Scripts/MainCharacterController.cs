@@ -136,6 +136,10 @@ public class MainCharacterController : MonoBehaviour
             gameOverPanel.SetActive(true);
             Destroy(this.gameObject);
         }
+        else if(currentHealth > 1000)
+        {
+            currentHealth = 1000;
+        }
         setHealthBar();
     }
 
