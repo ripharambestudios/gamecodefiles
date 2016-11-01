@@ -62,7 +62,7 @@ public class MainCharacterController : MonoBehaviour {
 
 	public void EnemyDamage(int damageDone){
 		currentHealth -= damageDone;
-		Debug.Log ("My current health: " + currentHealth);
+		//Debug.Log ("My current health: " + currentHealth);
 		if (currentHealth <= 0) {
 			currentHealth = 0;
 			gameOverPanel.SetActive (true);
