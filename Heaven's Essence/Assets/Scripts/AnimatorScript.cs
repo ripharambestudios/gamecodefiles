@@ -8,7 +8,7 @@ public class AnimatorScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		animator = this.GetComponent<Animator> ();
-		particleSystem = this.transform.parent.gameObject.transform.GetChild(6).gameObject;
+		particleSystem = this.transform.parent.gameObject.transform.GetChild(5).gameObject;
 	}
 	
 	// Update is called once per frame
