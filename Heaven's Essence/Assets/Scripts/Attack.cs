@@ -25,8 +25,8 @@ public class Attack : MonoBehaviour
     public GameObject attackTypeShotgun;
 
     //public float damage = 10;
-    public float speedOfProjectile = 1f;
-    public float rateOfFire = 4.0f;
+    private float speedOfProjectile = 1f;
+    private float rateOfFire = 4.0f;
 
     //Attack upgrades and souls text
     public Text soulsText;
@@ -43,12 +43,13 @@ public class Attack : MonoBehaviour
 
     private float chargeTime = 0; //used to track how long right click is held for energy attack alternate attack
     private float maxCharge = 6f;  //time player needs to hold down for alt attack to fire
+
     //Number of souls player has obtained
     private int energySouls = 0;
     private int beamSouls = 0;
     private int bombSouls = 0;
     private int shotgunSouls = 0;
-    private int spookyGuySouls = 0;
+    private int spookyGuySouls = 10000;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
     private int beamAttackLevel = 0;
@@ -63,7 +64,7 @@ public class Attack : MonoBehaviour
     private int spookyGuyUpgradeCost = 20;
     //max number of upgrades
     private int maxNumOfUpgrades = 36;
-    private int maxUpgradeForWeapon = 8;
+    private int maxUpgradeForWeapon = 7;
     private int numberOfUpgrades = 0;
     //starting damage values
     private int energyInitialDamage;
@@ -71,6 +72,7 @@ public class Attack : MonoBehaviour
     private int bombInitialDamage;
     private int shotgunInitialDamage;
     private int spookyGuyInitialDamage;
+    private float spookyGuyProjectileSpeed;
 
 
     // Use this for initialization
@@ -81,6 +83,14 @@ public class Attack : MonoBehaviour
         attackType = attackTypeEnergy;
         speedOfProjectile = 1f;
         rateOfFire = 4.0f;
+        spookyGuyProjectileSpeed = 1.2f;
+
+        //reset attack damage values otherwise they infinitely scale
+        attackTypeEnergy.GetComponent<DoDamage>().damage = 5;
+        attackTypeBeam.GetComponent<DoDamage>().damage = 1;
+        attackTypeBomb.GetComponent<DoDamage>().damage = 10;
+        attackTypeShotgun.GetComponent<DoDamage>().damage = 3;
+        attackTypeSpeed.GetComponent<DoDamage>().damage = 2;
         //save initial damage done by attacks
         energyInitialDamage = attackTypeEnergy.GetComponent<DoDamage>().damage;
         beamInitialDamage = attackTypeBeam.GetComponent<DoDamage>().damage;
@@ -119,7 +129,7 @@ public class Attack : MonoBehaviour
             //green skin
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.transform.GetChild(1).gameObject.SetActive(true);
-            this.transform.GetChild(2).gameObject.SetActive(false);
+            this.transform.GetChild(2).gameObject.SetActive(false); 
             this.transform.GetChild(3).gameObject.SetActive(false);
             this.transform.GetChild(4).gameObject.SetActive(false);
         }
@@ -171,17 +181,19 @@ public class Attack : MonoBehaviour
                 {
                     StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
                     StartCoroutine(Cooldown(_rateOfFire));
+                    
                 }
                 else if(beamAttackLevel >= 3 && beamAttackLevel < 5)
                 {
                     StartCoroutine(fireTripleBeam((Vector2)attackSpawn.transform.position, attackAngle));
                     StartCoroutine(Cooldown(_rateOfFire));
-
+                    
                 }
                 else if(beamAttackLevel >= 5)
                 {
                     StartCoroutine(bigBeam((Vector2)attackSpawn.transform.position, attackAngle));
                     StartCoroutine(Cooldown(_rateOfFire));
+                    
                 }
 
             }
@@ -210,19 +222,12 @@ public class Attack : MonoBehaviour
                     _rateOfFire = 1 / rateOfFire;
                     canAttack = false;
                     
-                    if (spookyGuyAttackLevel >= 1 && spookyGuyAttackLevel < 3)
+                    if (spookyGuyAttackLevel >= 1)
                     {
-                        StartCoroutine(fireProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
+                        StartCoroutine(spookyGuyProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, spookyGuyAttackLevel));
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
-                    else if (spookyGuyAttackLevel >= 3 && spookyGuyAttackLevel < 5)
-                    {
-
-                    }
-                    else if (spookyGuyAttackLevel >= 5)
-                    {
-
-                    }
+                    
 
                 }
                 else if (projectile.name == projectileShotgun.name && shotgunAttackLevel > 0)
@@ -257,11 +262,13 @@ public class Attack : MonoBehaviour
                     }
                     else if (energyAttackLevel >= 3 && energyAttackLevel < 5)
                     {
-
+                        StartCoroutine(bigEnergy((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 1.7f));
+                        StartCoroutine(Cooldown(_rateOfFire));
                     }
                     else if (energyAttackLevel >= 5)
                     {
-
+                        StartCoroutine(bigEnergy((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 2.2f));
+                        StartCoroutine(Cooldown(_rateOfFire));
                     }
 
                 }
@@ -337,9 +344,10 @@ public class Attack : MonoBehaviour
     }
 
     //fire powerful red beam in any direction
+    //CURRENTLY ATTACKS TO FAST, DOES TOO MUCH DAMAGE
     IEnumerator fireBeam(Vector2 start, Vector2 next)
     {
-        yield return null;
+        
         //destroy object if it doesn't collide with anything after timeout amout of time
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -366,15 +374,15 @@ public class Attack : MonoBehaviour
         {
             Instantiate(attackType, hit.point, Quaternion.identity);
         }
-        yield return new WaitForSeconds(.2f);
-        yield return null;
+        yield return new WaitForSeconds(.01f);
+        
         Destroy(createProjectile);
     }
 
     //fire powerful beam with two offshoots
+    //OFFSHOOTS DON'T ACTUALLY HAVE RAYCASTS IN THE RIGHT DIRECTION, NEED TO HAVE THE NEXT VECTOR ADJUSTED
     IEnumerator fireTripleBeam(Vector2 start, Vector2 next)
     {
-        yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         GameObject createProjectileLeft = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -401,10 +409,15 @@ public class Attack : MonoBehaviour
         createProjectileRight.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         createProjectileLeft.transform.rotation = Quaternion.Euler(createProjectileLeft.transform.rotation.eulerAngles.x, createProjectileLeft.transform.rotation.eulerAngles.y, (createProjectileLeft.transform.rotation.eulerAngles.z)+ rotationAmount);
         createProjectileRight.transform.rotation = Quaternion.Euler(createProjectileRight.transform.rotation.eulerAngles.x, createProjectileRight.transform.rotation.eulerAngles.y, (createProjectileRight.transform.rotation.eulerAngles.z) - rotationAmount);
+        
         float maxLaser = 100f;
 
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
+
+        Vector2 nextRight;
+        Vector2 nextLeft;
+
         RaycastHit2D[] hits = Physics2D.RaycastAll(createProjectile.transform.position, next, maxLaser, layerMask);
         foreach (RaycastHit2D hit in hits)
         {
@@ -420,8 +433,8 @@ public class Attack : MonoBehaviour
         {
             Instantiate(attackType, hit.point, Quaternion.identity);
         }
-        yield return new WaitForSeconds(.2f);
-        yield return null;
+        yield return new WaitForSeconds(.01f);
+        
         
         Destroy(createProjectile);
         Destroy(createProjectileLeft);
@@ -430,10 +443,10 @@ public class Attack : MonoBehaviour
     }
 
     //Shoots large laser beam that does more damage
-    //HIT BOX IS NOT CORRECT CURRENTLY
+    //HIT BOX IS NOT CORRECT CURRENTLY, LINE RAYCAST NEXT TO EACH OTHER
     IEnumerator bigBeam(Vector2 start, Vector2 next)
     {
-        yield return null;
+        
         //destroy object if it doesn't collide with anything after timeout amout of time
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.localScale *= 10;
@@ -462,8 +475,8 @@ public class Attack : MonoBehaviour
         {
             Instantiate(attackType, hit.point, Quaternion.identity);
         }
-        yield return new WaitForSeconds(.2f);
-        yield return null;
+        yield return new WaitForSeconds(.01f);
+        
         Destroy(createProjectile);
     }
 
@@ -516,21 +529,22 @@ public class Attack : MonoBehaviour
             yield return null;
         }
 
-
         Destroy(createProjectile);
     }
 
     
     //charges up large shot
     //Needs to be adjusted
-    IEnumerator altEnergy(Vector2 start, Vector2 next, float attackSpeed)
+    IEnumerator bigEnergy(Vector2 start, Vector2 next, float attackSpeed, float scaleFactor)
     {
 
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
-        createProjectile.transform.localScale *= maxCharge;
+        //createProjectile.transform.localScale *= maxCharge;
+        createProjectile.transform.localScale *= scaleFactor;
+
         //get the sign of the direction of the aim
         float signOfLook = 1;
         if (createProjectile.transform.position.y > next.y)
@@ -574,7 +588,7 @@ public class Attack : MonoBehaviour
     }
 
     //shoots double bullets, drains off ammunition twice as fast
-    IEnumerator altSpeed(Vector2 start, Vector2 next, float attackSpeed)
+    IEnumerator spookyGuyProjectile(Vector2 start, Vector2 next, float attackSpeed, int penetrationPower)
     {
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
@@ -582,8 +596,6 @@ public class Attack : MonoBehaviour
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
-        GameObject createProjectile2 = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
-        createProjectile2.transform.parent = this.transform;
 
         //get the sign of the direction of the aim
         float signOfLook = 1;
@@ -600,49 +612,50 @@ public class Attack : MonoBehaviour
         }
         //rotate shot
         createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        createProjectile2.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
 
         Vector2 nextPosition = start;
-        Vector2 nextPosition2 = start + new Vector2(0, -1);
+
         bool hit = false;
-        bool hit2 = false;
-        while ((createProjectile != null || createProjectile2 != null) && timeout > 0f && (!hit || !hit2))
+        bool entered = false;
+        while (createProjectile != null && timeout > 0f && !hit)
         {
             timeout -= Time.deltaTime;
             nextPosition += next * attackSpeed;
-            nextPosition2 += next * attackSpeed;
+
             RaycastHit2D impact;
-            RaycastHit2D impact2;
+
             int layerDepth = 1;
             int layerMask = layerDepth << 9; //enemies on 9th layer
             if (createProjectile != null && Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask) && !hit)
-            {
-                impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
-                Instantiate(attackType, impact.point, Quaternion.identity);
-                hit = true;
+            {                
+                //Penetration of the bullet increases with each level up, and only works when entered into the enemy the first time.
+                if(penetrationPower > 0 && !entered)
+                {
+                    impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
+                    Instantiate(attackType, impact.point, Quaternion.identity);
+                    penetrationPower--;
+                    entered = true; 
+                }
+                if(penetrationPower <=0)
+                {
+                    hit = true;
+                }  
             }
-            if (createProjectile2 != null && Physics2D.Linecast(createProjectile2.transform.position, nextPosition2, layerMask) && !hit2)
+            else
             {
-                impact2 = Physics2D.Linecast(createProjectile2.transform.position, nextPosition2, layerMask);
-                Instantiate(attackType, impact2.point, Quaternion.identity);
-                hit2 = true;
+                //when the bullet leaves the enter then it can allow to attack again
+                entered = false;
             }
 
             if (createProjectile != null)
             {
                 createProjectile.transform.position = nextPosition;
             }
-            if (createProjectile2 != null)
-            {
-                createProjectile2.transform.position = nextPosition2;
-            }
+
             if (hit)
             {
                 Destroy(createProjectile);
-            }
-            if (hit2)
-            {
-                Destroy(createProjectile2);
             }
             yield return null;
         }
@@ -650,10 +663,6 @@ public class Attack : MonoBehaviour
         if (createProjectile != null)
         {
             Destroy(createProjectile);
-        }
-        if (createProjectile2 != null)
-        {
-            Destroy(createProjectile2);
         }
     }
 
@@ -671,10 +680,11 @@ public class Attack : MonoBehaviour
         while (timer < cooldown)
         {
             timer += Time.deltaTime;
-            yield return null;
 
+            yield return null;
         }
         canAttack = true;
+        
     }
 
     IEnumerator BeamTimeLeft(float beamTimer)
@@ -734,6 +744,7 @@ public class Attack : MonoBehaviour
         {
             projectile = projectileBeam;
             attackType = attackTypeBeam;
+            rateOfFire = 1.0f;
 
         }
         else if (attackTypeString == "Bomb" && bombAttackLevel > 0)
@@ -748,7 +759,7 @@ public class Attack : MonoBehaviour
         {
             projectile = projectileSpeed;
             attackType = attackTypeSpeed;
-            speedOfProjectile = 1.2f;
+            speedOfProjectile = spookyGuyProjectileSpeed;
             rateOfFire = 6.0f;
 
         }
@@ -806,6 +817,7 @@ public class Attack : MonoBehaviour
                 attackTypeSpeed.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * spookyGuyAttackLevel;
                 spookyGuySouls -= spookyGuyUpgradeCost;
                 spookyGuyUpgradeCost *= 2;
+                spookyGuyProjectileSpeed = 1.2f + (spookyGuyAttackLevel * .1f);
 
             }
             else if (upgradeType == "Shotgun" && shotgunSouls >= shotgunUpgradeCost && shotgunAttackLevel < maxUpgradeForWeapon)
