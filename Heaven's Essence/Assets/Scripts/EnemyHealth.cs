@@ -5,7 +5,7 @@ public class EnemyHealth : MonoBehaviour {
 
 	public int startHealth = 100;
 	public int scoreValue= 0;
-	public GameObject enemyManager;
+	private GameObject enemyManager;
 
 	private int currentHealth;
 	private GameObject player;
