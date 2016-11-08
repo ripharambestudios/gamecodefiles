@@ -47,9 +47,9 @@ public class Attack : MonoBehaviour
     //Number of souls player has obtained
     private int energySouls = 0;
     private int beamSouls = 0;
-    private int bombSouls = 0;
+    private int bombSouls = 10000;
     private int shotgunSouls = 0;
-    private int spookyGuySouls = 10000;
+    private int spookyGuySouls = 0;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
     private int beamAttackLevel = 0;
@@ -205,12 +205,13 @@ public class Attack : MonoBehaviour
                     
                     if (bombAttackLevel >= 1 && bombAttackLevel < 3)
                     {
-                        StartCoroutine(fireProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
+                        StartCoroutine(bombShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 1));
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
                     else if (bombAttackLevel >= 3 && bombAttackLevel < 5)
                     {
-
+                        StartCoroutine(bombShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 3));
+                        StartCoroutine(Cooldown(_rateOfFire));
                     }
                     else if (bombAttackLevel >= 5)
                     {
@@ -238,7 +239,7 @@ public class Attack : MonoBehaviour
                     
                     if (shotgunAttackLevel >= 1 && shotgunAttackLevel < 3)
                     {
-                        StartCoroutine(fireProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
+                        StartCoroutine(shotgunShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
                     else if (shotgunAttackLevel >= 3 && shotgunAttackLevel < 5)
@@ -257,17 +258,17 @@ public class Attack : MonoBehaviour
                     
                     if (energyAttackLevel >= 1 && energyAttackLevel < 3)
                     {
-                        StartCoroutine(fireProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
+                        StartCoroutine(energyShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 1.0f));
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
                     else if (energyAttackLevel >= 3 && energyAttackLevel < 5)
                     {
-                        StartCoroutine(bigEnergy((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 1.7f));
+                        StartCoroutine(energyShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 1.7f));
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
                     else if (energyAttackLevel >= 5)
                     {
-                        StartCoroutine(bigEnergy((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 2.2f));
+                        StartCoroutine(energyShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 2.2f));
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
 
@@ -482,7 +483,7 @@ public class Attack : MonoBehaviour
 
 
     //fires variety of projectiles from the player
-    IEnumerator fireProjectile(Vector2 start, Vector2 next, float attackSpeed)
+    IEnumerator bombShot(Vector2 start, Vector2 next, float attackSpeed, int splitAmount)
     {
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
@@ -490,7 +491,6 @@ public class Attack : MonoBehaviour
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
-
 
         //get the sign of the direction of the aim
         float signOfLook = 1;
@@ -512,6 +512,7 @@ public class Attack : MonoBehaviour
         bool hit = false;
         while (createProjectile != null && timeout > 0f && !hit)
         {
+            createProjectile.GetComponent<AlternatePlayerBoomAttack>().setSplitAmount(splitAmount);
             timeout -= Time.deltaTime;
             nextPosition += next * attackSpeed;
 
@@ -521,10 +522,21 @@ public class Attack : MonoBehaviour
             if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
             {
                 impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
-                Instantiate(attackType, impact.point, Quaternion.identity);
+                if(splitAmount == 1)
+                {
+                    Instantiate(attackType, impact.point, Quaternion.identity);
+                }
+                else if(splitAmount > 1)
+                {
+                    //bombShot(impact.point, new Vector2(impact.point.x, impact.point.y + 5), attackSpeed, 1);
+                    //bombShot(impact.point, new Vector2(impact.point.x -5, impact.point.y - 2), attackSpeed, 1);
+                    //bombShot(impact.point, new Vector2(impact.point.x + 5, impact.point.y - 2), attackSpeed, 1);
+                    Instantiate(attackType, impact.point + new Vector2(0, 5), Quaternion.identity);
+                    Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
+                    Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
+                }
                 hit = true;
             }
-
             createProjectile.transform.position = nextPosition;
             yield return null;
         }
@@ -535,7 +547,7 @@ public class Attack : MonoBehaviour
     
     //charges up large shot
     //Needs to be adjusted
-    IEnumerator bigEnergy(Vector2 start, Vector2 next, float attackSpeed, float scaleFactor)
+    IEnumerator energyShot(Vector2 start, Vector2 next, float attackSpeed, float scaleFactor)
     {
 
         //destroy object if it doesn't collide with anything after timeout amout of time
@@ -667,9 +679,54 @@ public class Attack : MonoBehaviour
     }
 
     //fires four shots, one above, one below, and to the left and right of the player
-    IEnumerator altShotgun(float attackSpeed)
+    IEnumerator shotgunShot(Vector2 start, Vector2 next, float attackSpeed)
     {
         yield return null;
+        //destroy object if it doesn't collide with anything after timeout amout of time
+        float timeout = 3f;
+
+        GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
+        createProjectile.transform.parent = this.transform;
+
+
+        //get the sign of the direction of the aim
+        float signOfLook = 1;
+        if (createProjectile.transform.position.y > next.y)
+        {
+            signOfLook = Mathf.Sign(next.y); //this will be negative if the mouse is below bullet, rotating it appropriately
+        }
+        float angle = Vector3.Angle(Vector3.right, new Vector3(next.x, next.y, 0));
+
+        angle *= signOfLook;
+        if (this.transform.position.y < 0 && next.y < 0)
+        {
+            angle = angle * -1;
+        }
+        //rotate shot
+        createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        Vector2 nextPosition = start;
+        bool hit = false;
+        while (createProjectile != null && timeout > 0f && !hit)
+        {
+            timeout -= Time.deltaTime;
+            nextPosition += next * attackSpeed;
+
+            RaycastHit2D impact;
+            int layerDepth = 1;
+            int layerMask = layerDepth << 9; //enemies on 9th layer
+            if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
+            {
+                impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
+                Instantiate(attackType, impact.point, Quaternion.identity);
+                hit = true;
+            }
+
+            createProjectile.transform.position = nextPosition;
+            yield return null;
+        }
+
+        Destroy(createProjectile);
     }
 
 
