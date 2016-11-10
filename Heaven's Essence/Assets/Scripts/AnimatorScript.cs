@@ -3,12 +3,11 @@ using System.Collections;
 
 public class AnimatorScript : MonoBehaviour {
     
-	private GameObject particleSystem;
+	public GameObject particleSystem;
 	private Animator animator;
 	// Use this for initialization
 	void Start () {
 		animator = this.GetComponent<Animator> ();
-		particleSystem = this.transform.parent.gameObject.transform.GetChild(5).gameObject;
 	}
 	
 	// Update is called once per frame

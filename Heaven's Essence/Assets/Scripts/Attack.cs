@@ -25,6 +25,9 @@ public class Attack : MonoBehaviour
     public GameObject projectileShotgun;
     public GameObject attackTypeShotgun;
 
+	// the wing particle effect
+	public GameObject wingParticleEffect;
+
     //public float damage = 10;
     private float speedOfProjectile = 1f;
     private float rateOfFire = 4.0f;
@@ -46,11 +49,11 @@ public class Attack : MonoBehaviour
     private float maxCharge = 6f;  //time player needs to hold down for alt attack to fire
 
     //Number of souls player has obtained
-    private int energySouls = 0;
-    private int beamSouls = 0;
-    private int bombSouls = 0;
-    private int shotgunSouls = 0;
-    private int spookyGuySouls = 0;
+    private int energySouls = 1000;
+    private int beamSouls = 1000;
+    private int bombSouls = 1000;
+    private int shotgunSouls = 1000;
+    private int spookyGuySouls = 1000;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
     private int beamAttackLevel = 0;
@@ -109,6 +112,7 @@ public class Attack : MonoBehaviour
     {
         if (projectile.name == projectileBeam.name)
         {
+			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (1, .34509f, .34509f, 1);
             //red skin
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.transform.GetChild(1).gameObject.SetActive(false);
@@ -118,6 +122,7 @@ public class Attack : MonoBehaviour
         }
         else if (projectile.name == projectileEnergy.name)
         {
+			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (.34509f, .768627f, 1, 1);
             //blue skin
             this.transform.GetChild(0).gameObject.SetActive(true);
             this.transform.GetChild(1).gameObject.SetActive(false);
@@ -127,6 +132,7 @@ public class Attack : MonoBehaviour
         }
         else if (projectile.name == projectileShotgun.name)
         {
+			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (.23529f, 1, .34509f, 1);
             //green skin
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.transform.GetChild(1).gameObject.SetActive(true);
@@ -136,6 +142,7 @@ public class Attack : MonoBehaviour
         }
         else if (projectile.name == projectileSpeed.name)
         {
+			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (1, .980392f, .34509f, 1);
             //yellow skin
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.transform.GetChild(1).gameObject.SetActive(false);
@@ -145,6 +152,7 @@ public class Attack : MonoBehaviour
         }
         else if (projectile.name == projectileBomb.name)
         {
+			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (.81568f, .34509f, 1, 1);
             //purple skin
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.transform.GetChild(1).gameObject.SetActive(false);

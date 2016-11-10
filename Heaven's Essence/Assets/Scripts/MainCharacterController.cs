@@ -127,7 +127,6 @@ public class MainCharacterController : MonoBehaviour
     public void EnemyDamage(int damageDone)
     {
         currentHealth -= damageDone;
-        Debug.Log("My current health: " + currentHealth);
         if (currentHealth <= 0)
         {
             currentHealth = 0;
