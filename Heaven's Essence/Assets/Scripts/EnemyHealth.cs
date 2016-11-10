@@ -10,7 +10,8 @@ public class EnemyHealth : MonoBehaviour {
 	private int currentHealth;
 	private GameObject player;
 
-	private double timeForFlash = .5f;
+	private float timeForFlashGold = .5f;
+	private float timeForFlashRed = .1f;
 
 	// Use this for initialization
 	void Start () {
@@ -25,11 +26,16 @@ public class EnemyHealth : MonoBehaviour {
 		if (damage == 1000000) {
 			scoreValue -= (scoreValue / 5);
 		}
-		Debug.Log ("I am taking damage");
+			
 		if (currentHealth <= 0) {
 			enemyManager.GetComponent<EnemySpawner> ().decrementNumOfEnemies ();
 			player.SendMessage ("UpdateScore", scoreValue, SendMessageOptions.DontRequireReceiver);
 			Destroy (this.gameObject);
+		}
+			
+		if (currentHealth > (startHealth / 10 * 2))
+		{
+			StartCoroutine (flashRed ());
 		}
 	}
 
@@ -43,8 +49,9 @@ public class EnemyHealth : MonoBehaviour {
         int aTenth = startHealth / 10;
         if(currentHealth <= aTenth*2)
         {
-			timeForFlash -= Time.deltaTime;
-			if (timeForFlash <= 0)
+
+			timeForFlashGold -= Time.deltaTime;
+			if (timeForFlashGold <= 0)
 			{
 				if (this.gameObject.GetComponent<SpriteRenderer> ().color == new Color (1, 1, 1, 1))
 				{
@@ -54,7 +61,7 @@ public class EnemyHealth : MonoBehaviour {
 				{
 					this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
 				}
-				timeForFlash = .5f;
+				timeForFlashGold = .5f;
 			}
             return true;
         }
@@ -63,4 +70,11 @@ public class EnemyHealth : MonoBehaviour {
             return false;
         }
     }
+
+	IEnumerator flashRed()
+	{
+		this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .35294f, .35294f, 1);
+		yield return new WaitForSeconds (timeForFlashRed);
+		this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+	}
 }

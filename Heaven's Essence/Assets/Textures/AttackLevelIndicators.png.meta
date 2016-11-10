@@ -1,0 +1,605 @@
+fileFormatVersion: 2
+guid: cf91f00d573782646842aeb9b992c5f6
+timeCreated: 1478736031
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: AttackLevelIndicators_0
+    21300002: AttackLevelIndicators_1
+    21300004: AttackLevelIndicators_2
+    21300006: AttackLevelIndicators_3
+    21300008: AttackLevelIndicators_4
+    21300010: AttackLevelIndicators_5
+    21300012: AttackLevelIndicators_6
+    21300014: AttackLevelIndicators_7
+    21300016: AttackLevelIndicators_8
+    21300018: AttackLevelIndicators_9
+    21300020: AttackLevelIndicators_10
+    21300022: AttackLevelIndicators_11
+    21300024: AttackLevelIndicators_12
+    21300026: AttackLevelIndicators_13
+    21300028: AttackLevelIndicators_14
+    21300030: AttackLevelIndicators_15
+    21300032: AttackLevelIndicators_16
+    21300034: AttackLevelIndicators_17
+    21300036: AttackLevelIndicators_18
+    21300038: AttackLevelIndicators_19
+    21300040: AttackLevelIndicators_20
+    21300042: AttackLevelIndicators_21
+    21300044: AttackLevelIndicators_22
+    21300046: AttackLevelIndicators_23
+    21300048: AttackLevelIndicators_24
+    21300050: AttackLevelIndicators_25
+    21300052: AttackLevelIndicators_26
+    21300054: AttackLevelIndicators_27
+    21300056: AttackLevelIndicators_28
+    21300058: AttackLevelIndicators_29
+    21300060: AttackLevelIndicators_30
+    21300062: AttackLevelIndicators_31
+    21300064: AttackLevelIndicators_32
+    21300066: AttackLevelIndicators_33
+    21300068: AttackLevelIndicators_34
+    21300070: AttackLevelIndicators_35
+    21300072: AttackLevelIndicators_36
+    21300074: AttackLevelIndicators_37
+    21300076: AttackLevelIndicators_38
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: AttackLevelIndicators_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 462
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_1
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 462
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_2
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 462
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_3
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 462
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_4
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 462
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_5
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 462
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 388
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_7
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 388
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_8
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 388
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_9
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 388
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_10
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 388
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_11
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 388
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_12
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 314
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_13
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 314
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_14
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 314
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_15
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 314
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_16
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 314
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_17
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 314
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_18
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 240
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_19
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 240
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_20
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 240
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_21
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 240
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_22
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 240
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_23
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 240
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_24
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 166
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_25
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 166
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_26
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 166
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_27
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 166
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_28
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 166
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_29
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 166
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_30
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 92
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_31
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 92
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_32
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 92
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_33
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 92
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_34
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 92
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_35
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 92
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_36
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 18
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_37
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 18
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AttackLevelIndicators_38
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 18
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

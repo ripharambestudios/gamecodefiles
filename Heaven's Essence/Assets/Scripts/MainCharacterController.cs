@@ -15,6 +15,7 @@ public class MainCharacterController : MonoBehaviour
 
     private int currentHealth;
     private Vector2 characterVector;
+    private Vector2 healthStartVector;
     private Rigidbody2D player;
     private int totalScore = 0;
     private List<string> attackTypes = new List<string>();
@@ -34,6 +35,7 @@ public class MainCharacterController : MonoBehaviour
         attackTypes.Add("Bomb");
         attackTypes.Add("Speed");
         attackTypes.Add("Shotgun");
+        healthStartVector = healthBar.GetComponent<RectTransform>().sizeDelta;
     }
 
     // Update is called once per frame
@@ -155,6 +157,7 @@ public class MainCharacterController : MonoBehaviour
         {
             //float normalizedHealth = (float)currentHealth / (float)health;
             healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2(currentHealth, 32);
+            //healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2(healthStartVector.x * currentHealth / health, 32);
             //float lostHealth = health - currentHealth;
         }
         else
