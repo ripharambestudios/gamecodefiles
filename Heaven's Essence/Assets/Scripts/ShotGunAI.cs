@@ -37,7 +37,6 @@ public class ShotGunAI : MonoBehaviour {
 
 		if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
         {
-            Debug.Log(distanceToTarget + "Distance to Target ," + sightRadius + " ,Sight Radius");
             isAttacking = true;
             //setAttackingAnimation(true);
             StartCoroutine(LaunchAttack());
@@ -120,7 +119,7 @@ public class ShotGunAI : MonoBehaviour {
 		isAttacking = false;
         attacked = false;
 
-        Debug.Log("done attacking");
+        //Debug.Log("done attacking");
         //setAttackingAnimation(false);
 
     }

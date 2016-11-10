@@ -67,7 +67,7 @@ public class BigBoomAI : MonoBehaviour {
  
 			if (timer >= teleportTime)
 			{
-				Debug.Log ("Teleporting");
+				//Debug.Log ("Teleporting");
 
 				enemyPlacement ();
 				//add check if on top of other enemies to move off slightly
@@ -89,7 +89,9 @@ public class BigBoomAI : MonoBehaviour {
 	private void enemyPlacement()
 	{
 
+		// check for colliders when there is a plannet it is landing on
 		if (direction == 0) { // on top
+			//this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
 			transform.position = new Vector3 (target.transform.position.x, target.transform.position.y + teleDistance, 0);
 		} 
 		else if (direction == 1) { // on right

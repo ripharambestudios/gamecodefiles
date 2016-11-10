@@ -10,6 +10,8 @@ public class EnemyHealth : MonoBehaviour {
 	private int currentHealth;
 	private GameObject player;
 
+	private double timeForFlash = .5f;
+
 	// Use this for initialization
 	void Start () {
 		currentHealth = startHealth;
@@ -41,6 +43,19 @@ public class EnemyHealth : MonoBehaviour {
         int aTenth = startHealth / 10;
         if(currentHealth <= aTenth*2)
         {
+			timeForFlash -= Time.deltaTime;
+			if (timeForFlash <= 0)
+			{
+				if (this.gameObject.GetComponent<SpriteRenderer> ().color == new Color (1, 1, 1, 1))
+				{
+					this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .792156f, 0, 1);
+				} 
+				else 
+				{
+					this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+				}
+				timeForFlash = .5f;
+			}
             return true;
         }
         else

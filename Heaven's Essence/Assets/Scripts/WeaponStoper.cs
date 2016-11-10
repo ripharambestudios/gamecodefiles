@@ -11,7 +11,6 @@ public class WeaponStoper : MonoBehaviour {
 	{
 		Collider2D[] collidersPlayerShots = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("PlayerAttacks"));
 		foreach (Collider2D coll in collidersPlayerShots) {
-			Debug.Log (coll.gameObject.name);
 			if(coll.gameObject.layer == 10)
 			{
 				if (coll.gameObject.name == "BombBall(Clone)") {
