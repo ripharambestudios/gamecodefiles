@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour {
     static private int waveNum;
     private int healthReturned = -150;
     private int numberOfEnemiesPerWave = 4;
-
+    
 
     // Use this for initialization
     void Start () {
@@ -36,13 +36,15 @@ public class EnemySpawner : MonoBehaviour {
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
 		waveText.text = "";
         numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5);
+        
     }
 
 	void Update(){
 		if (numberOfEnemies == 0) { 		//&& this.GetComponent<TotalEnemies>().enemiesGone()
 			StartCoroutine (BeginSpawn ()); //calls coroutine to allow for a delay between waves
 		}
-	}
+        
+    }
 
 	//Start spawn of the wave
 	IEnumerator BeginSpawn(){
