@@ -20,11 +20,20 @@ public class AlternatePlayerBoomAttack : MonoBehaviour {
                 Instantiate(actualExplosion, this.transform.position, Quaternion.identity);
                 Destroy(this.gameObject);
             }
-            else if(splitAmount > 1)
+            else if(splitAmount == 3)
             {
                 Instantiate(actualExplosion, this.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
                 Instantiate(actualExplosion, this.transform.position + new Vector3(-5, -5, 0), Quaternion.identity);
                 Instantiate(actualExplosion, this.transform.position + new Vector3(5, -5, 0), Quaternion.identity);
+                Destroy(this.gameObject);
+            }
+            else if (splitAmount == 5)
+            {
+                Instantiate(actualExplosion, this.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
+                Instantiate(actualExplosion, this.transform.position + new Vector3(-5, -5, 0), Quaternion.identity);
+                Instantiate(actualExplosion, this.transform.position + new Vector3(5, -5, 0), Quaternion.identity);
+                Instantiate(actualExplosion, this.transform.position + new Vector3(5, 5, 0), Quaternion.identity);
+                Instantiate(actualExplosion, this.transform.position + new Vector3(-5, 5, 0), Quaternion.identity);
                 Destroy(this.gameObject);
             }
         }

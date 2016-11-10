@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 using UnityEngine.UI;
 
 public class Attack : MonoBehaviour
@@ -47,7 +48,7 @@ public class Attack : MonoBehaviour
     //Number of souls player has obtained
     private int energySouls = 0;
     private int beamSouls = 0;
-    private int bombSouls = 10000;
+    private int bombSouls = 0;
     private int shotgunSouls = 0;
     private int spookyGuySouls = 0;
     //attack power of the different attacks
@@ -215,7 +216,8 @@ public class Attack : MonoBehaviour
                     }
                     else if (bombAttackLevel >= 5)
                     {
-
+                        StartCoroutine(bombShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 5));
+                        StartCoroutine(Cooldown(_rateOfFire));
                     }
                 }
                 else if (projectile.name == projectileSpeed.name && spookyGuyAttackLevel > 0)
@@ -225,7 +227,7 @@ public class Attack : MonoBehaviour
                     
                     if (spookyGuyAttackLevel >= 1)
                     {
-                        StartCoroutine(spookyGuyProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, spookyGuyAttackLevel));
+                        StartCoroutine(spookyGuyProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, spookyGuyAttackLevel));  //pass attack level as penetration power of the shot
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
                     
@@ -273,8 +275,6 @@ public class Attack : MonoBehaviour
                     }
 
                 }
-                
-                
             }
         }
     }
@@ -416,27 +416,30 @@ public class Attack : MonoBehaviour
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
 
-        Vector2 nextRight;
-        Vector2 nextLeft;
+        float size = (float)Math.Sqrt(next.x * next.x + next.y * next.y);
+
+        Vector2 nextLeft = new Vector2((float)Math.Cos(createProjectileLeft.transform.rotation.eulerAngles.z * (Math.PI/180)) * size, (float)Math.Sin(createProjectileLeft.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
+        Vector2 nextRight = new Vector2((float)Math.Cos(createProjectileRight.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(createProjectileRight.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
 
         RaycastHit2D[] hits = Physics2D.RaycastAll(createProjectile.transform.position, next, maxLaser, layerMask);
         foreach (RaycastHit2D hit in hits)
         {
             Instantiate(attackType, hit.point, Quaternion.identity);
         }
-        RaycastHit2D[] hitsLeft = Physics2D.RaycastAll(createProjectileLeft.transform.position, next, maxLaser, layerMask);
+        RaycastHit2D[] hitsLeft = Physics2D.RaycastAll(createProjectileLeft.transform.position, nextLeft, maxLaser, layerMask);
         foreach (RaycastHit2D hit in hitsLeft)
         {
             Instantiate(attackType, hit.point, Quaternion.identity);
+            Debug.DrawLine(createProjectileLeft.transform.position, hit.point, new Color(255, 0, 0), 5);
         }
-        RaycastHit2D[] hitsRight = Physics2D.RaycastAll(createProjectileRight.transform.position, next, maxLaser, layerMask);
+        RaycastHit2D[] hitsRight = Physics2D.RaycastAll(createProjectileRight.transform.position, nextRight, maxLaser, layerMask);
         foreach (RaycastHit2D hit in hitsRight)
         {
             Instantiate(attackType, hit.point, Quaternion.identity);
+            Debug.DrawLine(createProjectileRight.transform.position, hit.point, new Color(0, 255, 0), 5);
         }
         yield return new WaitForSeconds(.01f);
-        
-        
+
         Destroy(createProjectile);
         Destroy(createProjectileLeft);
         Destroy(createProjectileRight);
@@ -482,7 +485,7 @@ public class Attack : MonoBehaviour
     }
 
 
-    //fires variety of projectiles from the player
+    //fires bomb projectile 
     IEnumerator bombShot(Vector2 start, Vector2 next, float attackSpeed, int splitAmount)
     {
         yield return null;
@@ -526,21 +529,25 @@ public class Attack : MonoBehaviour
                 {
                     Instantiate(attackType, impact.point, Quaternion.identity);
                 }
-                else if(splitAmount > 1)
+                else if(splitAmount == 3)
                 {
-                    //bombShot(impact.point, new Vector2(impact.point.x, impact.point.y + 5), attackSpeed, 1);
-                    //bombShot(impact.point, new Vector2(impact.point.x -5, impact.point.y - 2), attackSpeed, 1);
-                    //bombShot(impact.point, new Vector2(impact.point.x + 5, impact.point.y - 2), attackSpeed, 1);
                     Instantiate(attackType, impact.point + new Vector2(0, 5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
+                }
+                else if(splitAmount == 5)
+                {
+                    Instantiate(attackType, impact.point + new Vector2(0, 5), Quaternion.identity);
+                    Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
+                    Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
+                    Instantiate(attackType, impact.point + new Vector2(5, 5), Quaternion.identity);
+                    Instantiate(attackType, impact.point + new Vector2(-5, 5), Quaternion.identity);
                 }
                 hit = true;
             }
             createProjectile.transform.position = nextPosition;
             yield return null;
         }
-
         Destroy(createProjectile);
     }
 
@@ -725,7 +732,6 @@ public class Attack : MonoBehaviour
             createProjectile.transform.position = nextPosition;
             yield return null;
         }
-
         Destroy(createProjectile);
     }
 
