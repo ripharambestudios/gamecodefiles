@@ -33,48 +33,46 @@ public class ShotGunAI : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
-
-		if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
-        {
-            isAttacking = true;
-            //setAttackingAnimation(true);
-            StartCoroutine(LaunchAttack());
-        }
-		else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+		if (target != null)
 		{
-			StartCoroutine(WeakenedState());
+			distanceToTarget = Vector2.Distance (transform.position, target.transform.position);
 
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () || weakenedOnce)) 
+			{
+				isAttacking = true;
+				//setAttackingAnimation(true);
+				StartCoroutine (LaunchAttack ());
+			} 
+			else if (this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () && !weakenedOnce) 
+			{
+				StartCoroutine (WeakenedState ());
+			}
+
+			//Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
+			//GetComponent<Rigidbody2D>().velocity = -velocity;
+
+			if (!stopped)
+			{
+				transform.LookAt (target.transform.position);
+				transform.Rotate (new Vector3 (0, -90, 0), Space.Self);
+
+				if (distanceToTarget >= 10f) {//move if distance from target is greater than 1
+
+					//transform.Translate(new Vector3(inverseLaunchSpeed * Time.deltaTime, 0, 0));
+					GetComponent<Rigidbody2D> ().AddRelativeForce (transform.right * movementSpeed);
+
+				} else {
+
+					GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+					GetComponent<Rigidbody2D> ().angularVelocity = 0;
+				}
+			} 
+			else 
+			{
+				GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+				GetComponent<Rigidbody2D> ().angularVelocity = 0;
+			}
 		}
-
-
-        //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
-        //GetComponent<Rigidbody2D>().velocity = -velocity;
-
-        if (!stopped)
-        {
-            transform.LookAt(target.transform.position);
-            transform.Rotate(new Vector3(0, -90, 0), Space.Self);
-
-            if (distanceToTarget >= 10f)
-            {//move if distance from target is greater than 1
-
-                //transform.Translate(new Vector3(inverseLaunchSpeed * Time.deltaTime, 0, 0));
-                GetComponent<Rigidbody2D>().AddRelativeForce(transform.right * movementSpeed);
-
-            }
-            else
-            {
-
-                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                GetComponent<Rigidbody2D>().angularVelocity = 0;
-            }
-        }
-        else
-        {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            GetComponent<Rigidbody2D>().angularVelocity = 0;
-        }
     }
 
 	IEnumerator WeakenedState()

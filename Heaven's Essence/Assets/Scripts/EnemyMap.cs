@@ -8,19 +8,20 @@ public class EnemyMap : MonoBehaviour
 
     public int height = 90;
     public int width = 160;
-    Vector2 anchor;
-    Rect region;
-    GameObject mapShower;
+	private Vector2 anchor;
+    private Rect region;
+    private GameObject mapShower;
+	GameObject player;
     // Use this for initialization
     void Start()
     {
-        Debug.Log("Map Initialization started");
         mapShower = GameObject.FindGameObjectWithTag("Map");
         map = new Texture2D(width, height, TextureFormat.RGBA32, false);
         map.filterMode = FilterMode.Point;
 
         region = new Rect(0f, 0f, map.width, map.height);
         anchor = new Vector2(map.width * .5f, map.height * .5f);
+		player = GameObject.FindGameObjectWithTag ("Player");
     }
 
     // Update is called once per frame
@@ -50,7 +51,6 @@ public class EnemyMap : MonoBehaviour
     }
     void updateMap()
     {
-        Debug.Log("Test of Texture call");
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyDemonic"))
         {
             //Debug.Log("1 called");
@@ -75,7 +75,10 @@ public class EnemyMap : MonoBehaviour
 			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.yellow);
         }
 
-		map.SetPixel((int)GameObject.FindGameObjectWithTag("Player").transform.position.x + width/2, (int)GameObject.FindGameObjectWithTag("Player").transform.position.y + height/2, Color.blue);
+		if (player != null) 
+		{
+			map.SetPixel ((int)player.transform.position.x + width / 2, (int)GameObject.FindGameObjectWithTag ("Player").transform.position.y + height / 2, Color.blue);
+		}
 
         map.Apply();
 

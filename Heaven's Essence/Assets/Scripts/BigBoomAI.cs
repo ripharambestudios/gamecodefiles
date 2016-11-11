@@ -34,19 +34,22 @@ public class BigBoomAI : MonoBehaviour {
     }
 
 	// Update is called once per frame
-	void Update () {
-		distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
-
-		if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce)) 
+	void Update () 
+	{
+		if (target != null)
 		{
-			Debug.Log ("Seen");
-			isAttacking = true;
-			StartCoroutine(LaunchAttack());
-		}
-		else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
-		{
-			StartCoroutine(WeakenedState());
+			distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
 
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () || weakenedOnce)) 
+			{
+				Debug.Log ("Seen");
+				isAttacking = true;
+				StartCoroutine (LaunchAttack ());
+			}
+			else if (this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () && !weakenedOnce) 
+			{
+				StartCoroutine (WeakenedState ());
+			}
 		}
 	}
 

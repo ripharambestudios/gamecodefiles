@@ -84,6 +84,7 @@ public class Attack : MonoBehaviour
     private float spookyGuyProjectileSpeed;
 
 
+
     // Use this for initialization
     void Start()
     {
@@ -464,7 +465,7 @@ public class Attack : MonoBehaviour
         
         //destroy object if it doesn't collide with anything after timeout amout of time
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
-        createProjectile.transform.localScale *= 10;
+        createProjectile.transform.localScale *= 5;
         //createProjectile.GetComponent<BoxCollider2D>();
         createProjectile.transform.parent = this.transform;
         //get the sign of the direction of the aim
