@@ -34,7 +34,12 @@ public class Attack : MonoBehaviour
 
     //Attack upgrades and souls text
     public Text soulsText;
-    public Text upgradeLevels;
+	public Text energyUpgradeText;
+	public Text beamUpgradeText;
+	public Text bombUpgradeText;
+	public Text speedUpgradeText;
+	public Text shotgunUpgradeText;
+
 
     private GameObject projectile;
     private GameObject attackType;
@@ -59,7 +64,7 @@ public class Attack : MonoBehaviour
     private int beamAttackLevel = 0;
     private int bombAttackLevel = 0;
     private int shotgunAttackLevel = 0;
-    private int spookyGuyAttackLevel = 0;
+    private int speedAttackLevel = 0;
     //upgrade cost for each attack
     private int energyUpgradeCost = 50;
     private int beamUpgradeCost = 20;
@@ -102,10 +107,8 @@ public class Attack : MonoBehaviour
         shotgunInitialDamage = attackTypeShotgun.GetComponent<DoDamage>().damage;
         spookyGuyInitialDamage = attackTypeSpeed.GetComponent<DoDamage>().damage;
 
-		//soulsText = GameObject.FindGameObjectsWithTag ("SoulsText");
-		//soulsText = GameObject.FindGameObjectsWithTag ("AttackText");
         soulsText.text = "Souls: Energy= 0 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
-        upgradeLevels.text = "Attack Levels: Energy= 1 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
+		energyUpgradeText.text = "1";
     }
 
     void Update()
@@ -228,14 +231,14 @@ public class Attack : MonoBehaviour
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
                 }
-                else if (projectile.name == projectileSpeed.name && spookyGuyAttackLevel > 0)
+                else if (projectile.name == projectileSpeed.name && speedAttackLevel > 0)
                 {
                     _rateOfFire = 1 / rateOfFire;
                     canAttack = false;
                     
-                    if (spookyGuyAttackLevel >= 1)
+                    if (speedAttackLevel >= 1)
                     {
-                        StartCoroutine(spookyGuyProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, spookyGuyAttackLevel));  //pass attack level as penetration power of the shot
+                        StartCoroutine(spookyGuyProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, speedAttackLevel));  //pass attack level as penetration power of the shot
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
                     
@@ -826,7 +829,7 @@ public class Attack : MonoBehaviour
             rateOfFire = 1.0f;
 
         }
-        else if (attackTypeString == "Speed" && spookyGuyAttackLevel > 0)
+        else if (attackTypeString == "Speed" && speedAttackLevel > 0)
         {
             projectile = projectileSpeed;
             attackType = attackTypeSpeed;
@@ -882,13 +885,13 @@ public class Attack : MonoBehaviour
                 bombUpgradeCost *= 2;
 
             }
-            else if (upgradeType == "Speed" && spookyGuySouls >= spookyGuyUpgradeCost && spookyGuyAttackLevel < maxUpgradeForWeapon)
+            else if (upgradeType == "Speed" && spookyGuySouls >= spookyGuyUpgradeCost && speedAttackLevel < maxUpgradeForWeapon)
             {
-                spookyGuyAttackLevel += 1;
-                attackTypeSpeed.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * spookyGuyAttackLevel;
+                speedAttackLevel += 1;
+                attackTypeSpeed.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * speedAttackLevel;
                 spookyGuySouls -= spookyGuyUpgradeCost;
                 spookyGuyUpgradeCost *= 2;
-                spookyGuyProjectileSpeed = 1.2f + (spookyGuyAttackLevel * .1f);
+                spookyGuyProjectileSpeed = 1.2f + (speedAttackLevel * .1f);
 
             }
             else if (upgradeType == "Shotgun" && shotgunSouls >= shotgunUpgradeCost && shotgunAttackLevel < maxUpgradeForWeapon)
@@ -905,8 +908,12 @@ public class Attack : MonoBehaviour
                 //instantiate here a warning that the player does not have enough souls for the attack upgrade
                 numberOfUpgrades -= 1;
             }
+			energyUpgradeText.text = energyAttackLevel.ToString ();
+			beamUpgradeText.text = beamAttackLevel.ToString();
+			bombUpgradeText.text = bombAttackLevel.ToString();
+			speedUpgradeText.text = speedAttackLevel.ToString();
+			shotgunUpgradeText.text = shotgunAttackLevel.ToString();
 
-            upgradeLevels.text = "Attack Levels: Energy= " + energyAttackLevel + " Beam= " + beamAttackLevel + " Bomb= " + bombAttackLevel + " Speed= " + spookyGuyAttackLevel + " Shotgun= " + shotgunAttackLevel;
             soulsText.text = "Souls: Energy= " + energySouls + " Beam= " + beamSouls + " Bomb= " + bombSouls + " Speed= " + spookyGuySouls + " Shotgun= " + shotgunSouls;
         }
         else

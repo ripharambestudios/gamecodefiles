@@ -21,9 +21,6 @@ public class EnemyMap : MonoBehaviour
 
         region = new Rect(0f, 0f, map.width, map.height);
         anchor = new Vector2(map.width * .5f, map.height * .5f);
-
-       
-
     }
 
     // Update is called once per frame
@@ -56,29 +53,29 @@ public class EnemyMap : MonoBehaviour
         Debug.Log("Test of Texture call");
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyDemonic"))
         {
-            Debug.Log("1 called");
+            //Debug.Log("1 called");
             map.SetPixel((int)enemy.transform.position.x + width/2, (int)enemy.transform.position.y + height/2, Color.red);
         }
 
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyFallen"))
         {
-            Debug.Log("2 called");
-            map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.gray);
+            //Debug.Log("2 called");
+			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.green);
         }
 
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyBoom"))
         {
-            Debug.Log("3 called");
-            map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.yellow);
+            //Debug.Log("3 called");
+			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.magenta);
         }
 
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemySpook"))
         {
-            Debug.Log("4 called");
-            map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.green);
+            //Debug.Log("4 called");
+			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.yellow);
         }
 
-        map.SetPixel((int)GameObject.FindGameObjectWithTag("Player").transform.position.x + width/2, (int)GameObject.FindGameObjectWithTag("Player").transform.position.y + height/2, Color.white);
+		map.SetPixel((int)GameObject.FindGameObjectWithTag("Player").transform.position.x + width/2, (int)GameObject.FindGameObjectWithTag("Player").transform.position.y + height/2, Color.blue);
 
         map.Apply();
 
