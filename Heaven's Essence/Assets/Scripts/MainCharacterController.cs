@@ -29,7 +29,7 @@ public class MainCharacterController : MonoBehaviour
         currentHealth = health;
         //HealthText.text = "Health: ";   //+ currentHealth;
         gameOverPanel.SetActive(false);
-        ScoreText.text = "Score: 0";
+        ScoreText.text = "Score: " + totalScore;
         attackTypes.Add("Energy");
         attackTypes.Add("Beam");
         attackTypes.Add("Bomb");
@@ -156,8 +156,8 @@ public class MainCharacterController : MonoBehaviour
         if (currentHealth > 0)
         {
             //float normalizedHealth = (float)currentHealth / (float)health;
-            healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2(currentHealth, 32);
-            //healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2(healthStartVector.x * currentHealth / health, 32);
+            //healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2(currentHealth, 32);
+            healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2(healthStartVector.x * currentHealth / health, 32);
             //float lostHealth = health - currentHealth;
         }
         else

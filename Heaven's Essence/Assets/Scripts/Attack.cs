@@ -57,7 +57,7 @@ public class Attack : MonoBehaviour
     private int energySouls = 1000;
     private int beamSouls = 1000;
     private int bombSouls = 1000;
-    private int shotgunSouls = 1000;
+    private int shotgunSouls = 10000;
     private int spookyGuySouls = 1000;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
@@ -83,6 +83,12 @@ public class Attack : MonoBehaviour
     private int spookyGuyInitialDamage;
     private float spookyGuyProjectileSpeed;
 
+    //upgrade icons
+    private GameObject energyShotUpgradeIcon;
+    private GameObject shotgunAttackUpgradeIcon;
+    private GameObject speedShotUpgradeIcon;
+    private GameObject bombAttackUpgradeIcon;
+    private GameObject beamAttackUpgradeIcon;
 
 
     // Use this for initialization
@@ -110,6 +116,12 @@ public class Attack : MonoBehaviour
 
         soulsText.text = "Souls: Energy= 0 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
 		energyUpgradeText.text = "1";
+
+        energyShotUpgradeIcon = GameObject.Find("Attack level Basic");
+        shotgunAttackUpgradeIcon = GameObject.Find("Attack level Shotgun");
+        speedShotUpgradeIcon = GameObject.Find("Attack level Speed Shot");
+        bombAttackUpgradeIcon = GameObject.Find("Attack level Bomb");
+        beamAttackUpgradeIcon = GameObject.Find("Attack level Beam");
     }
 
     void Update()
@@ -814,6 +826,7 @@ public class Attack : MonoBehaviour
             attackType = attackTypeEnergy;
             speedOfProjectile = 1f;
             rateOfFire = 4.0f;
+            
         }
         else if (attackTypeString == "Beam" && beamAttackLevel > 0)
         {
@@ -844,6 +857,7 @@ public class Attack : MonoBehaviour
             attackType = attackTypeShotgun;
             speedOfProjectile = .7f;
             rateOfFire = 3.0f;
+            
         }
         else
         {
@@ -864,11 +878,11 @@ public class Attack : MonoBehaviour
         {
             if (upgradeType == "Energy" && energySouls >= energyUpgradeCost && energyAttackLevel < maxUpgradeForWeapon)
             {
-
                 energyAttackLevel += 1;
                 attackTypeEnergy.GetComponent<DoDamage>().damage = energyInitialDamage * energyAttackLevel;
                 energySouls -= energyUpgradeCost;
                 energyUpgradeCost *= 2;
+                energyShotUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(energyAttackLevel);
             }
             else if (upgradeType == "Beam" && beamSouls >= beamUpgradeCost && beamAttackLevel < maxUpgradeForWeapon)
             {
@@ -876,7 +890,7 @@ public class Attack : MonoBehaviour
                 attackTypeBeam.GetComponent<DoDamage>().damage = beamInitialDamage * beamAttackLevel;
                 beamSouls -= beamUpgradeCost;
                 beamUpgradeCost *= 2;
-
+                beamAttackUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(beamAttackLevel);
             }
             else if (upgradeType == "Bomb" && bombSouls >= bombUpgradeCost && bombAttackLevel < maxUpgradeForWeapon)
             {
@@ -884,6 +898,7 @@ public class Attack : MonoBehaviour
                 attackTypeBomb.GetComponent<DoDamage>().damage = bombInitialDamage * bombAttackLevel;
                 bombSouls -= bombUpgradeCost;
                 bombUpgradeCost *= 2;
+                bombAttackUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(bombAttackLevel);
 
             }
             else if (upgradeType == "Speed" && spookyGuySouls >= spookyGuyUpgradeCost && speedAttackLevel < maxUpgradeForWeapon)
@@ -893,6 +908,7 @@ public class Attack : MonoBehaviour
                 spookyGuySouls -= spookyGuyUpgradeCost;
                 spookyGuyUpgradeCost *= 2;
                 spookyGuyProjectileSpeed = 1.2f + (speedAttackLevel * .1f);
+                speedShotUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(speedAttackLevel);
 
             }
             else if (upgradeType == "Shotgun" && shotgunSouls >= shotgunUpgradeCost && shotgunAttackLevel < maxUpgradeForWeapon)
@@ -901,6 +917,7 @@ public class Attack : MonoBehaviour
                 attackTypeShotgun.GetComponent<DoDamage>().damage = shotgunInitialDamage * shotgunAttackLevel;
                 shotgunSouls -= shotgunUpgradeCost;
                 shotgunUpgradeCost *= 2;
+                shotgunAttackUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(shotgunAttackLevel);
             }
             else
             {
