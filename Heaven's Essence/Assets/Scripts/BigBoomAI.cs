@@ -7,6 +7,7 @@ public class BigBoomAI : MonoBehaviour {
 	public float damage = 20f;
 	public float waitTime = 0.5f;
 	public float inverseLaunchSpeed = 10f;
+	public float radius = 1.8f;
 
 	static private int direction = 0;
 	private GameObject target;
@@ -21,6 +22,8 @@ public class BigBoomAI : MonoBehaviour {
 	public int teleDistance = 5;
 
 	private bool weakenedOnce = false;
+
+	private bool correctPlacement = false;
 
 	// Use this for initialization
 	void Start () {
@@ -88,20 +91,39 @@ public class BigBoomAI : MonoBehaviour {
 
 	private void enemyPlacement()
 	{
+		int distanceForPlacement = 1;
+		correctPlacement = false;
+		while (!correctPlacement)
+		{
+			this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+			// check for colliders when there is a plannet it is landing on
+			if (direction == 0) 
+			{ // on top
+				transform.position = new Vector3 (target.transform.position.x, target.transform.position.y + (teleDistance * distanceForPlacement), 0);
+			} 
+			else if (direction == 1)
+			{ // on right
+				transform.position = new Vector3 (target.transform.position.x + (teleDistance * distanceForPlacement), target.transform.position.y, 0);
+			} 
+			else if (direction == 2)
+			{ // on bottom
+				transform.position = new Vector3 (target.transform.position.x, target.transform.position.y - (teleDistance * distanceForPlacement), 0);
+			} 
+			else
+			{ //on left
+				transform.position = new Vector3 (target.transform.position.x - (teleDistance * distanceForPlacement), target.transform.position.y, 0);
+			}
 
-		// check for colliders when there is a plannet it is landing on
-		if (direction == 0) { // on top
-			//this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-			transform.position = new Vector3 (target.transform.position.x, target.transform.position.y + teleDistance, 0);
-		} 
-		else if (direction == 1) { // on right
-			transform.position = new Vector3 (target.transform.position.x + teleDistance, target.transform.position.y, 0);
-		} 
-		else if (direction == 2) { // on bottom
-			transform.position = new Vector3 (target.transform.position.x, target.transform.position.y - teleDistance, 0);
-		} 
-		else { //on left
-			transform.position = new Vector3 (target.transform.position.x - teleDistance, target.transform.position.y, 0);
+			Collider2D[] collidersPlanets = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("Obsticale"));
+			if (collidersPlanets.Length == 0) 
+			{
+				this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+				correctPlacement = true;
+			}
+			else 
+			{
+				distanceForPlacement++;
+			}
 		}
 			
 		if (direction < 3) {

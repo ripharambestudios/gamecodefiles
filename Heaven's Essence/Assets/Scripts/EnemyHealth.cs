@@ -33,7 +33,7 @@ public class EnemyHealth : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 			
-		if (currentHealth > (startHealth / 10 * 2))
+		if (currentHealth > 0)
 		{
 			StartCoroutine (flashRed ());
 		}

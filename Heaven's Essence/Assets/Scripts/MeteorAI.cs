@@ -78,8 +78,10 @@ public class MeteorAI : MonoBehaviour {
 		int maxDistance = 10000;
 		int layerDepth = 1;
 		int layerMask = layerDepth << 8; //player on 8th layer
+		int obsticalMask = layerDepth << 12; //obsticale on 12th layer
 		RaycastHit2D impact = Physics2D.Raycast(nextPosition, endLocation, maxDistance, layerMask);
-		Debug.Log (impact.point + "TARGETING PLAYER");
+		RaycastHit2D impactObsticale = Physics2D.Raycast(nextPosition, endLocation, maxDistance, obsticalMask);
+		//Debug.Log (impact.point + "TARGETING PLAYER");
 		yield return new WaitForSeconds (waitTime);
         
 		bool hasHit = false;
@@ -88,13 +90,20 @@ public class MeteorAI : MonoBehaviour {
 			distanceToGo = 50f;
 		}
 		while(distanceCovered < distanceToGo){
-			nextPosition += look.normalized * launchSpeed; //try time.detlatime to see if that can make it better, also look into better name for enemyspeed
+			nextPosition += look.normalized * launchSpeed; //try time.detlatime to see if that can make it better
 			distanceCovered += Math.Abs (Vector2.Distance (this.transform.position, nextPosition));
 			if (Physics2D.Linecast (this.transform.position, nextPosition, layerMask) && !hasHit) {
 				impact = Physics2D.Linecast (this.transform.position, nextPosition, layerMask);
 				impact.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
 				hasHit = true;
-				Debug.Log ("Player hit.");
+				//Debug.Log ("Player hit.");
+			}
+
+			if (Physics2D.Linecast (this.transform.position, nextPosition, obsticalMask)) // if it his an obsticale it stops moving
+			{
+				impactObsticale = Physics2D.Linecast (this.transform.position, nextPosition, obsticalMask);
+				distanceCovered = distanceToGo;
+				nextPosition = this.transform.position;
 			}
 
 			this.transform.position = nextPosition;

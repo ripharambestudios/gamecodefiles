@@ -9,7 +9,7 @@ public class WeaponStoper : MonoBehaviour {
 
 	void Update()
 	{
-		Collider2D[] collidersPlayerShots = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("PlayerAttacks"));
+		Collider2D[] collidersPlayerShots = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("PlayerAttacks")); // for player attacks
 		foreach (Collider2D coll in collidersPlayerShots) {
 			if(coll.gameObject.layer == 10)
 			{
@@ -23,7 +23,7 @@ public class WeaponStoper : MonoBehaviour {
 			}
 		}
 
-		Collider2D[] collidersEnemyShots = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("EnemyAttacks"));
+		Collider2D[] collidersEnemyShots = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("EnemyAttacks")); // for enemy attacks
 		foreach (Collider2D coll in collidersEnemyShots) {
 			if(coll.gameObject.layer == 11)
 			{
