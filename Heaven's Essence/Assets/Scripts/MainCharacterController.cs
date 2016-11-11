@@ -27,7 +27,7 @@ public class MainCharacterController : MonoBehaviour
         player = this.GetComponent<Rigidbody2D>();
         player.gravityScale = 0;
         currentHealth = health;
-        HealthText.text = "Health: ";   //+ currentHealth;
+        //HealthText.text = "Health: ";   //+ currentHealth;
         gameOverPanel.SetActive(false);
         ScoreText.text = "Score: 0";
         attackTypes.Add("Energy");
@@ -166,20 +166,4 @@ public class MainCharacterController : MonoBehaviour
         }
 
     }
-
-    /*
-	void OnTriggerEnter2D(Collider2D coll)
-	{
-		Debug.Log("collision name = " + coll.gameObject.name);
-		if (coll.gameObject.tag != null) {
-			if (coll.gameObject.tag == "Enemy") {
-				EnemyDamage (50);
-			} else if (coll.gameObject.tag == "Explosion") {
-				Debug.Log ("Explosion Collision");
-				DestroyObject (coll.gameObject);
-			}
-		} else {
-			Debug.Log ("Object has no tag: " + coll.gameObject.name);
-		}		
-	}*/
 }

@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour {
 	public GameObject enemyType2;
 	public GameObject enemyType3;
 	public GameObject enemyType4;
-	public float waveTime = 6f;
+	public float waveTime = 10f;
 	
 	public Text waveText;
 	public Text enemiesLeftText;
@@ -20,7 +20,6 @@ public class EnemySpawner : MonoBehaviour {
 	static private int numberOfEnemies;
 	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 'b', 'b', 'g', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     static private int waveNum;
-    private int healthReturned = -150;
     private int numberOfEnemiesPerWave = 4;
     
 
@@ -40,7 +39,8 @@ public class EnemySpawner : MonoBehaviour {
     }
 
 	void Update(){
-		if (numberOfEnemies == 0) { 		//&& this.GetComponent<TotalEnemies>().enemiesGone()
+		if (numberOfEnemies == 0) 
+		{
 			StartCoroutine (BeginSpawn ()); //calls coroutine to allow for a delay between waves
 		}
         
@@ -65,7 +65,6 @@ public class EnemySpawner : MonoBehaviour {
         //waveText.text = "";
         numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5); //increases number of enemies quickly initially and then slows down as it gets further
 		waveNum++;
-        player.SendMessage("EnemyDamage", healthReturned, SendMessageOptions.DontRequireReceiver); //returns a set amount of health to the player to give a little amount of longevity to the player's life
 	}
 
 	//Code to randomly spawn enemies in the map
@@ -99,6 +98,11 @@ public class EnemySpawner : MonoBehaviour {
 	public void decrementNumOfEnemies(){
 		numberOfEnemies--;
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString();
-							//this.GetComponent<TotalEnemies>().decrementNumEnemies ();
+		if (numberOfEnemies == 0) 
+		{
+			this.GetComponent<SnitchSpawner> ().startSpawn ();
+
+		}
+
 	}
 }
