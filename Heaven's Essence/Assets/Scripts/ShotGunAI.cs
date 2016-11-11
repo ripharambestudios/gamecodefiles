@@ -56,13 +56,19 @@ public class ShotGunAI : MonoBehaviour {
 				transform.LookAt (target.transform.position);
 				transform.Rotate (new Vector3 (0, -90, 0), Space.Self);
 
-				if (distanceToTarget >= 10f) {//move if distance from target is greater than 1
+				if (distanceToTarget >= 10f)
+                {//move if distance from target is greater than 1
 
 					//transform.Translate(new Vector3(inverseLaunchSpeed * Time.deltaTime, 0, 0));
-					GetComponent<Rigidbody2D> ().AddRelativeForce (transform.right * movementSpeed);
+					
+                    if(!(GetComponent<Rigidbody2D>().velocity.magnitude > new Vector2(30,30).magnitude) && !(GetComponent<Rigidbody2D>().angularVelocity > 30))
+                    {
+                        GetComponent<Rigidbody2D>().AddRelativeForce(transform.right * movementSpeed);
+                    }
 
-				} else {
-
+				}
+                else
+                {
 					GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 					GetComponent<Rigidbody2D> ().angularVelocity = 0;
 				}

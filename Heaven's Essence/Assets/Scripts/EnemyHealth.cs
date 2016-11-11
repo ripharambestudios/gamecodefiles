@@ -14,7 +14,8 @@ public class EnemyHealth : MonoBehaviour {
 	private float timeForFlashRed = .1f;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 		currentHealth = startHealth;
 		enemyManager = GameObject.FindGameObjectWithTag ("Enemy Manager");
 		player = GameObject.FindGameObjectWithTag ("Player");
