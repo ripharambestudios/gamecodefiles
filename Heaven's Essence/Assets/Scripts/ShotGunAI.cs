@@ -9,8 +9,8 @@ public class ShotGunAI : MonoBehaviour {
     private float movementSpeed = 100f;
 	private float launchSpeed = 1000f;
 	private GameObject target;
-	private float distanceToTarget;
-	private bool isAttacking = false;
+	public float distanceToTarget;
+	public bool isAttacking = false;
 	private bool weakenedOnce = false;
 
     private bool stopped = false;
@@ -33,53 +33,44 @@ public class ShotGunAI : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-		if (target != null)
+        distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
+
+		if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
+        {
+            Debug.Log(distanceToTarget + "Distance to Target ," + sightRadius + " ,Sight Radius");
+            isAttacking = true;
+            //setAttackingAnimation(true);
+            StartCoroutine(LaunchAttack());
+        }
+		else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
 		{
-			distanceToTarget = Vector2.Distance (transform.position, target.transform.position);
+			StartCoroutine(WeakenedState());
 
-			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () || weakenedOnce)) 
-			{
-				isAttacking = true;
-				//setAttackingAnimation(true);
-				StartCoroutine (LaunchAttack ());
-			} 
-			else if (this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () && !weakenedOnce) 
-			{
-				StartCoroutine (WeakenedState ());
-			}
-
-			//Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
-			//GetComponent<Rigidbody2D>().velocity = -velocity;
-
-			if (!stopped)
-			{
-				transform.LookAt (target.transform.position);
-				transform.Rotate (new Vector3 (0, -90, 0), Space.Self);
-
-				if (distanceToTarget >= 10f)
-                {//move if distance from target is greater than 1
-
-					//transform.Translate(new Vector3(inverseLaunchSpeed * Time.deltaTime, 0, 0));
-					
-                    if(!(GetComponent<Rigidbody2D>().velocity.magnitude > new Vector2(30,30).magnitude) && !(GetComponent<Rigidbody2D>().angularVelocity > 30))
-                    {
-                        GetComponent<Rigidbody2D>().AddRelativeForce(transform.right * movementSpeed);
-                    }
-
-				}
-                else
-                {
-					GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
-					GetComponent<Rigidbody2D> ().angularVelocity = 0;
-				}
-			} 
-			else 
-			{
-				GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
-				GetComponent<Rigidbody2D> ().angularVelocity = 0;
-			}
 		}
-    }
+
+
+        //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
+        //GetComponent<Rigidbody2D>().velocity = -velocity;
+
+        if (!stopped)
+        {
+            Vector3 dir = target.transform.position - transform.position;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+            if (distanceToTarget >= sightRadius - 1.0f)
+            {
+                Debug.Log("Forward");
+                transform.position += transform.right * Time.deltaTime * movementSpeed;
+            }
+            else
+            {
+                Debug.Log("Rotate");
+                //transform.position += transform.right * Time.deltaTime * speed;
+                transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 100);
+            }
+        }
+        }
 
 	IEnumerator WeakenedState()
 	{
@@ -123,7 +114,7 @@ public class ShotGunAI : MonoBehaviour {
 		isAttacking = false;
         attacked = false;
 
-        //Debug.Log("done attacking");
+        Debug.Log("done attacking");
         //setAttackingAnimation(false);
 
     }
