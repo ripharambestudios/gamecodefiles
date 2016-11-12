@@ -12,6 +12,7 @@ public class EnemySpawner : MonoBehaviour {
 	public GameObject enemyType3;
 	public GameObject enemyType4;
 	public float waveTime = 10f;
+	public float demonicRadius = 216; // if map had box collider use x value times scale to get radius will cover larger y than necessary
 	
 	public Text waveText;
 	public Text enemiesLeftText;
@@ -21,6 +22,8 @@ public class EnemySpawner : MonoBehaviour {
 	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 'b', 'b', 'g', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     static private int waveNum;
     private int numberOfEnemiesPerWave = 4;
+
+	private bool correctPlacement;
     
 
     // Use this for initialization
@@ -74,23 +77,45 @@ public class EnemySpawner : MonoBehaviour {
 		if (player.GetComponent<MainCharacterController> ().GetHealth () <= 0) {
 			return;
 		}
-		Vector2 spawnLocation = new Vector2(randNum.Next(-50,50), randNum.Next(-30,30));
-		//create new enemy and spawn him in somewhere random
-		if (enemyChar == 's') {
-			
-			Instantiate (enemyType, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
-		}
-		//bomb guy
-		else if (enemyChar == 'b') {
-			Instantiate (enemyType2, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
-		}
-		//spooky guy
-		else if (enemyChar == 'g') {
-			Instantiate (enemyType3, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
-		}
-		//fallen guy
-		else if (enemyChar == 'f') {
-			Instantiate (enemyType4, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+
+		correctPlacement = false;
+		Vector2 spawnLocation = new Vector2 ();
+		while (!correctPlacement) 
+		{
+			spawnLocation = new Vector2 (randNum.Next (-90, 90), randNum.Next (-60, 60));
+		
+			//create new enemy and spawn him in somewhere random
+			if (enemyChar == 's') 
+			{		
+				GameObject newDemonic = (GameObject)Instantiate (enemyType, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+				Collider2D[] collidersPlanets = Physics2D.OverlapCircleAll (newDemonic.transform.position, demonicRadius, 1 << LayerMask.NameToLayer ("Obsticale"));
+				if (collidersPlanets.Length == 0) 
+				{
+					correctPlacement = true;
+				}
+				else 
+				{
+					Destroy (newDemonic);
+				}
+			}
+			//bomb guy
+			else if (enemyChar == 'b') 
+			{
+				Instantiate (enemyType2, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+				correctPlacement = true;
+			}
+			//spooky guy
+			else if (enemyChar == 'g')
+			{
+				Instantiate (enemyType3, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+				correctPlacement = true;
+			}
+			//fallen guy
+			else if (enemyChar == 'f') 
+			{
+				Instantiate (enemyType4, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+				correctPlacement = true;
+			}
 		}
 		
 	}
