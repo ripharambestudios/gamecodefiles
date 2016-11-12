@@ -35,7 +35,7 @@ public class EnemyMap : MonoBehaviour
     }
 
 
-    private void clearMap()
+    void clearMap()
     {
         map = new Texture2D(width, height, TextureFormat.RGBA32, false);
         map.filterMode = FilterMode.Point;
@@ -49,13 +49,12 @@ public class EnemyMap : MonoBehaviour
 
         map.SetPixels(fillPixels);
     }
-
-    private void updateMap()
+    void updateMap()
     {
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyDemonic"))
         {
             //Debug.Log("1 called");
-			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.red);
+            map.SetPixel((int)enemy.transform.position.x + width/2, (int)enemy.transform.position.y + height/2, Color.red);
         }
 
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyFallen"))
