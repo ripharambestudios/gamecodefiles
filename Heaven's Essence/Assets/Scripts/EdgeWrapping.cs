@@ -16,21 +16,28 @@ public class EdgeWrapping : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D coll){
-		if (coll.tag == "Player") {
+		if (coll.tag == "Player")
+        {
 			Rigidbody2D rigid = coll.GetComponent<Rigidbody2D> ();
 			Debug.Log ("Crossed boundary: name is " + rigid.name + "X: " + rigid.transform.position.x + " Y: " + rigid.transform.position.y);
-			if (rigid != null && rigid.tag == "Player") {
-				if (rigid.transform.position.y > edgeY) {
+			if (rigid != null && rigid.tag == "Player")
+            {
+				if (rigid.transform.position.y > edgeY)
+                {
 					rigid.transform.position = new Vector3 (rigid.transform.position.x, rigid.transform.position.y * -1 + 5, 0);
 				}  
-				else if (rigid.transform.position.y < -edgeY) {
+				else if (rigid.transform.position.y < -edgeY)
+                {
 					rigid.transform.position = new Vector3 (rigid.transform.position.x, rigid.transform.position.y * -1 - 5, 0);
 				} 
 
-				if (rigid.transform.position.x > edgeX) {
-					rigid.transform.position = new Vector3 (rigid.transform.position.x * -1 + 5, rigid.transform.position.y, 0);
-				}else if (rigid.transform.position.x < -edgeX) {
-					rigid.transform.position = new Vector3 (rigid.transform.position.x * -1 - 5, rigid.transform.position.y, 0);
+				if (rigid.transform.position.x > edgeX)
+                {
+					rigid.transform.position = new Vector3 (rigid.transform.position.x * -1, rigid.transform.position.y, 0);
+				}
+                else if (rigid.transform.position.x < -edgeX)
+                {
+					rigid.transform.position = new Vector3 (rigid.transform.position.x * -1, rigid.transform.position.y, 0);
 				}
 			}
 		}
