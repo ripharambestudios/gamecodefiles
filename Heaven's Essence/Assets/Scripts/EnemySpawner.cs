@@ -82,7 +82,7 @@ public class EnemySpawner : MonoBehaviour {
 		Vector2 spawnLocation = new Vector2 ();
 		while (!correctPlacement) 
 		{
-			spawnLocation = new Vector2 (randNum.Next (-90, 90), randNum.Next (-60, 60));
+			spawnLocation = new Vector2 (randNum.Next (-105, 105), randNum.Next (-55, 55));
 		
 			//create new enemy and spawn him in somewhere random
 			if (enemyChar == 's') 
