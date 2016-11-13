@@ -37,27 +37,44 @@ public class CameraFollow : MonoBehaviour {
         //delta time is a small number
         if (target != null)
         {
-            
-            if (this.transform.position.x < topLeft.transform.position.x )
+            Vector2 newTargetLocation = target.transform.position;
+            if (target.transform.position.x < topLeft.transform.position.x + camWidth / 2 && target.transform.position.y > topLeft.transform.position.y - camHeight / 2)
             {
-                this.transform.position = new Vector2(topLeft.transform.position.x + camWidth/2, this.transform.position.y);
+                newTargetLocation = new Vector2(topLeft.transform.position.x + camWidth / 2, topLeft.transform.position.y - camHeight / 2);
             }
-            else if(this.transform.position.y > topLeft.transform.position.y)
+            else if (target.transform.position.x < topLeft.transform.position.x + camWidth / 2 && target.transform.position.y < bottomRight.transform.position.y + camHeight / 2)
             {
-                this.transform.position = new Vector2(this.transform.position.x, topLeft.transform.position.y - camHeight/2);
+                newTargetLocation = new Vector2(topLeft.transform.position.x + camWidth / 2, bottomRight.transform.position.y + camHeight / 2);
             }
-            else if(this.transform.position.x > bottomRight.transform.position.x)
+            else if (target.transform.position.x > bottomRight.transform.position.x - camWidth / 2 && target.transform.position.y > topLeft.transform.position.y - camHeight / 2)
             {
-                this.transform.position = new Vector2(bottomRight.transform.position.x - camWidth / 2, this.transform.position.y);
+                newTargetLocation = new Vector2(bottomRight.transform.position.x - camWidth / 2, topLeft.transform.position.y - camHeight / 2);
             }
-            else if(this.transform.position.y < bottomRight.transform.position.y)
+            else if (target.transform.position.x > bottomRight.transform.position.x - camWidth / 2 && target.transform.position.y < bottomRight.transform.position.y + camHeight / 2)
             {
-                this.transform.position = new Vector2(this.transform.position.x, bottomRight.transform.position.y + camHeight / 2);
+                newTargetLocation = new Vector2(bottomRight.transform.position.x - camWidth / 2, bottomRight.transform.position.y + camHeight / 2);
+            }
+            else if (target.transform.position.x < topLeft.transform.position.x + camWidth / 2)
+            {
+                newTargetLocation = new Vector2(topLeft.transform.position.x + camWidth/2, target.transform.position.y);
+            }
+            else if(target.transform.position.y > topLeft.transform.position.y - camHeight / 2)
+            {
+                newTargetLocation = new Vector2(target.transform.position.x, topLeft.transform.position.y - camHeight/2);
+            }
+            else if(target.transform.position.x > bottomRight.transform.position.x - camWidth / 2)
+            {
+                newTargetLocation = new Vector2(bottomRight.transform.position.x - camWidth / 2, target.transform.position.y);
+            }
+            else if(target.transform.position.y < bottomRight.transform.position.y + camHeight / 2)
+            {
+                newTargetLocation = new Vector2(target.transform.position.x, bottomRight.transform.position.y + camHeight / 2);
             }
             else
             {
-                this.transform.position = Vector2.Lerp(this.transform.position, target.transform.position, Time.deltaTime * trackingSpeed);
+                newTargetLocation = target.transform.position;
             }
+            this.transform.position = Vector2.Lerp(this.transform.position, newTargetLocation, Time.deltaTime * trackingSpeed);
         }
     }
 }
