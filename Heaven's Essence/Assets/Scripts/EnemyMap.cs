@@ -77,7 +77,7 @@ public class EnemyMap : MonoBehaviour
 
 		if (player != null) 
 		{
-			map.SetPixel ((int)player.transform.position.x + width / 2, (int)GameObject.FindGameObjectWithTag ("Player").transform.position.y + height / 2, Color.blue);
+			map.SetPixel ((int)player.transform.position.x + width / 2, (int)player.transform.position.y + height / 2, Color.blue);
 		}
 
         map.Apply();

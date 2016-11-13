@@ -11,7 +11,8 @@ public class EnemySpawner : MonoBehaviour {
 	public GameObject enemyType2;
 	public GameObject enemyType3;
 	public GameObject enemyType4;
-	public float waveTime = 6f;
+	public float waveTime = 10f;
+	public float demonicRadius = 216; // if map had box collider use x value times scale to get radius will cover larger y than necessary
 	
 	public Text waveText;
 	public Text enemiesLeftText;
@@ -20,8 +21,9 @@ public class EnemySpawner : MonoBehaviour {
 	static private int numberOfEnemies;
 	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 'b', 'b', 'g', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     static private int waveNum;
-    private int healthReturned = -150;
     private int numberOfEnemiesPerWave = 4;
+
+	private bool correctPlacement;
     
 
     // Use this for initialization
@@ -40,7 +42,8 @@ public class EnemySpawner : MonoBehaviour {
     }
 
 	void Update(){
-		if (numberOfEnemies == 0) { 		//&& this.GetComponent<TotalEnemies>().enemiesGone()
+		if (numberOfEnemies == 0) 
+		{
 			StartCoroutine (BeginSpawn ()); //calls coroutine to allow for a delay between waves
 		}
         
@@ -65,7 +68,6 @@ public class EnemySpawner : MonoBehaviour {
         //waveText.text = "";
         numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5); //increases number of enemies quickly initially and then slows down as it gets further
 		waveNum++;
-        player.SendMessage("EnemyDamage", healthReturned, SendMessageOptions.DontRequireReceiver); //returns a set amount of health to the player to give a little amount of longevity to the player's life
 	}
 
 	//Code to randomly spawn enemies in the map
@@ -75,23 +77,45 @@ public class EnemySpawner : MonoBehaviour {
 		if (player.GetComponent<MainCharacterController> ().GetHealth () <= 0) {
 			return;
 		}
-		Vector2 spawnLocation = new Vector2(randNum.Next(-50,50), randNum.Next(-30,30));
-		//create new enemy and spawn him in somewhere random
-		if (enemyChar == 's') {
-			
-			Instantiate (enemyType, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
-		}
-		//bomb guy
-		else if (enemyChar == 'b') {
-			Instantiate (enemyType2, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
-		}
-		//spooky guy
-		else if (enemyChar == 'g') {
-			Instantiate (enemyType3, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
-		}
-		//fallen guy
-		else if (enemyChar == 'f') {
-			Instantiate (enemyType4, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+
+		correctPlacement = false;
+		Vector2 spawnLocation = new Vector2 ();
+		while (!correctPlacement) 
+		{
+			spawnLocation = new Vector2 (randNum.Next (-105, 105), randNum.Next (-55, 55));
+		
+			//create new enemy and spawn him in somewhere random
+			if (enemyChar == 's') 
+			{		
+				GameObject newDemonic = (GameObject)Instantiate (enemyType, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+				Collider2D[] collidersPlanets = Physics2D.OverlapCircleAll (newDemonic.transform.position, demonicRadius, 1 << LayerMask.NameToLayer ("Obsticale"));
+				if (collidersPlanets.Length == 0) 
+				{
+					correctPlacement = true;
+				}
+				else 
+				{
+					Destroy (newDemonic);
+				}
+			}
+			//bomb guy
+			else if (enemyChar == 'b') 
+			{
+				Instantiate (enemyType2, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+				correctPlacement = true;
+			}
+			//spooky guy
+			else if (enemyChar == 'g')
+			{
+				Instantiate (enemyType3, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+				correctPlacement = true;
+			}
+			//fallen guy
+			else if (enemyChar == 'f') 
+			{
+				Instantiate (enemyType4, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
+				correctPlacement = true;
+			}
 		}
 		
 	}
@@ -99,6 +123,11 @@ public class EnemySpawner : MonoBehaviour {
 	public void decrementNumOfEnemies(){
 		numberOfEnemies--;
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString();
-							//this.GetComponent<TotalEnemies>().decrementNumEnemies ();
+		if (numberOfEnemies == 0) 
+		{
+			this.GetComponent<SnitchSpawner> ().startSpawn ();
+
+		}
+
 	}
 }
