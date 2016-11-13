@@ -33,11 +33,11 @@ public class EdgeWrapping : MonoBehaviour {
 
 				if (rigid.transform.position.x > edgeX)
                 {
-					rigid.transform.position = new Vector3 (rigid.transform.position.x * -1, rigid.transform.position.y, 0);
+					rigid.transform.position = new Vector3 (rigid.transform.position.x * -1 + 2, rigid.transform.position.y, 0);
 				}
                 else if (rigid.transform.position.x < -edgeX)
                 {
-					rigid.transform.position = new Vector3 (rigid.transform.position.x * -1, rigid.transform.position.y, 0);
+					rigid.transform.position = new Vector3 (rigid.transform.position.x * -1 - 2, rigid.transform.position.y, 0);
 				}
 			}
 		}
