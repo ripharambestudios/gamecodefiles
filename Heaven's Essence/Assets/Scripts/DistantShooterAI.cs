@@ -29,49 +29,42 @@ public class DistantShooterAI : MonoBehaviour {
 
 		minTether = 17f;
 		maxTether = 21f;
-		if (sightRadius != maxTether) 
-		{
+		if (sightRadius != maxTether) {
 			sightRadius = maxTether;
 		}
 		numberOfProjectilesLaunched = 0;
 		actualRateOfFire = 1 / rateOfFire;
+        Debug.Log("RateOfFireTrigger: " + actualRateOfFire);
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (target != null)
+		distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
+		Vector2 tether = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
+		float tetherMagnitude = Mathf.Sqrt ((tether.x * tether.x) + (tether.y * tether.y));
+
+		if(tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce)){
+			isAttacking = true;
+			StartCoroutine (VolleyOfAttacks (distanceToTarget)); // test
+			//StartCoroutine (DistantAttack (distanceToTarget));
+		}
+		else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
 		{
-			distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
-			Vector2 tether = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
-			float tetherMagnitude = Mathf.Sqrt ((tether.x * tether.x) + (tether.y * tether.y));
+			canMove = false;
+			StartCoroutine(WeakenedState());
 
-			if (tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () || weakenedOnce))
-			{
-				isAttacking = true;
-				StartCoroutine (VolleyOfAttacks (distanceToTarget)); // test
-				//StartCoroutine (DistantAttack (distanceToTarget));
-			} 
-			else if (this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () && !weakenedOnce)
-			{
-				canMove = false;
-				StartCoroutine (WeakenedState ());
-
-			}
-			if (canMove) 
-			{
-				//motion slightly jerky still
-				if (tetherMagnitude < minTether)
-				{ 			
-					this.GetComponent<Rigidbody2D> ().velocity = -tether; 
-				} 
-				else if (tetherMagnitude > maxTether) 
-				{		
-					this.GetComponent<Rigidbody2D> ().velocity = tether;
-				} 
-				else 
-				{		
-					this.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
-				}
+		}
+		if (canMove) {
+			//motion slightly jerky still
+			if (tetherMagnitude < minTether) { 
+			
+				this.GetComponent<Rigidbody2D> ().velocity = -tether; 
+			} else if (tetherMagnitude > maxTether) {
+			
+				this.GetComponent<Rigidbody2D> ().velocity = tether;
+			} else {
+			
+				this.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 			}
 		}
 
@@ -87,72 +80,90 @@ public class DistantShooterAI : MonoBehaviour {
 
 	IEnumerator VolleyOfAttacks(float distance){
 		for (int i = 0; i < numberOfProjectiles; i++) {
-			yield return new WaitForSeconds (actualRateOfFire);
-			StartCoroutine (DistantAttack (distance));
-			numberOfProjectilesLaunched += 2;
+			yield return new WaitForSecondsRealtime (actualRateOfFire);
+            //numberOfProjectilesLaunched += 2;
+
+                StartCoroutine(DistantAttack(distance));
+            
+			
 		}
 	}
 
 	IEnumerator DistantAttack(float distance){
-		if (target != null) 
-		{
-			//destroy object if it doesn't collide with anything after timeout amout of time
-			float timeout = 2.5f;
-			setAttackingAnimation (true);
-			Vector2 aim = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
-			GameObject createProjectile = (GameObject)Instantiate (projectile, launchPosition.transform.position, Quaternion.Euler (new Vector3 (0, 0, 0))); 
-			GameObject createProjectile2 = (GameObject)Instantiate (projectile, launchPosition.transform.position + new Vector3 (0, -1, 0), Quaternion.Euler (new Vector3 (0, 0, 0))); 
+        //yield return null;
+        //destroy object if it doesn't collide with anything after timeout amout of time
+		float timeout = 2.5f;
+		setAttackingAnimation (true);
+		Vector2 aim = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
+        //Debug.Log("Bullet Making");
+		GameObject createProjectile = (GameObject)Instantiate (projectile, launchPosition.transform.position, Quaternion.Euler (new Vector3 (0, 0, 0))); 
+		GameObject createProjectile2 = (GameObject)Instantiate (projectile, launchPosition.transform.position + new Vector3 (0, -1, 0), Quaternion.Euler (new Vector3 (0, 0, 0)));
+        numberOfProjectilesLaunched += 2;
+        createProjectile.transform.parent = this.transform;
+		createProjectile2.transform.parent = this.transform;
+		Vector2 nextPosition = launchPosition.transform.position;
+		Vector2 nextPosition2 = launchPosition.transform.position + new Vector3 (0, -1, 0);
+		bool hit = false;
+		while (timeout > 0f && !hit) {
+			timeout -= Time.deltaTime;
+			int layerDepth = 1;
+			int layerMask = layerDepth << 8; //player on 8th layer
 
-			
-			createProjectile.transform.parent = this.transform;
-			createProjectile2.transform.parent = this.transform;
-			Vector2 nextPosition = launchPosition.transform.position;
-			Vector2 nextPosition2 = launchPosition.transform.position + new Vector3 (0, -1, 0);
-			bool hit = false;
-			while (timeout > 0f && !hit) {
-				timeout -= Time.deltaTime;
-				int layerDepth = 1;
-				int layerMask = layerDepth << 8; //player on 8th layer
+			if (createProjectile != null) {
+				nextPosition += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
+				RaycastHit2D impact;
+				if (Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask)) {
 
-				if (createProjectile != null) 
-				{
-					nextPosition += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
-					RaycastHit2D impact;
-					if (Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask)) {
+					impact = Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask);
+					impact.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
+					hit = true;
 
-						impact = Physics2D.Linecast (createProjectile.transform.position, nextPosition, layerMask);
-						impact.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
-						hit = true;
-					}
-					createProjectile.transform.position = nextPosition;
-				}
+                }
+				createProjectile.transform.position = nextPosition;
+                
+            }
 
-				if (createProjectile2 != null) 
-				{
-					nextPosition2 += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
-					RaycastHit2D impact2;
-					if (Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask)) 
-					{
+			if (createProjectile2 != null) {
+				nextPosition2 += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
+				RaycastHit2D impact2;
+				if (Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask)) {
 
-						impact2 = Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask);
-						impact2.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
-						hit = true;
-					}
-					createProjectile2.transform.position = nextPosition2;
-					yield return null;
-				}
-			}
-			Destroy (createProjectile);
-			Destroy (createProjectile2);
-			numberOfProjectilesLaunched -= 2;
-			yield return new WaitForSeconds (attackCooldown);
-			if (numberOfProjectilesLaunched == 0)
-			{
-				isAttacking = false;
-				setAttackingAnimation (false);
+					impact2 = Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask);
+					impact2.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
+					hit = true;
+
+                }
+				createProjectile2.transform.position = nextPosition2;
+                if (hit)
+                {
+                    DestroyImmediate(createProjectile.gameObject);
+                    DestroyImmediate(createProjectile2.gameObject);
+                    numberOfProjectilesLaunched -= 2;
+                }
+				yield return null;
 			}
 		}
-	}
+
+        if (!hit)
+        {
+            DestroyImmediate(createProjectile.gameObject);
+            DestroyImmediate(createProjectile2.gameObject);
+
+            numberOfProjectilesLaunched -= 2;
+        }
+
+        
+        //Debug.Log(numberOfProjectilesLaunched);
+
+
+        //Debug.Log(numberOfProjectilesLaunched);
+        if (numberOfProjectilesLaunched <= 0) {
+            //Debug.Log("stopAttack");
+            isAttacking = false;
+			setAttackingAnimation (false);
+		}
+        yield return new WaitForSeconds(attackCooldown);
+    }
 
     void setAttackingAnimation(bool status)
     {
