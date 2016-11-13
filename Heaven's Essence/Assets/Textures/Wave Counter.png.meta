@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 5ac8e85ada4a78e448b2d7fb99f54e98
-timeCreated: 1478568912
+guid: 69681379dacab1c439ee982175e0bea0
+timeCreated: 1478940629
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: HealthBar_0
-    21300002: HealthBar_1
-    21300004: HealthBar_2
-    21300006: HealthBar_3
+    21300000: Wave Counter_0
+    21300002: Wave Counter_1
+    21300004: Wave Counter_2
+    21300006: Wave Counter_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -33,7 +33,7 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: 0
+    filterMode: -1
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -57,54 +57,54 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HealthBar_0
+      name: Wave Counter_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 104
-        width: 44
-        height: 20
+        x: 0
+        y: 74
+        width: 74
+        height: 74
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: HealthBar_1
+      name: Wave Counter_1
       rect:
         serializedVersion: 2
-        x: 81
-        y: 104
-        width: 44
-        height: 20
+        x: 74
+        y: 74
+        width: 74
+        height: 74
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: HealthBar_2
+      name: Wave Counter_2
       rect:
         serializedVersion: 2
-        x: 7
-        y: 30
-        width: 44
-        height: 20
+        x: 0
+        y: 0
+        width: 74
+        height: 74
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: HealthBar_3
+      name: Wave Counter_3
       rect:
         serializedVersion: 2
-        x: 81
-        y: 30
-        width: 44
-        height: 20
+        x: 74
+        y: 0
+        width: 74
+        height: 74
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
