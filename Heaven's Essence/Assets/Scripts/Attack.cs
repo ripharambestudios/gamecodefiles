@@ -33,12 +33,11 @@ public class Attack : MonoBehaviour
     private float rateOfFire = 4.0f;
 
     //Attack upgrades and souls text
-    public Text soulsText;
-	public Text energyUpgradeText;
-	public Text beamUpgradeText;
-	public Text bombUpgradeText;
-	public Text speedUpgradeText;
-	public Text shotgunUpgradeText;
+	public Text energySoulsText;
+	public Text beamSoulsText;
+	public Text bombSoulsText;
+	public Text speedSoulsText;
+	public Text shotgunSoulsText;
 
 
     private GameObject projectile;
@@ -58,7 +57,7 @@ public class Attack : MonoBehaviour
     private int beamSouls = 1000;
     private int bombSouls = 1000;
     private int shotgunSouls = 10000;
-    private int spookyGuySouls = 1000;
+    private int speedSouls = 1000;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
     private int beamAttackLevel = 0;
@@ -113,9 +112,6 @@ public class Attack : MonoBehaviour
         bombInitialDamage = attackTypeBomb.GetComponent<DoDamage>().damage;
         shotgunInitialDamage = attackTypeShotgun.GetComponent<DoDamage>().damage;
         spookyGuyInitialDamage = attackTypeSpeed.GetComponent<DoDamage>().damage;
-
-        soulsText.text = "Souls: Energy= 0 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
-		energyUpgradeText.text = "1";
 
         energyShotUpgradeIcon = GameObject.Find("Attack level Basic");
         shotgunAttackUpgradeIcon = GameObject.Find("Attack level Shotgun");
@@ -807,14 +803,13 @@ public class Attack : MonoBehaviour
         {
 
             energySouls += 25;
-            spookyGuySouls += 10;
+            speedSouls += 10;
         }
         else if (attackTypeString == "FallenGuy(Clone)")
         {
             energySouls += 15;
             shotgunSouls += 10;
         }
-        soulsText.text = "Souls: Energy= " + energySouls + " Beam= " + beamSouls + " Bomb= " + bombSouls + " Speed= " + spookyGuySouls + " Shotgun= " + shotgunSouls;
     }
 
     public void SwitchAttacks(string attackTypeString)
@@ -901,11 +896,11 @@ public class Attack : MonoBehaviour
                 bombAttackUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(bombAttackLevel);
 
             }
-            else if (upgradeType == "Speed" && spookyGuySouls >= spookyGuyUpgradeCost && speedAttackLevel < maxUpgradeForWeapon)
+            else if (upgradeType == "Speed" && speedSouls >= spookyGuyUpgradeCost && speedAttackLevel < maxUpgradeForWeapon)
             {
                 speedAttackLevel += 1;
                 attackTypeSpeed.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * speedAttackLevel;
-                spookyGuySouls -= spookyGuyUpgradeCost;
+                speedSouls -= spookyGuyUpgradeCost;
                 spookyGuyUpgradeCost *= 2;
                 spookyGuyProjectileSpeed = 1.2f + (speedAttackLevel * .1f);
                 speedShotUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(speedAttackLevel);
@@ -926,13 +921,11 @@ public class Attack : MonoBehaviour
                 //instantiate here a warning that the player does not have enough souls for the attack upgrade
                 numberOfUpgrades -= 1;
             }
-			energyUpgradeText.text = energyAttackLevel.ToString ();
-			beamUpgradeText.text = beamAttackLevel.ToString();
-			bombUpgradeText.text = bombAttackLevel.ToString();
-			speedUpgradeText.text = speedAttackLevel.ToString();
-			shotgunUpgradeText.text = shotgunAttackLevel.ToString();
-
-            soulsText.text = "Souls: Energy= " + energySouls + " Beam= " + beamSouls + " Bomb= " + bombSouls + " Speed= " + spookyGuySouls + " Shotgun= " + shotgunSouls;
+			energySoulsText.text = energySouls.ToString ();
+			beamSoulsText.text = beamSouls.ToString();
+			bombSoulsText.text = bombSouls.ToString();
+			speedSoulsText.text = speedSouls.ToString();
+			shotgunSoulsText.text = shotgunSouls.ToString();
         }
         else
         {
@@ -952,7 +945,7 @@ public class Attack : MonoBehaviour
     }
     public int GetSpookyNumberOfSouls()
     {
-        return spookyGuySouls;
+        return speedSouls;
     }
     public int GetShotgunNumberOfSouls()
     {
