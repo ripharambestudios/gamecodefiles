@@ -24,6 +24,7 @@ public class BigBoomAI : MonoBehaviour {
 	private bool weakenedOnce = false;
 
 	private bool correctPlacement = false;
+	private bool canAttack = true;
 
 	// Use this for initialization
 	void Start () {
@@ -36,13 +37,12 @@ public class BigBoomAI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (target != null)
+		if (target != null && canAttack)
 		{
 			distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
 
 			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () || weakenedOnce)) 
 			{
-				Debug.Log ("Seen");
 				isAttacking = true;
 				StartCoroutine (LaunchAttack ());
 			}
@@ -135,5 +135,11 @@ public class BigBoomAI : MonoBehaviour {
 		else {
 			direction = 0;
 		}
+	}
+
+
+	public void setCanAttack(bool booleanSent)
+	{
+		canAttack = booleanSent;
 	}
 }

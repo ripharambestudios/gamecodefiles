@@ -15,15 +15,17 @@ public class MeteorAI : MonoBehaviour {
 	private float launchSpeed = 1f;
     private bool track = true;
     private bool weakenedOnce = false;
+	private bool canAttack;
 
 	// Use this for initialization
 	void Start () {
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
+		canAttack = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (target.gameObject != null)
+		if (target.gameObject != null && canAttack)
         {
             distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
             if (track)
@@ -112,5 +114,10 @@ public class MeteorAI : MonoBehaviour {
         track = true;
 		yield return new WaitForSeconds (attackCooldown);
 		isAttacking = false;
+	}
+
+	public void setCanAttack(bool booleanSent)
+	{
+		canAttack = booleanSent;
 	}
 }

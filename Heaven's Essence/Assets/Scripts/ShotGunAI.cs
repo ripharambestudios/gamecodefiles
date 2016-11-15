@@ -22,6 +22,7 @@ public class ShotGunAI : MonoBehaviour {
     public int rotateSpeed = 3;
 
     private bool attacked = false;
+	private bool canAttack = true;
 	// Use this for initialization
 	void Start () {
 		isAttacking = false;
@@ -33,44 +34,46 @@ public class ShotGunAI : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
-
-		if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
-        {
-            Debug.Log(distanceToTarget + "Distance to Target ," + sightRadius + " ,Sight Radius");
-            isAttacking = true;
-            //setAttackingAnimation(true);
-            StartCoroutine(LaunchAttack());
-        }
-		else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+		if(target != null && canAttack)
 		{
-			StartCoroutine(WeakenedState());
+        	distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
 
-		}
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
+        	{
+            	isAttacking = true;
+            	//setAttackingAnimation(true);
+            	StartCoroutine(LaunchAttack());
+        	}
+			else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+			{
+				StartCoroutine(WeakenedState());
+
+			}
 
 
-        //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
-        //GetComponent<Rigidbody2D>().velocity = -velocity;
+        	//Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
+        	//GetComponent<Rigidbody2D>().velocity = -velocity;
 
-        if (!stopped)
-        {
-            Vector3 dir = target.transform.position - transform.position;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        	if (!stopped)
+        	{
+            	Vector3 dir = target.transform.position - transform.position;
+            	float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            	transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-            if (distanceToTarget >= sightRadius - 1.0f)
-            {
-                Debug.Log("Forward");
-                transform.position += transform.right * Time.deltaTime * movementSpeed;
-            }
-            else
-            {
-                Debug.Log("Rotate");
-                //transform.position += transform.right * Time.deltaTime * speed;
-                transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 100);
-            }
+            	if (distanceToTarget >= sightRadius - 1.0f)
+            	{
+                	Debug.Log("Forward");
+                	transform.position += transform.right * Time.deltaTime * movementSpeed;
+            	}
+            	else
+            	{
+                	Debug.Log("Rotate");
+                	//transform.position += transform.right * Time.deltaTime * speed;
+                	transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 100);
+            	}
+        	}
         }
-        }
+	}
 
 	IEnumerator WeakenedState()
 	{
@@ -114,7 +117,6 @@ public class ShotGunAI : MonoBehaviour {
 		isAttacking = false;
         attacked = false;
 
-        Debug.Log("done attacking");
         //setAttackingAnimation(false);
 
     }
@@ -123,4 +125,9 @@ public class ShotGunAI : MonoBehaviour {
     {
         this.GetComponent<EnemyAnimationScript>().isAttacking = status;
     }
+
+	public void setCanAttack(bool booleanSent)
+	{
+		canAttack = booleanSent;
+	}
 }

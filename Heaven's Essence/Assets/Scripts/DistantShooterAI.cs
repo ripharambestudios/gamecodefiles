@@ -22,6 +22,7 @@ public class DistantShooterAI : MonoBehaviour {
 	private int numberOfProjectilesLaunched;
 	private bool weakenedOnce = false;
 	private bool canMove = true;
+	private bool canAttack = true;
 
 	// Use this for initialization
 	void Start () {
@@ -38,33 +39,43 @@ public class DistantShooterAI : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-		distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
-		Vector2 tether = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
-		float tetherMagnitude = Mathf.Sqrt ((tether.x * tether.x) + (tether.y * tether.y));
-
-		if(tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce)){
-			isAttacking = true;
-			StartCoroutine (VolleyOfAttacks (distanceToTarget)); // test
-			//StartCoroutine (DistantAttack (distanceToTarget));
-		}
-		else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+	void FixedUpdate () 
+	{
+		if (target != null && canAttack) 
 		{
-			canMove = false;
-			StartCoroutine(WeakenedState());
+			distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
+			Vector2 tether = new Vector2 (target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
+			float tetherMagnitude = Mathf.Sqrt ((tether.x * tether.x) + (tether.y * tether.y));
 
-		}
-		if (canMove) {
-			//motion slightly jerky still
-			if (tetherMagnitude < minTether) { 
+			if (tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () || weakenedOnce) && canAttack) 
+			{
+				isAttacking = true;
+				StartCoroutine (VolleyOfAttacks (distanceToTarget)); // test
+				//StartCoroutine (DistantAttack (distanceToTarget));
+			} 
+			else if (this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () && !weakenedOnce) 
+			{
+				canMove = false;
+				StartCoroutine (WeakenedState ());
+
+			}
+			if (canMove)
+			{
+				//motion slightly jerky still
+				if (tetherMagnitude < minTether)
+				{ 
 			
-				this.GetComponent<Rigidbody2D> ().velocity = -tether; 
-			} else if (tetherMagnitude > maxTether) {
+					this.GetComponent<Rigidbody2D> ().velocity = -tether; 
+				} 
+				else if (tetherMagnitude > maxTether) 
+				{
 			
-				this.GetComponent<Rigidbody2D> ().velocity = tether;
-			} else {
-			
-				this.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+					this.GetComponent<Rigidbody2D> ().velocity = tether;
+				} 
+				else 
+				{		
+					this.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+				}
 			}
 		}
 
@@ -169,4 +180,9 @@ public class DistantShooterAI : MonoBehaviour {
     {
         this.GetComponent<EnemyAnimationScript>().isAttacking = status;
     }
+
+	public void setCanAttack(bool booleanSent)
+	{
+		canAttack = booleanSent;
+	}
 }
