@@ -25,8 +25,8 @@ public class CameraFollow : MonoBehaviour {
         cam = Camera.main;
         camHeight = 2f * cam.orthographicSize;
         camWidth = camHeight * cam.aspect;
-        mapEdges = map.GetComponents<EdgeCollider2D>();
-        mapMinBound = new Vector2(map.transform.position.x, map.transform.position.y);
+        //mapEdges = map.GetComponents<EdgeCollider2D>();
+        //mapMinBound = new Vector2(map.transform.position.x, map.transform.position.y);
         //mapMaxBound = mapMinBound + new Vector2(map)
     }
 

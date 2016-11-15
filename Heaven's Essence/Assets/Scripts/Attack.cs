@@ -56,7 +56,7 @@ public class Attack : MonoBehaviour
     private int energySouls = 1000;
     private int beamSouls = 1000;
     private int bombSouls = 1000;
-    private int shotgunSouls = 10000;
+    private int shotgunSouls = 1000;
     private int speedSouls = 1000;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
@@ -65,11 +65,11 @@ public class Attack : MonoBehaviour
     private int shotgunAttackLevel = 0;
     private int speedAttackLevel = 0;
     //upgrade cost for each attack
-    private int energyUpgradeCost = 50;
-    private int beamUpgradeCost = 20;
-    private int bombUpgradeCost = 20;
-    private int shotgunUpgradeCost = 20;
-    private int spookyGuyUpgradeCost = 20;
+    private int energyUpgradeCost = 5;
+    private int beamUpgradeCost = 2;
+    private int bombUpgradeCost = 2;
+    private int shotgunUpgradeCost = 2;
+    private int spookyGuyUpgradeCost = 2;
     //max number of upgrades
     private int maxNumOfUpgrades = 36;
     private int maxUpgradeForWeapon = 7;
@@ -103,7 +103,7 @@ public class Attack : MonoBehaviour
         //reset attack damage values otherwise they infinitely scale
         attackTypeEnergy.GetComponent<DoDamage>().damage = 5;
         attackTypeBeam.GetComponent<DoDamage>().damage = 1;
-        attackTypeBomb.GetComponent<DoDamage>().damage = 10;
+        attackTypeBomb.GetComponent<DoDamage>().damage = 6;
         attackTypeShotgun.GetComponent<DoDamage>().damage = 3;
         attackTypeSpeed.GetComponent<DoDamage>().damage = 2;
         //save initial damage done by attacks
@@ -791,24 +791,24 @@ public class Attack : MonoBehaviour
         }
         else if (attackTypeString == "DemonicSonic(Clone)")
         {
-            energySouls += 10;
-            beamSouls += 10;
+            energySouls += 1;
+            beamSouls += 1;
         }
         else if (attackTypeString == "BoomEnemy(Clone)")
         {
-            energySouls += 20;
-            bombSouls += 10;
+            energySouls += 2;
+            bombSouls += 1;
         }
         else if (attackTypeString == "SpookyGuy(Clone)")
         {
 
-            energySouls += 25;
-            speedSouls += 10;
+            energySouls += 3;
+            speedSouls += 1;
         }
         else if (attackTypeString == "FallenGuy(Clone)")
         {
-            energySouls += 15;
-            shotgunSouls += 10;
+            energySouls += 2;
+            shotgunSouls += 1;
         }
     }
 
@@ -932,27 +932,5 @@ public class Attack : MonoBehaviour
             //display that the player has reached their max number of upgrades
         }
 
-    }
-
-    public int GetEnergyNumberOfSouls()
-    {
-        return energySouls;
-    }
-
-    public int GetBombNumberOfSouls()
-    {
-        return bombSouls;
-    }
-    public int GetSpookyNumberOfSouls()
-    {
-        return speedSouls;
-    }
-    public int GetShotgunNumberOfSouls()
-    {
-        return shotgunSouls;
-    }
-    public int GetBeamNumberOfSouls()
-    {
-        return beamSouls;
     }
 }

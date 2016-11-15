@@ -46,32 +46,31 @@ public class ShotGunAI : MonoBehaviour {
         	}
 			else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
 			{
+            	stopped = true;
 				StartCoroutine(WeakenedState());
-
 			}
+				
+        //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
+        //GetComponent<Rigidbody2D>().velocity = -velocity;
 
+        if (!stopped)
+        {
+            Vector3 dir = target.transform.position - transform.position;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        	//Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
-        	//GetComponent<Rigidbody2D>().velocity = -velocity;
-
-        	if (!stopped)
-        	{
-            	Vector3 dir = target.transform.position - transform.position;
-            	float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            	transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-            	if (distanceToTarget >= sightRadius - 1.0f)
-            	{
-                	Debug.Log("Forward");
-                	transform.position += transform.right * Time.deltaTime * movementSpeed;
-            	}
-            	else
-            	{
-                	Debug.Log("Rotate");
-                	//transform.position += transform.right * Time.deltaTime * speed;
-                	transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 100);
-            	}
-        	}
+            if (distanceToTarget >= sightRadius - 1.0f)
+            {
+                Debug.Log("Forward");
+                transform.position += transform.right * Time.deltaTime * movementSpeed;
+            }
+            else
+            {
+                Debug.Log("Rotate");
+                //transform.position += transform.right * Time.deltaTime * speed;
+                transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 500);
+            }
+        }
         }
 	}
 
@@ -79,6 +78,7 @@ public class ShotGunAI : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(5);
 		weakenedOnce = true;
+        stopped = false;
 		yield return null;
 	}
 
