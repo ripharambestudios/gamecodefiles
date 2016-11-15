@@ -67,7 +67,7 @@ public class BigBoomAI : MonoBehaviour {
 		yield return null;
 		float timer = teleportTime;
 		//yield return new WaitForSeconds (waitTime);
-		while (transform.position != target.transform.position && distanceToTarget <= sightRadius)
+		while ( target != null && transform.position != target.transform.position && distanceToTarget <= sightRadius)
 		{
 			timer += Time.deltaTime;
  
