@@ -23,11 +23,12 @@ public class ShotGunAI : MonoBehaviour
     public int rotateSpeed = 3;
 
     private bool attacked = false;
-    // Use this for initialization
-    void Start()
-    {
-        isAttacking = false;
-        target = GameObject.FindWithTag("Player");
+
+	private bool canAttack = true;
+	// Use this for initialization
+	void Start () {
+		isAttacking = false;
+		target = GameObject.FindWithTag ("Player");
         transform.LookAt(target.transform.position);
         transform.Rotate(new Vector3(0, -90, 0), Space.Self);
     }
@@ -35,24 +36,23 @@ public class ShotGunAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target != null && this.gameObject != null)
-        {
-            distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
 
-            if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
-            {
-                Debug.Log(distanceToTarget + "Distance to Target ," + sightRadius + " ,Sight Radius");
-                isAttacking = true;
-                //setAttackingAnimation(true);
-                StartCoroutine(LaunchAttack());
-            }
-            else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
-            {
-                stopped = true;
-                StartCoroutine(WeakenedState());
+		if(target != null && canAttack && this.gameObject != null)
+		{
+        	distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
 
-            }
-
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
+        	{
+            	isAttacking = true;
+            	//setAttackingAnimation(true);
+            	StartCoroutine(LaunchAttack());
+        	}
+			else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+			{
+            	stopped = true;
+				StartCoroutine(WeakenedState());
+			}
+				
 
             //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
             //GetComponent<Rigidbody2D>().velocity = -velocity;
@@ -77,6 +77,7 @@ public class ShotGunAI : MonoBehaviour
             }
         }
     }
+
 
     IEnumerator WeakenedState()
     {
@@ -121,7 +122,6 @@ public class ShotGunAI : MonoBehaviour
         isAttacking = false;
         attacked = false;
 
-        Debug.Log("done attacking");
         //setAttackingAnimation(false);
 
     }
@@ -130,4 +130,9 @@ public class ShotGunAI : MonoBehaviour
     {
         this.GetComponent<EnemyAnimationScript>().isAttacking = status;
     }
+
+	public void setCanAttack(bool booleanSent)
+	{
+		canAttack = booleanSent;
+	}
 }

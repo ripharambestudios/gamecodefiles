@@ -105,8 +105,8 @@ public class Attack : MonoBehaviour
         //set attack to initial energy ball with start properties
         projectile = projectileEnergy;
         attackType = attackTypeEnergy;
-        speedOfProjectile = 1f;
-        rateOfFire = 4.0f;
+        speedOfProjectile = 2f;
+        rateOfFire = 10.0f;
         spookyGuyProjectileSpeed = 1.2f;
 
         //reset attack damage values otherwise they infinitely scale
@@ -852,6 +852,11 @@ public class Attack : MonoBehaviour
             energySouls += 2;
             shotgunSouls += 1;
         }
+        energySoulsText.text = energySouls.ToString();
+        beamSoulsText.text = beamSouls.ToString();
+        bombSoulsText.text = bombSouls.ToString();
+        speedSoulsText.text = speedSouls.ToString();
+        shotgunSoulsText.text = shotgunSouls.ToString();
     }
 
     public void SwitchAttacks(string attackTypeString)
@@ -861,8 +866,8 @@ public class Attack : MonoBehaviour
         {
             projectile = projectileEnergy;
             attackType = attackTypeEnergy;
-            speedOfProjectile = 1f;
-            rateOfFire = 4.0f;
+            speedOfProjectile = 2f;
+            rateOfFire = 10.0f;
 
         }
         else if (attackTypeString == "Beam" && beamAttackLevel > 0)

@@ -23,6 +23,7 @@ public class DistantShooterAI : MonoBehaviour
     private int numberOfProjectilesLaunched;
     private bool weakenedOnce = false;
     private bool canMove = true;
+    private bool canAttack = true;
 
     // Use this for initialization
     void Start()
@@ -37,19 +38,18 @@ public class DistantShooterAI : MonoBehaviour
         }
         numberOfProjectilesLaunched = 0;
         actualRateOfFire = 1 / rateOfFire;
-        Debug.Log("RateOfFireTrigger: " + actualRateOfFire);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (target != null)
+        if (target != null && canAttack)
         {
             distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
             Vector2 tether = new Vector2(target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
             float tetherMagnitude = Mathf.Sqrt((tether.x * tether.x) + (tether.y * tether.y));
 
-            if (tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
+            if (tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce) && canAttack)
             {
                 isAttacking = true;
                 StartCoroutine(VolleyOfAttacks(distanceToTarget)); // test
@@ -74,8 +74,8 @@ public class DistantShooterAI : MonoBehaviour
 
                     this.GetComponent<Rigidbody2D>().velocity = tether;
                 }
-                else {
-
+                else
+                {
                     this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 }
             }
@@ -99,8 +99,6 @@ public class DistantShooterAI : MonoBehaviour
             //numberOfProjectilesLaunched += 2;
 
             StartCoroutine(DistantAttack(distance));
-
-
         }
     }
 
@@ -117,8 +115,28 @@ public class DistantShooterAI : MonoBehaviour
         numberOfProjectilesLaunched += 2;
         createProjectile.transform.parent = this.transform;
         createProjectile2.transform.parent = this.transform;
+        
+        
         Vector2 nextPosition = launchPosition.transform.position;
         Vector2 nextPosition2 = launchPosition.transform.position + new Vector3(0, -1, 0);
+        float signOfLook = 1;
+        if (createProjectile.transform.position.y > nextPosition.y)
+        {
+            signOfLook = Mathf.Sign(nextPosition.y); //this will be negative if the mouse is below bullet, rotating it appropriately
+        }
+        float angle = Vector3.Angle(Vector3.right, new Vector3(nextPosition.x, nextPosition.y, 0));
+        
+        //angle *= signOfLook;
+        /*
+        if (this.transform.position.y < 0 && nextPosition.y < 0)
+        {
+            angle = angle * -1;
+        }
+        */
+        //rotate shot
+        createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        createProjectile2.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
         bool hit = false;
         while (timeout > 0f && !hit)
         {
@@ -190,5 +208,10 @@ public class DistantShooterAI : MonoBehaviour
     void setAttackingAnimation(bool status)
     {
         this.GetComponent<EnemyAnimationScript>().isAttacking = status;
+    }
+
+    public void setCanAttack(bool booleanSent)
+    {
+        canAttack = booleanSent;
     }
 }

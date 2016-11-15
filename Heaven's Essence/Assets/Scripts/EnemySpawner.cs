@@ -19,7 +19,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private System.Random randNum;
 	static private int numberOfEnemies;
-	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 'b', 'b', 'g', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
+	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     static private int waveNum;
     private int numberOfEnemiesPerWave = 4;
 
@@ -37,7 +37,7 @@ public class EnemySpawner : MonoBehaviour {
 		waveNum = 1;
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
 		waveText.text = "";
-        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5);
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 45);
         
     }
 
