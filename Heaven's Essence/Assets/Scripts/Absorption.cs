@@ -21,7 +21,6 @@ public class Absorption : MonoBehaviour {
             Collider2D[] hits = Physics2D.OverlapBoxAll(new Vector2(transform.position.x, this.transform.position.y), new Vector2(coll.size.x, coll.size.y), angle, layerDepth);
             foreach(Collider2D hit in hits)
             {
-                Debug.Log("I have collided with an enemy and its name is " + hit.name);
                 if (hit.GetComponent<EnemyHealth>() != null && hit.GetComponent<EnemyHealth>().IsBelowTwentyPercent())
                 {
                     string attackType = hit.name;

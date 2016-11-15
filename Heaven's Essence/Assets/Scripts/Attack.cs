@@ -33,12 +33,11 @@ public class Attack : MonoBehaviour
     private float rateOfFire = 4.0f;
 
     //Attack upgrades and souls text
-    public Text soulsText;
-	public Text energyUpgradeText;
-	public Text beamUpgradeText;
-	public Text bombUpgradeText;
-	public Text speedUpgradeText;
-	public Text shotgunUpgradeText;
+	public Text energySoulsText;
+	public Text beamSoulsText;
+	public Text bombSoulsText;
+	public Text speedSoulsText;
+	public Text shotgunSoulsText;
 
 
     private GameObject projectile;
@@ -57,8 +56,8 @@ public class Attack : MonoBehaviour
     private int energySouls = 1000;
     private int beamSouls = 1000;
     private int bombSouls = 1000;
-    private int shotgunSouls = 10000;
-    private int spookyGuySouls = 1000;
+    private int shotgunSouls = 1000;
+    private int speedSouls = 1000;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
     private int beamAttackLevel = 0;
@@ -66,11 +65,11 @@ public class Attack : MonoBehaviour
     private int shotgunAttackLevel = 0;
     private int speedAttackLevel = 0;
     //upgrade cost for each attack
-    private int energyUpgradeCost = 50;
-    private int beamUpgradeCost = 20;
-    private int bombUpgradeCost = 20;
-    private int shotgunUpgradeCost = 20;
-    private int spookyGuyUpgradeCost = 20;
+    private int energyUpgradeCost = 5;
+    private int beamUpgradeCost = 2;
+    private int bombUpgradeCost = 2;
+    private int shotgunUpgradeCost = 2;
+    private int spookyGuyUpgradeCost = 2;
     //max number of upgrades
     private int maxNumOfUpgrades = 36;
     private int maxUpgradeForWeapon = 7;
@@ -104,7 +103,7 @@ public class Attack : MonoBehaviour
         //reset attack damage values otherwise they infinitely scale
         attackTypeEnergy.GetComponent<DoDamage>().damage = 5;
         attackTypeBeam.GetComponent<DoDamage>().damage = 1;
-        attackTypeBomb.GetComponent<DoDamage>().damage = 10;
+        attackTypeBomb.GetComponent<DoDamage>().damage = 6;
         attackTypeShotgun.GetComponent<DoDamage>().damage = 3;
         attackTypeSpeed.GetComponent<DoDamage>().damage = 2;
         //save initial damage done by attacks
@@ -113,9 +112,6 @@ public class Attack : MonoBehaviour
         bombInitialDamage = attackTypeBomb.GetComponent<DoDamage>().damage;
         shotgunInitialDamage = attackTypeShotgun.GetComponent<DoDamage>().damage;
         spookyGuyInitialDamage = attackTypeSpeed.GetComponent<DoDamage>().damage;
-
-        soulsText.text = "Souls: Energy= 0 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
-		energyUpgradeText.text = "1";
 
         energyShotUpgradeIcon = GameObject.Find("Attack level Basic");
         shotgunAttackUpgradeIcon = GameObject.Find("Attack level Shotgun");
@@ -795,26 +791,25 @@ public class Attack : MonoBehaviour
         }
         else if (attackTypeString == "DemonicSonic(Clone)")
         {
-            energySouls += 10;
-            beamSouls += 10;
+            energySouls += 1;
+            beamSouls += 1;
         }
         else if (attackTypeString == "BoomEnemy(Clone)")
         {
-            energySouls += 20;
-            bombSouls += 10;
+            energySouls += 2;
+            bombSouls += 1;
         }
         else if (attackTypeString == "SpookyGuy(Clone)")
         {
 
-            energySouls += 25;
-            spookyGuySouls += 10;
+            energySouls += 3;
+            speedSouls += 1;
         }
         else if (attackTypeString == "FallenGuy(Clone)")
         {
-            energySouls += 15;
-            shotgunSouls += 10;
+            energySouls += 2;
+            shotgunSouls += 1;
         }
-        soulsText.text = "Souls: Energy= " + energySouls + " Beam= " + beamSouls + " Bomb= " + bombSouls + " Speed= " + spookyGuySouls + " Shotgun= " + shotgunSouls;
     }
 
     public void SwitchAttacks(string attackTypeString)
@@ -901,11 +896,11 @@ public class Attack : MonoBehaviour
                 bombAttackUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(bombAttackLevel);
 
             }
-            else if (upgradeType == "Speed" && spookyGuySouls >= spookyGuyUpgradeCost && speedAttackLevel < maxUpgradeForWeapon)
+            else if (upgradeType == "Speed" && speedSouls >= spookyGuyUpgradeCost && speedAttackLevel < maxUpgradeForWeapon)
             {
                 speedAttackLevel += 1;
                 attackTypeSpeed.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * speedAttackLevel;
-                spookyGuySouls -= spookyGuyUpgradeCost;
+                speedSouls -= spookyGuyUpgradeCost;
                 spookyGuyUpgradeCost *= 2;
                 spookyGuyProjectileSpeed = 1.2f + (speedAttackLevel * .1f);
                 speedShotUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(speedAttackLevel);
@@ -926,40 +921,16 @@ public class Attack : MonoBehaviour
                 //instantiate here a warning that the player does not have enough souls for the attack upgrade
                 numberOfUpgrades -= 1;
             }
-			energyUpgradeText.text = energyAttackLevel.ToString ();
-			beamUpgradeText.text = beamAttackLevel.ToString();
-			bombUpgradeText.text = bombAttackLevel.ToString();
-			speedUpgradeText.text = speedAttackLevel.ToString();
-			shotgunUpgradeText.text = shotgunAttackLevel.ToString();
-
-            soulsText.text = "Souls: Energy= " + energySouls + " Beam= " + beamSouls + " Bomb= " + bombSouls + " Speed= " + spookyGuySouls + " Shotgun= " + shotgunSouls;
+			energySoulsText.text = energySouls.ToString ();
+			beamSoulsText.text = beamSouls.ToString();
+			bombSoulsText.text = bombSouls.ToString();
+			speedSoulsText.text = speedSouls.ToString();
+			shotgunSoulsText.text = shotgunSouls.ToString();
         }
         else
         {
             //display that the player has reached their max number of upgrades
         }
 
-    }
-
-    public int GetEnergyNumberOfSouls()
-    {
-        return energySouls;
-    }
-
-    public int GetBombNumberOfSouls()
-    {
-        return bombSouls;
-    }
-    public int GetSpookyNumberOfSouls()
-    {
-        return spookyGuySouls;
-    }
-    public int GetShotgunNumberOfSouls()
-    {
-        return shotgunSouls;
-    }
-    public int GetBeamNumberOfSouls()
-    {
-        return beamSouls;
     }
 }
