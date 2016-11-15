@@ -29,9 +29,9 @@ public class Attack : MonoBehaviour
     public GameObject wingParticleEffect;
 
     [Header("Laser Parts")]
-    public GameObject laserStart;
+    public GameObject laserParticles;
     public GameObject laserMiddle;
-    public GameObject laserEnd;
+    //public GameObject laserEnd;
 
     //public float damage = 10;
     private float speedOfProjectile = 1f;
@@ -98,6 +98,8 @@ public class Attack : MonoBehaviour
     private GameObject middleOfLaser;
     private GameObject laserStartParticles;
     private GameObject laserHitParticles;
+    private GameObject leftSideLaser;
+    private GameObject rightSideLaser;
 
     // Use this for initialization
     void Start()
@@ -132,10 +134,18 @@ public class Attack : MonoBehaviour
         middleOfLaser = (GameObject)Instantiate(laserMiddle, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
         middleOfLaser.transform.parent = this.transform;
         middleOfLaser.SetActive(false);
-        laserStartParticles = (GameObject)Instantiate(laserStart, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        laserStartParticles = (GameObject)Instantiate(laserParticles, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
         laserStartParticles.SetActive(false);
-        laserHitParticles = (GameObject)Instantiate(laserStart, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        laserHitParticles = (GameObject)Instantiate(laserParticles, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
         laserHitParticles.SetActive(false);
+
+        //create offshoot lasers
+        leftSideLaser = (GameObject)Instantiate(laserMiddle, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        leftSideLaser.transform.parent = this.transform;
+        leftSideLaser.SetActive(false);
+        rightSideLaser = (GameObject)Instantiate(laserMiddle, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        rightSideLaser.transform.parent = this.transform;
+        rightSideLaser.SetActive(false);
     }
 
     void Update()
@@ -412,8 +422,7 @@ public class Attack : MonoBehaviour
         //rotate shot
         middleOfLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        float maxLaser = 100f;
-        float currentLaserSize = maxLaser;
+        float maxLaser = 200f;
 
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
@@ -430,10 +439,8 @@ public class Attack : MonoBehaviour
             laserHitParticles.transform.position = hit.point;
             positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
 
-            currentLaserSize = Math.Abs(Vector2.Distance(hit.point, start));
             Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0,0,0)));
         }
-        currentLaserSize = currentLaserSize / .74f;
 
         middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
         middleOfLaser.GetComponent<LineRenderer>().SetWidth(.6f, .45f);
@@ -443,19 +450,30 @@ public class Attack : MonoBehaviour
     }
 
     //fire powerful beam with two offshoots
-    //OFFSHOOTS DON'T ACTUALLY HAVE RAYCASTS IN THE RIGHT DIRECTION, NEED TO HAVE THE NEXT VECTOR ADJUSTED
+    //offshoots slightly not correct
     IEnumerator fireTripleBeam(Vector2 start, Vector2 next)
     {
-        //destroy object if it doesn't collide with anything after timeout amout of time
-        GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
-        GameObject createProjectileLeft = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0)));
-        GameObject createProjectileRight = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0)));
-        createProjectile.transform.parent = this.transform;
-        createProjectileLeft.transform.parent = this.transform;
-        createProjectileRight.transform.parent = this.transform;
+        if (!middleOfLaser.activeInHierarchy)
+        {
+            middleOfLaser.SetActive(true);
+        }
+        if (!leftSideLaser.activeInHierarchy)
+        {
+            leftSideLaser.SetActive(true);
+        }
+        if (!rightSideLaser.activeInHierarchy)
+        {
+            rightSideLaser.SetActive(true);
+        }
+        if (!laserStartParticles.activeInHierarchy)
+        {
+            laserStartParticles.SetActive(true);
+        }
+        laserStartParticles.transform.position = start;
+
         //get the sign of the direction of the aim
         float signOfLook = 1;
-        if (createProjectile.transform.position.y > next.y)
+        if (middleOfLaser.transform.position.y > next.y)
         {
             signOfLook = Mathf.Sign(next.y); //this will be negative if the mouse is below bullet, rotating it appropriately
         }
@@ -467,44 +485,79 @@ public class Attack : MonoBehaviour
         }
         //rotate shot
         int rotationAmount = 25;
-        createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        createProjectileLeft.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        createProjectileRight.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        createProjectileLeft.transform.rotation = Quaternion.Euler(createProjectileLeft.transform.rotation.eulerAngles.x, createProjectileLeft.transform.rotation.eulerAngles.y, (createProjectileLeft.transform.rotation.eulerAngles.z) + rotationAmount);
-        createProjectileRight.transform.rotation = Quaternion.Euler(createProjectileRight.transform.rotation.eulerAngles.x, createProjectileRight.transform.rotation.eulerAngles.y, (createProjectileRight.transform.rotation.eulerAngles.z) - rotationAmount);
+        middleOfLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        leftSideLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        rightSideLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        leftSideLaser.transform.rotation = Quaternion.Euler(leftSideLaser.transform.rotation.eulerAngles.x, leftSideLaser.transform.rotation.eulerAngles.y, (leftSideLaser.transform.rotation.eulerAngles.z) + rotationAmount);
+        rightSideLaser.transform.rotation = Quaternion.Euler(rightSideLaser.transform.rotation.eulerAngles.x, rightSideLaser.transform.rotation.eulerAngles.y, (rightSideLaser.transform.rotation.eulerAngles.z) - rotationAmount);
 
-        float maxLaser = 100f;
+        float maxLaser = 200f;
 
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
 
         float size = (float)Math.Sqrt(next.x * next.x + next.y * next.y);
 
-        Vector2 nextLeft = new Vector2((float)Math.Cos(createProjectileLeft.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(createProjectileLeft.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
-        Vector2 nextRight = new Vector2((float)Math.Cos(createProjectileRight.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(createProjectileRight.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
+        Vector2 nextLeft = new Vector2((float)Math.Cos(leftSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(leftSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
+        Vector2 nextRight = new Vector2((float)Math.Cos(rightSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(rightSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(createProjectile.transform.position, next, maxLaser, layerMask);
-        foreach (RaycastHit2D hit in hits)
+        RaycastHit2D hit = Physics2D.Raycast(middleOfLaser.transform.position, next, maxLaser, layerMask);
+        Vector3[] positions = new Vector3[2];
+        positions[0] = new Vector3(start.x, start.y, 0);
+        positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
+        if (hit.collider != null)
         {
-            Instantiate(attackType, hit.point, Quaternion.identity);
-        }
-        RaycastHit2D[] hitsLeft = Physics2D.RaycastAll(createProjectileLeft.transform.position, nextLeft, maxLaser, layerMask);
-        foreach (RaycastHit2D hit in hitsLeft)
-        {
-            Instantiate(attackType, hit.point, Quaternion.identity);
-            Debug.DrawLine(createProjectileLeft.transform.position, hit.point, new Color(255, 0, 0), 5);
-        }
-        RaycastHit2D[] hitsRight = Physics2D.RaycastAll(createProjectileRight.transform.position, nextRight, maxLaser, layerMask);
-        foreach (RaycastHit2D hit in hitsRight)
-        {
-            Instantiate(attackType, hit.point, Quaternion.identity);
-            Debug.DrawLine(createProjectileRight.transform.position, hit.point, new Color(0, 255, 0), 5);
-        }
-        yield return new WaitForSeconds(.01f);
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hit.point;
+            positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
 
-        Destroy(createProjectile);
-        Destroy(createProjectileLeft);
-        Destroy(createProjectileRight);
+            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+
+        RaycastHit2D hitLeft = Physics2D.Raycast(leftSideLaser.transform.position, nextLeft, maxLaser, layerMask);
+        Vector3[] positionsLeft = new Vector3[2];
+        positionsLeft[0] = new Vector3(start.x, start.y, 0);
+        positionsLeft[1] = new Vector3(nextLeft.x * 1000, nextLeft.y * 1000, 0);
+        if (hitLeft.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitLeft.point;
+            positionsLeft[1] = new Vector3(hitLeft.point.x, hitLeft.point.y, 0);
+
+            Instantiate(attackType, hitLeft.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+        RaycastHit2D hitRight = Physics2D.Raycast(rightSideLaser.transform.position, nextRight, maxLaser, layerMask);
+        Vector3[] positionsRight = new Vector3[2];
+        positionsRight[0] = new Vector3(start.x, start.y, 0);
+        positionsRight[1] = new Vector3(nextRight.x * 1000, nextRight.y * 1000, 0);
+        if (hitRight.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitRight.point;
+            positionsRight[1] = new Vector3(hitRight.point.x, hitRight.point.y, 0);
+
+            Instantiate(attackType, hitRight.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+
+        middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
+        middleOfLaser.GetComponent<LineRenderer>().SetWidth(.6f, .45f);
+
+        leftSideLaser.GetComponent<LineRenderer>().SetPositions(positionsLeft);
+        leftSideLaser.GetComponent<LineRenderer>().SetWidth(.6f, .35f);
+
+        rightSideLaser.GetComponent<LineRenderer>().SetPositions(positionsRight);
+        rightSideLaser.GetComponent<LineRenderer>().SetWidth(.6f, .35f);
+
+        yield return null;
 
     }
 
@@ -512,15 +565,22 @@ public class Attack : MonoBehaviour
     //HIT BOX IS NOT CORRECT CURRENTLY, LINE RAYCAST NEXT TO EACH OTHER
     IEnumerator bigBeam(Vector2 start, Vector2 next)
     {
-
+        
         //destroy object if it doesn't collide with anything after timeout amout of time
-        GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
-        createProjectile.transform.localScale *= 5;
-        //createProjectile.GetComponent<BoxCollider2D>();
-        createProjectile.transform.parent = this.transform;
+        //destroy object if it doesn't collide with anything after timeout amout of time
+        if (!middleOfLaser.activeInHierarchy)
+        {
+            middleOfLaser.SetActive(true);
+        }
+        if (!laserStartParticles.activeInHierarchy)
+        {
+            laserStartParticles.SetActive(true);
+        }
+        laserStartParticles.transform.position = start;
+
         //get the sign of the direction of the aim
         float signOfLook = 1;
-        if (createProjectile.transform.position.y > next.y)
+        if (middleOfLaser.transform.position.y > next.y)
         {
             signOfLook = Mathf.Sign(next.y); //this will be negative if the mouse is below bullet, rotating it appropriately
         }
@@ -531,19 +591,33 @@ public class Attack : MonoBehaviour
             angle = angle * -1;
         }
         //rotate shot
-        createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        float maxLaser = 100f;
+        middleOfLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        float maxLaser = 200f;
 
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
-        RaycastHit2D[] hits = Physics2D.RaycastAll(createProjectile.transform.position, next, maxLaser, layerMask); //STACK LINECASTING ALL RIGHT NEXT TO EACH OTHER FOR WHOLE WIDTH
-        foreach (RaycastHit2D hit in hits)
+        RaycastHit2D hit = Physics2D.Raycast(start, next, maxLaser, layerMask);
+        Vector3[] positions = new Vector3[2];
+        positions[0] = new Vector3(start.x, start.y, 0);
+        positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
+        if (hit.collider != null)
         {
-            Instantiate(attackType, hit.point, Quaternion.identity);
-        }
-        yield return new WaitForSeconds(.01f);
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hit.point;
+            positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
 
-        Destroy(createProjectile);
+            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+
+        middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
+        middleOfLaser.GetComponent<LineRenderer>().SetWidth(3f, 2.25f);
+
+        
+        yield return null;
     }
 
 
@@ -985,6 +1059,8 @@ public class Attack : MonoBehaviour
         middleOfLaser.SetActive(false);
         laserStartParticles.SetActive(false);
         laserHitParticles.SetActive(false);
+        leftSideLaser.SetActive(false);
+        rightSideLaser.SetActive(false);
     }
 
 }
