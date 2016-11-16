@@ -29,7 +29,7 @@ public class AlternatePlayerBoomAttack : MonoBehaviour {
             }
             else if (splitAmount == 5)
             {
-                Instantiate(actualExplosion, this.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
+                Instantiate(actualExplosion, this.transform.position + new Vector3(0, 0, 0), Quaternion.identity);
                 Instantiate(actualExplosion, this.transform.position + new Vector3(-5, -5, 0), Quaternion.identity);
                 Instantiate(actualExplosion, this.transform.position + new Vector3(5, -5, 0), Quaternion.identity);
                 Instantiate(actualExplosion, this.transform.position + new Vector3(5, 5, 0), Quaternion.identity);

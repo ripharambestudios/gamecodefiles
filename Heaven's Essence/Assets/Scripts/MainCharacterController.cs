@@ -63,6 +63,10 @@ public class MainCharacterController : MonoBehaviour
         {
             this.GetComponent<Attack>().Fire();
         }
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            this.GetComponent<Attack>().DeactivateLaser();
+        }
         if (Input.GetAxis("Fire2") > 0)
         {
             this.GetComponent<Attack>().AltFire();

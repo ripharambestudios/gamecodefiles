@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WeaponStoper : MonoBehaviour {
+public class WeaponStoper : MonoBehaviour
+{
 
-	public GameObject actualExplosion;
-	public float radius = 3.2f;
+    public GameObject actualExplosion;
+    public float radius = 3.2f;
 
 
 	void Update()
@@ -23,12 +24,13 @@ public class WeaponStoper : MonoBehaviour {
 			}
 		}
 
-		Collider2D[] collidersEnemyShots = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("EnemyAttacks")); // for enemy attacks
-		foreach (Collider2D coll in collidersEnemyShots) {
-			if(coll.gameObject.layer == 11)
-			{
-				Destroy (coll.gameObject);
-			}
-		}
-	}
+        Collider2D[] collidersEnemyShots = Physics2D.OverlapCircleAll(this.transform.position, radius, 1 << LayerMask.NameToLayer("EnemyAttacks")); // for enemy attacks
+        foreach (Collider2D coll in collidersEnemyShots)
+        {
+            if (coll.gameObject.layer == 11)
+            {
+                Destroy(coll.gameObject);
+            }
+        }
+    }
 }

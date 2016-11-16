@@ -9,14 +9,14 @@ public class ShotGunBullet : MonoBehaviour {
     private float maxSize = 5f;
     public float damage = 20f;
     // Use this for initialization
-    void Start () {
+    void Start ()
+	{
         StartCoroutine(Scale());
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
-
         destroyTimer += Time.deltaTime;
 
         if(destroyTimer > 5f)
@@ -46,7 +46,6 @@ public class ShotGunBullet : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        Debug.Log("Result hit shotgun");
         if (coll.gameObject.tag != null)
         {
             if (coll.gameObject.tag == "Player")

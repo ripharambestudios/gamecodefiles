@@ -4,8 +4,8 @@ using System;
 
 public class EdgeWrapping : MonoBehaviour {
 
-	public float edgeY = 25f;
-	public float edgeX = 50f;
+	public float edgeY = 54f;
+	public float edgeX = 105f;
 	public float bounceSpeed = .5f;
 
 	private System.Random randNum;
@@ -19,7 +19,9 @@ public class EdgeWrapping : MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter2D(Collider2D coll){
+	void OnTriggerEnter2D(Collider2D coll)
+	{
+
 		if (coll.tag == "Player") 
 		{
 			Rigidbody2D rigid = coll.GetComponent<Rigidbody2D> ();
@@ -45,8 +47,10 @@ public class EdgeWrapping : MonoBehaviour {
 				}
 			}
 		}
-		else if (coll.tag == "EnemyFallen" || coll.tag == "EnemyBoom" || coll.tag == "EnemyDemonic" || coll.tag == "EnemySpook") 
+
+		else if (coll.gameObject.layer == LayerMask.NameToLayer ("Enemies")) 
 		{
+			
 			if (coll.gameObject.transform.position.x <= -edgeX) 
 			{
 				coll.gameObject.SendMessage ("setCanAttack", false, SendMessageOptions.DontRequireReceiver);
@@ -72,8 +76,6 @@ public class EdgeWrapping : MonoBehaviour {
 				int randomDegree = randNum.Next (240, 300);
 				StartCoroutine(BounceOff(coll.gameObject, randomDegree));
 			}
-
-
 		}
 	}
 
