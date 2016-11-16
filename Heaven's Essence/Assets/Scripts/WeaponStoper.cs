@@ -14,7 +14,7 @@ public class WeaponStoper : MonoBehaviour {
 			if(coll.gameObject.layer == 10)
 			{
 				if (coll.gameObject.name == "BombBall(Clone)") {
-					Instantiate(actualExplosion, this.transform.position, Quaternion.identity);
+					Instantiate(actualExplosion, coll.transform.position, Quaternion.identity);
 					Destroy(coll.gameObject);
 				} 
 				else {

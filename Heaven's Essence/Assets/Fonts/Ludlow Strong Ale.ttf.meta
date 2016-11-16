@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 4aa693304152b7d4db1cc7b64b68c983
-timeCreated: 1475883540
+guid: bec8c4d81aa31324885a14c4776c9256
+timeCreated: 1479175619
 licenseType: Free
 TrueTypeFontImporter:
   serializedVersion: 4
@@ -8,7 +8,7 @@ TrueTypeFontImporter:
   forceTextureCase: -2
   characterSpacing: 0
   characterPadding: 1
-  includeFontData: 0
+  includeFontData: 1
   fontNames:
   - Ludlow Strong Ale
   fallbackFontReferences: []
