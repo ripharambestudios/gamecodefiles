@@ -56,7 +56,7 @@ public class EnemyHealth : MonoBehaviour {
 			{
 				if (this.gameObject.GetComponent<SpriteRenderer> ().color == new Color (1, 1, 1, 1))
 				{
-					this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .792156f, 0, 1);
+					this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .925f, 0, 1);
 				} 
 				else 
 				{
@@ -74,7 +74,7 @@ public class EnemyHealth : MonoBehaviour {
 
 	IEnumerator flashRed()
 	{
-		this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .35294f, .35294f, 1);
+		this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .17647f, .17647f, 1);
 		yield return new WaitForSeconds (timeForFlashRed);
 		this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
 	}
