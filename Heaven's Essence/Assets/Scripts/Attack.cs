@@ -109,7 +109,7 @@ public class Attack : MonoBehaviour
         attackType = attackTypeEnergy;
         speedOfProjectile = 2f;
         rateOfFire = 10.0f;
-        spookyGuyProjectileSpeed = 1.2f;
+        spookyGuyProjectileSpeed = 2.4f;
 
         //reset attack damage values otherwise they infinitely scale
         attackTypeEnergy.GetComponent<DoDamage>().damage = 5;
@@ -941,7 +941,7 @@ public class Attack : MonoBehaviour
             projectile = projectileEnergy;
             attackType = attackTypeEnergy;
             speedOfProjectile = 2f;
-            rateOfFire = 10.0f;
+            rateOfFire = 8.5f;
 
         }
         else if (attackTypeString == "Beam" && beamAttackLevel > 0)
@@ -954,7 +954,7 @@ public class Attack : MonoBehaviour
         {
             projectile = projectileBomb;
             attackType = attackTypeBomb;
-            speedOfProjectile = .4f;
+            speedOfProjectile = .5f;
             rateOfFire = 1.0f;
 
         }
@@ -963,15 +963,15 @@ public class Attack : MonoBehaviour
             projectile = projectileSpeed;
             attackType = attackTypeSpeed;
             speedOfProjectile = spookyGuyProjectileSpeed;
-            rateOfFire = 6.0f;
+            rateOfFire = 15.0f;
 
         }
         else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
         {
             projectile = projectileShotgun;
             attackType = attackTypeShotgun;
-            speedOfProjectile = .7f;
-            rateOfFire = 3.0f;
+            speedOfProjectile = 1.4f;
+            rateOfFire = 4.5f;
 
         }
         else
@@ -979,8 +979,8 @@ public class Attack : MonoBehaviour
             //case occurs when player selects weapon that is not unlocked
             projectile = projectileEnergy;
             attackType = attackTypeEnergy;
-            speedOfProjectile = 1f;
-            rateOfFire = 4.0f;
+            speedOfProjectile = 2f;
+            rateOfFire = 8.5f;
             Debug.Log("Attack is not unlocked");
             //instantiate here a warning that the player has not unlocked that attack yet
         }

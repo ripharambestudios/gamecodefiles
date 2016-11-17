@@ -108,7 +108,11 @@ public class DistantShooterAI : MonoBehaviour
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 2.5f;
         setAttackingAnimation(true);
-        Vector2 aim = new Vector2(target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
+        Vector2 aim = new Vector2(0, 0);
+        if (target != null)
+        {
+            aim = new Vector2(target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
+        }
         //Debug.Log("Bullet Making");
         GameObject createProjectile = (GameObject)Instantiate(projectile, launchPosition.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
         GameObject createProjectile2 = (GameObject)Instantiate(projectile, launchPosition.transform.position + new Vector3(0, -1, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
