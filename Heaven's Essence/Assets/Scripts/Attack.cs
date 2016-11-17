@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Attack : MonoBehaviour
 {
-
-    public GameObject weaponPosition;
     public GameObject attackSpawn;
 
     //energy attack type
@@ -28,6 +26,12 @@ public class Attack : MonoBehaviour
     // the wing particle effect
     public GameObject wingParticleEffect;
 
+	public AudioClip standardFireSound;
+	public AudioClip beamFireSound;
+	public AudioClip bombFireSound;
+	public AudioClip fastShotFireSound;
+	public AudioClip shotGunFireSound;
+
     [Header("Laser Parts")]
     public GameObject laserParticles;
     public GameObject laserMiddle;
@@ -44,6 +48,7 @@ public class Attack : MonoBehaviour
     public Text speedSoulsText;
     public Text shotgunSoulsText;
 
+	private AudioSource source;
 
     private GameObject projectile;
     private GameObject attackType;
@@ -110,6 +115,8 @@ public class Attack : MonoBehaviour
         speedOfProjectile = 2f;
         rateOfFire = 10.0f;
         spookyGuyProjectileSpeed = 2.4f;
+
+		source = gameObject.AddComponent<AudioSource> ();
 
         //reset attack damage values otherwise they infinitely scale
         attackTypeEnergy.GetComponent<DoDamage>().damage = 5;
@@ -202,10 +209,10 @@ public class Attack : MonoBehaviour
         }
     }
 
+
     public void Aim(Vector2 aimTarget)
     {
         aimLocation = aimTarget;
-        attackSpawn.transform.position = weaponPosition.transform.position;
         attackSpawn.transform.LookAt(aimLocation);
         attackAngle = attackSpawn.transform.forward;
     }
@@ -225,6 +232,7 @@ public class Attack : MonoBehaviour
                 _rateOfFire = 0f;
                 if (beamAttackLevel >= 1 && beamAttackLevel < 3)
                 {
+					Debug.Log (attackSpawn.transform.position);
                     StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
                     StartCoroutine(Cooldown(_rateOfFire));
 
@@ -395,7 +403,8 @@ public class Attack : MonoBehaviour
     //CURRENTLY ATTACKS TO FAST, DOES TOO MUCH DAMAGE
     IEnumerator fireBeam(Vector2 start, Vector2 next)
     {
-                
+            
+		source.PlayOneShot (beamFireSound, .05f); // need assistance from chandler on this one
         //destroy object if it doesn't collide with anything after timeout amout of time
         if (!middleOfLaser.activeInHierarchy)
         {
@@ -453,6 +462,7 @@ public class Attack : MonoBehaviour
     //offshoots slightly not correct
     IEnumerator fireTripleBeam(Vector2 start, Vector2 next)
     {
+		source.PlayOneShot (beamFireSound, .075f); // need assistance from chandler on this one
         if (!middleOfLaser.activeInHierarchy)
         {
             middleOfLaser.SetActive(true);
@@ -565,7 +575,7 @@ public class Attack : MonoBehaviour
     //HIT BOX IS NOT CORRECT CURRENTLY, LINE RAYCAST NEXT TO EACH OTHER
     IEnumerator bigBeam(Vector2 start, Vector2 next)
     {
-        
+		source.PlayOneShot (beamFireSound, .1f); // need assistance from chandler on this one
         //destroy object if it doesn't collide with anything after timeout amout of time
         //destroy object if it doesn't collide with anything after timeout amout of time
         if (!middleOfLaser.activeInHierarchy)
@@ -627,6 +637,8 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
+
+		source.PlayOneShot (bombFireSound, .05f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -695,6 +707,8 @@ public class Attack : MonoBehaviour
 
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
+		source.PlayOneShot (standardFireSound, .05f);
+
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
         //createProjectile.transform.localScale *= maxCharge;
@@ -748,6 +762,7 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
+		source.PlayOneShot (fastShotFireSound, .05f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -827,6 +842,7 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
+		source.PlayOneShot (shotGunFireSound, .075f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;

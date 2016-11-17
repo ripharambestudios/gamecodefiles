@@ -9,7 +9,7 @@ public class CameraFollow : MonoBehaviour {
     public GameObject bottomLeft;
     public GameObject bottomRight;
     
-    public float trackingSpeed = 5;
+    public float trackingSpeed = 1000;
 
     private GameObject map;
     private Camera cam;
@@ -25,9 +25,6 @@ public class CameraFollow : MonoBehaviour {
         cam = Camera.main;
         camHeight = 2f * cam.orthographicSize;
         camWidth = camHeight * cam.aspect;
-        //mapEdges = map.GetComponents<EdgeCollider2D>();
-        //mapMinBound = new Vector2(map.transform.position.x, map.transform.position.y);
-        //mapMaxBound = mapMinBound + new Vector2(map)
     }
 
     // Update is called once per frame at the end of the update
@@ -74,7 +71,7 @@ public class CameraFollow : MonoBehaviour {
             {
                 newTargetLocation = target.transform.position;
             }
-            this.transform.position = Vector2.Lerp(this.transform.position, newTargetLocation, Time.deltaTime * trackingSpeed);
+			this.transform.position = Vector2.Lerp(this.transform.position, newTargetLocation, Time.deltaTime * trackingSpeed);
         }
     }
 }

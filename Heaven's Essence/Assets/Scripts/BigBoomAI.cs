@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class BigBoomAI : MonoBehaviour {
 
@@ -8,6 +9,9 @@ public class BigBoomAI : MonoBehaviour {
 	public float waitTime = 0.5f;
 	public float inverseLaunchSpeed = 10f;
 	public float radius = 1.8f;
+	public float bounceSpeed = .5f;
+	public float edgeY = 54f;
+	public float edgeX = 105f;
 
 	static private int direction = 0;
 	private GameObject target;
@@ -25,6 +29,8 @@ public class BigBoomAI : MonoBehaviour {
 
 	private bool correctPlacement = false;
 	private bool canAttack = true;
+	private System.Random randNum;
+
 
 	// Use this for initialization
 	void Start () {
@@ -32,6 +38,7 @@ public class BigBoomAI : MonoBehaviour {
 		target = GameObject.FindWithTag ("Player");
         animator = this.GetComponent<Animator>();
         animator.SetInteger("Port", 0);
+		randNum = new System.Random ();
     }
 
 	// Update is called once per frame
@@ -79,7 +86,10 @@ public class BigBoomAI : MonoBehaviour {
 				//add check if on top of other enemies to move off slightly
 				yield return new WaitForSeconds (1f);
                 animator.SetInteger("Port", 1);
-				Instantiate(attackType, transform.position, Quaternion.identity);
+				if (canAttack) 
+				{
+					Instantiate (attackType, transform.position, Quaternion.identity);
+				}
 				timer = 0f;
 			}
 			yield return null;
@@ -128,6 +138,34 @@ public class BigBoomAI : MonoBehaviour {
 				distanceForPlacement++;
 			}
 		}
+
+		//check for bounce off
+		if (this.gameObject.transform.position.x <= -edgeX) 
+		{
+			canAttack = false;
+			int randomDegree = randNum.Next (-30, 30);
+			StartCoroutine(BounceOff(this.gameObject, randomDegree));
+		} 
+		else if(this.gameObject.transform.position.x >= edgeX)
+		{
+			canAttack = false;
+			int randomDegree = randNum.Next (150, 210);
+			StartCoroutine(BounceOff(this.gameObject, randomDegree));
+		}
+
+		if (this.gameObject.transform.position.y <= -edgeY) 
+		{
+			canAttack = false;
+			int randomDegree = randNum.Next (60, 120);
+			StartCoroutine(BounceOff(this.gameObject, randomDegree));
+		} 
+		else if(this.gameObject.transform.position.y >= edgeY)
+		{
+			canAttack = false;
+			int randomDegree = randNum.Next (240, 300);
+			StartCoroutine(BounceOff(this.gameObject, randomDegree));
+		}
+			
 			
 		if (direction < 3) {
 			direction++;
@@ -141,5 +179,42 @@ public class BigBoomAI : MonoBehaviour {
 	public void setCanAttack(bool booleanSent)
 	{
 		canAttack = booleanSent;
+	}
+
+
+	IEnumerator BounceOff(GameObject enemy, int randomDegree)
+	{
+		//yield return null;
+		float numAddX = Mathf.Cos(randomDegree * (Mathf.PI / 180)) * 50;
+		float numAddY = Mathf.Sin(randomDegree * (Mathf.PI / 180)) * 50;
+		float endX = numAddX + enemy.transform.position.x;
+		float endY = numAddY + enemy.transform.position.y;
+		Vector2 endLocation = new Vector2 (endX, endY);
+		Vector2 nextPosition = enemy.transform.position;
+		Vector2 look = endLocation - nextPosition;
+		float distanceCovered = 0;
+		int maxDistance = 100;
+		int layerDepth = 1;
+		int obsticalMask = layerDepth << 12; //obsticale on 12th layer
+		RaycastHit2D impactObsticale = Physics2D.Raycast(nextPosition, endLocation, maxDistance, obsticalMask);
+
+
+		float distanceToGo = 50f;
+		while(distanceCovered < distanceToGo){
+			nextPosition += look.normalized * bounceSpeed; //try time.detlatime to see if that can make it better
+			distanceCovered += Math.Abs (Vector2.Distance (enemy.transform.position, nextPosition));
+
+			if (Physics2D.Linecast (enemy.transform.position, nextPosition, obsticalMask)) // if it his an obsticale it stops moving
+			{
+				impactObsticale = Physics2D.Linecast (enemy.transform.position, nextPosition, obsticalMask);
+				distanceCovered = distanceToGo;
+				nextPosition = enemy.transform.position;
+			}
+
+			enemy.transform.position = nextPosition;
+			yield return null;
+		}
+		yield return new WaitForSeconds (.25f); // cooldown
+		canAttack = true;
 	}
 }
