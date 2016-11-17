@@ -37,7 +37,7 @@ public class EnemySpawner : MonoBehaviour {
 		waveNum = 1;
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
 		waveText.text = "";
-        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5); // what you add is the first round amount
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 35); // what you add is the first round amount
         
     }
 
@@ -66,7 +66,7 @@ public class EnemySpawner : MonoBehaviour {
 		}
         waveText.enabled = false;
         //waveText.text = "";
-        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5); //increases number of enemies quickly initially and then slows down as it gets further
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 35); //increases number of enemies quickly initially and then slows down as it gets further
 		waveNum++;
 	}
 
