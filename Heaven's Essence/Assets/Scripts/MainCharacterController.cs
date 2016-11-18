@@ -36,6 +36,7 @@ public class MainCharacterController : MonoBehaviour
         attackTypes.Add("Speed");
         attackTypes.Add("Shotgun");
         healthStartVector = healthBar.GetComponent<RectTransform>().sizeDelta;
+        
     }
 
     // Update is called once per frame

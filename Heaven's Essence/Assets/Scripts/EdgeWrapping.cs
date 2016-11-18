@@ -115,4 +115,5 @@ public class EdgeWrapping : MonoBehaviour {
 		enemy.SendMessage ("setCanAttack", true, SendMessageOptions.DontRequireReceiver);
 	}
 
+
 }

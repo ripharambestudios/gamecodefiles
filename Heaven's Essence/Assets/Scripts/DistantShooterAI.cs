@@ -218,4 +218,8 @@ public class DistantShooterAI : MonoBehaviour
     {
         canAttack = booleanSent;
     }
+
+
+
+
 }
