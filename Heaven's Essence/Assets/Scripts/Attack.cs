@@ -402,8 +402,7 @@ public class Attack : MonoBehaviour
     //fire powerful red beam in any direction
     //CURRENTLY ATTACKS TO FAST, DOES TOO MUCH DAMAGE
     IEnumerator fireBeam(Vector2 start, Vector2 next)
-    {
-            
+    {   
 		source.PlayOneShot (beamFireSound, .05f); // need assistance from chandler on this one
         //destroy object if it doesn't collide with anything after timeout amout of time
         if (!middleOfLaser.activeInHierarchy)
@@ -432,14 +431,41 @@ public class Attack : MonoBehaviour
         middleOfLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         float maxLaser = 200f;
-
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
+        int layerMaskPlanet = layerDepth << 12; //the planets
+        //raycast to both planets and enemies, to check which one the laser hits first
         RaycastHit2D hit = Physics2D.Raycast(start, next, maxLaser, layerMask);
+        RaycastHit2D hitPlanet = Physics2D.Raycast(start, next, maxLaser, layerMaskPlanet);
         Vector3[] positions = new Vector3[2];
         positions[0] = new Vector3(start.x, start.y, 0);
         positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
-        if (hit.collider != null)
+        if (hit.collider != null && hitPlanet.collider != null)
+        {
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hit.point));
+            if(distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hit.point;
+                positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
+
+                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitPlanet.point;
+                positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+            }
+        }
+        else if (hit.collider != null)
         {
             if (!laserHitParticles.activeInHierarchy)
             {
@@ -448,8 +474,18 @@ public class Attack : MonoBehaviour
             laserHitParticles.transform.position = hit.point;
             positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
 
-            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0,0,0)));
+            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
         }
+        else if (hitPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitPlanet.point;
+            positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+        }
+
 
         middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
         middleOfLaser.GetComponent<LineRenderer>().SetWidth(.6f, .45f);
@@ -505,17 +541,43 @@ public class Attack : MonoBehaviour
 
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
-
+        int layerMaskPlanet = layerDepth << 12;
         float size = (float)Math.Sqrt(next.x * next.x + next.y * next.y);
 
         Vector2 nextLeft = new Vector2((float)Math.Cos(leftSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(leftSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
         Vector2 nextRight = new Vector2((float)Math.Cos(rightSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(rightSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
 
         RaycastHit2D hit = Physics2D.Raycast(middleOfLaser.transform.position, next, maxLaser, layerMask);
+        RaycastHit2D hitPlanet = Physics2D.Raycast(middleOfLaser.transform.position, next, maxLaser, layerMaskPlanet);
         Vector3[] positions = new Vector3[2];
         positions[0] = new Vector3(start.x, start.y, 0);
         positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
-        if (hit.collider != null)
+        if (hit.collider != null && hitPlanet.collider != null)
+        {
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hit.point));
+            if (distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hit.point;
+                positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
+
+                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitPlanet.point;
+                positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+            }
+        }
+        else if (hit.collider != null)
         {
             if (!laserHitParticles.activeInHierarchy)
             {
@@ -526,12 +588,47 @@ public class Attack : MonoBehaviour
 
             Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
         }
+        else if (hitPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitPlanet.point;
+            positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+        }
 
         RaycastHit2D hitLeft = Physics2D.Raycast(leftSideLaser.transform.position, nextLeft, maxLaser, layerMask);
+        RaycastHit2D hitLeftPlanet = Physics2D.Raycast(leftSideLaser.transform.position, nextLeft, maxLaser, layerMaskPlanet);
         Vector3[] positionsLeft = new Vector3[2];
         positionsLeft[0] = new Vector3(start.x, start.y, 0);
         positionsLeft[1] = new Vector3(nextLeft.x * 1000, nextLeft.y * 1000, 0);
-        if (hitLeft.collider != null)
+        if (hitLeft.collider != null && hitLeftPlanet.collider != null)
+        {
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitLeftPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hitLeft.point));
+            if (distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitLeft.point;
+                positionsLeft[1] = new Vector3(hitLeft.point.x, hitLeft.point.y, 0);
+
+                Instantiate(attackType, hitLeft.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitLeftPlanet.point;
+                positionsLeft[1] = new Vector3(hitLeftPlanet.point.x, hitLeftPlanet.point.y, 0);
+            }
+        }
+        else if (hitLeft.collider != null)
         {
             if (!laserHitParticles.activeInHierarchy)
             {
@@ -542,11 +639,46 @@ public class Attack : MonoBehaviour
 
             Instantiate(attackType, hitLeft.point, Quaternion.Euler(new Vector3(0, 0, 0)));
         }
+        else if (hitLeftPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitLeftPlanet.point;
+            positionsLeft[1] = new Vector3(hitLeftPlanet.point.x, hitLeftPlanet.point.y, 0);
+        }
         RaycastHit2D hitRight = Physics2D.Raycast(rightSideLaser.transform.position, nextRight, maxLaser, layerMask);
+        RaycastHit2D hitRightPlanet = Physics2D.Raycast(rightSideLaser.transform.position, nextRight, maxLaser, layerMaskPlanet);
         Vector3[] positionsRight = new Vector3[2];
         positionsRight[0] = new Vector3(start.x, start.y, 0);
         positionsRight[1] = new Vector3(nextRight.x * 1000, nextRight.y * 1000, 0);
-        if (hitRight.collider != null)
+        if (hitRight.collider != null && hitRightPlanet.collider != null)
+        {
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitRightPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hitRight.point));
+            if (distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitRight.point;
+                positionsRight[1] = new Vector3(hitRight.point.x, hitRight.point.y, 0);
+
+                Instantiate(attackType, hitRight.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitRightPlanet.point;
+                positionsRight[1] = new Vector3(hitRightPlanet.point.x, hitRightPlanet.point.y, 0);
+            }
+        }
+        else if (hitRight.collider != null)
         {
             if (!laserHitParticles.activeInHierarchy)
             {
@@ -556,6 +688,15 @@ public class Attack : MonoBehaviour
             positionsRight[1] = new Vector3(hitRight.point.x, hitRight.point.y, 0);
 
             Instantiate(attackType, hitRight.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+        else if (hitRightPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitRightPlanet.point;
+            positionsRight[1] = new Vector3(hitRightPlanet.point.x, hitRightPlanet.point.y, 0);
         }
 
         middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
@@ -607,11 +748,39 @@ public class Attack : MonoBehaviour
 
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
-        RaycastHit2D hit = Physics2D.Raycast(start, next, maxLaser, layerMask);
+        int layerMaskPlanet = layerDepth << 12; //the planets
+        //raycast to both planets and enemies, to check which one the laser hits first
+        RaycastHit2D hit = Physics2D.Raycast(start, next, maxLaser, layerMask); //create a perpendicular line that contains the stacked raycasts as it aims
+        RaycastHit2D hitPlanet = Physics2D.Raycast(start, next, maxLaser, layerMaskPlanet);
         Vector3[] positions = new Vector3[2];
         positions[0] = new Vector3(start.x, start.y, 0);
         positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
-        if (hit.collider != null)
+        if (hit.collider != null && hitPlanet.collider != null)
+        {
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hit.point));
+            if (distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hit.point;
+                positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
+
+                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitPlanet.point;
+                positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+            }
+        }
+        else if (hit.collider != null)
         {
             if (!laserHitParticles.activeInHierarchy)
             {
@@ -621,6 +790,15 @@ public class Attack : MonoBehaviour
             positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
 
             Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+        else if (hitPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitPlanet.point;
+            positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
         }
 
         middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
