@@ -80,9 +80,9 @@ public class MeteorAI : MonoBehaviour {
 		int maxDistance = 10000;
 		int layerDepth = 1;
 		int layerMask = layerDepth << 8; //player on 8th layer
-		int obsticalMask = layerDepth << 12; //obsticale on 12th layer
+        int obsticalMask = layerDepth << 12; //obsticale on 12th layer
 		RaycastHit2D impact = Physics2D.Raycast(nextPosition, endLocation, maxDistance, layerMask);
-		RaycastHit2D impactObsticale = Physics2D.Raycast(nextPosition, endLocation, maxDistance, obsticalMask);
+        RaycastHit2D impactObsticale; // = Physics2D.Raycast(nextPosition, endLocation, maxDistance, obsticalMask);
 		//Debug.Log (impact.point + "TARGETING PLAYER");
 		yield return new WaitForSeconds (waitTime);
         
