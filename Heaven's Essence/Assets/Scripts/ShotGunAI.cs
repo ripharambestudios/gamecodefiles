@@ -44,6 +44,7 @@ public class ShotGunAI : MonoBehaviour {
         }
 		else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
 		{
+            stopped = true;
 			StartCoroutine(WeakenedState());
 
 		}
@@ -67,7 +68,7 @@ public class ShotGunAI : MonoBehaviour {
             {
                 Debug.Log("Rotate");
                 //transform.position += transform.right * Time.deltaTime * speed;
-                transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 100);
+                transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 500);
             }
         }
         }
@@ -76,6 +77,7 @@ public class ShotGunAI : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(5);
 		weakenedOnce = true;
+        stopped = false;
 		yield return null;
 	}
 
