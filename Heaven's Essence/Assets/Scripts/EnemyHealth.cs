@@ -10,6 +10,7 @@ public class EnemyHealth : MonoBehaviour {
 	private int currentHealth;
 	private GameObject player;
 
+    public GameObject pool;
 	private float timeForFlashGold = .5f;
 	private float timeForFlashRed = .1f;
 
@@ -19,6 +20,8 @@ public class EnemyHealth : MonoBehaviour {
 		currentHealth = startHealth;
 		enemyManager = GameObject.FindGameObjectWithTag ("Enemy Manager");
 		player = GameObject.FindGameObjectWithTag ("Player");
+        
+
 	}
 	
 	// Message sent from player that does damage to enemy
@@ -31,7 +34,8 @@ public class EnemyHealth : MonoBehaviour {
 		if (currentHealth <= 0) {
 			enemyManager.GetComponent<EnemySpawner> ().decrementNumOfEnemies ();
 			player.SendMessage ("UpdateScore", scoreValue, SendMessageOptions.DontRequireReceiver);
-			Destroy (this.gameObject);
+            //Destroy (this.gameObject);
+            pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
 		}
 			
 		if (currentHealth > 0)

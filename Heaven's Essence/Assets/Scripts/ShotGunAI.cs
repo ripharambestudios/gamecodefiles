@@ -19,27 +19,29 @@ public class ShotGunAI : MonoBehaviour
     public GameObject createProjectile;
     public GameObject attackType;
 
+    public GameObject pool;
+
     public float attackTime = 3f;
 
     public int rotateSpeed = 3;
 	public float knockBackDistance;
 
     private bool attacked = false;
-
 	private bool canAttack = true;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
 		knockBackDistance = 2;
-		isAttacking = false;
-		target = GameObject.FindWithTag ("Player");
+        isAttacking = false;
+        target = GameObject.FindWithTag("Player");
         transform.LookAt(target.transform.position);
         transform.Rotate(new Vector3(0, -90, 0), Space.Self);
+        pool = GameObject.FindWithTag("PoolFallen");
     }
 
     // Update is called once per frame
     void Update()
     {
-
 		if(target != null && canAttack && this.gameObject != null)
 		{
         	distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
@@ -55,6 +57,7 @@ public class ShotGunAI : MonoBehaviour
             	stopped = true;
 				StartCoroutine(WeakenedState());
 			}
+					
             //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
             //GetComponent<Rigidbody2D>().velocity = -velocity;
 
@@ -131,7 +134,7 @@ public class ShotGunAI : MonoBehaviour
     {
         this.GetComponent<EnemyAnimationScript>().isAttacking = status;
     }
-
+		
 	public void setCanAttack(bool booleanSent)
 	{
 		canAttack = booleanSent;
@@ -185,3 +188,4 @@ public class ShotGunAI : MonoBehaviour
 		canAttack = true;
 	}
 }
+

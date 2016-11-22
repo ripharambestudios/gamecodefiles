@@ -219,7 +219,7 @@ public class BigBoomAI : MonoBehaviour {
 		yield return new WaitForSeconds (.25f); // cooldown
 		canAttack = true;
 	}
-
+		
 	public void startKnockBack(float degree)
 	{
 		StartCoroutine (BounceOff(degree, 1f));

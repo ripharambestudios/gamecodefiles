@@ -36,6 +36,7 @@ public class MainCharacterController : MonoBehaviour
         attackTypes.Add("Speed");
         attackTypes.Add("Shotgun");
         healthStartVector = healthBar.GetComponent<RectTransform>().sizeDelta;
+        
     }
 
     // Update is called once per frame
@@ -97,18 +98,13 @@ public class MainCharacterController : MonoBehaviour
         {
             this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
         }
-
-
         if (Input.GetKey(KeyCode.LeftShift) && (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1)))
         {
             this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
-            
-
         }
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha2))
         {
             this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
-            
         }
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha3))
         {
