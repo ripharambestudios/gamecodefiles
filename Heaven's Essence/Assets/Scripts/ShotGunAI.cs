@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class ShotGunAI : MonoBehaviour
 {
@@ -21,12 +22,14 @@ public class ShotGunAI : MonoBehaviour
     public float attackTime = 3f;
 
     public int rotateSpeed = 3;
+	public float knockBackDistance;
 
     private bool attacked = false;
 
 	private bool canAttack = true;
 	// Use this for initialization
 	void Start () {
+		knockBackDistance = 2;
 		isAttacking = false;
 		target = GameObject.FindWithTag ("Player");
         transform.LookAt(target.transform.position);
@@ -52,8 +55,6 @@ public class ShotGunAI : MonoBehaviour
             	stopped = true;
 				StartCoroutine(WeakenedState());
 			}
-				
-
             //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
             //GetComponent<Rigidbody2D>().velocity = -velocity;
 
@@ -134,5 +135,53 @@ public class ShotGunAI : MonoBehaviour
 	public void setCanAttack(bool booleanSent)
 	{
 		canAttack = booleanSent;
+	}
+
+	public void setKnockBackAmount(int distance)
+	{
+		knockBackDistance = distance;
+	}
+
+	public void startKnockBack(float degree)
+	{
+		StartCoroutine (BounceOff(degree, 1f));
+	}
+
+
+	IEnumerator BounceOff(float degree, float knockBackSpeed)
+	{
+		//yield return null;
+		float numAddX = Mathf.Cos(degree * (Mathf.PI / 180)) * knockBackDistance;
+		float numAddY = Mathf.Sin(degree * (Mathf.PI / 180)) * knockBackDistance;
+		float endX = numAddX + this.gameObject.transform.position.x;
+		float endY = numAddY + this.gameObject.transform.position.y;
+		Vector2 endLocation = new Vector2 (endX, endY);
+		Vector2 nextPosition = this.gameObject.transform.position;
+		Vector2 look = endLocation - nextPosition;
+		float distanceCovered = 0;
+		int maxDistance = 100;
+		int layerDepth = 1;
+		int obsticalMask = layerDepth << 12; //obsticale on 12th layer
+		RaycastHit2D impactObsticale = Physics2D.Raycast(nextPosition, endLocation, maxDistance, obsticalMask);
+
+
+		float distanceToGo = knockBackDistance;
+		while(distanceCovered < distanceToGo)
+		{
+			nextPosition += look.normalized * knockBackSpeed;
+			distanceCovered += Math.Abs (Vector2.Distance (this.gameObject.transform.position, nextPosition));
+
+			if (Physics2D.Linecast (this.gameObject.transform.position, nextPosition, obsticalMask)) // if it his an obsticale it stops moving
+			{
+				impactObsticale = Physics2D.Linecast (this.gameObject.transform.position, nextPosition, obsticalMask);
+				distanceCovered = distanceToGo;
+				nextPosition = this.gameObject.transform.position;
+			}
+
+			this.gameObject.transform.position = nextPosition;
+			yield return null;
+		}
+		yield return new WaitForSeconds (.5f); // cooldown
+		canAttack = true;
 	}
 }
