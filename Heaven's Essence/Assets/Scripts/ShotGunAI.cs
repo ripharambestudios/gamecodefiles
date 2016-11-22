@@ -18,6 +18,8 @@ public class ShotGunAI : MonoBehaviour
     public GameObject createProjectile;
     public GameObject attackType;
 
+    public GameObject pool;
+
     public float attackTime = 3f;
 
     public int rotateSpeed = 3;
@@ -31,6 +33,7 @@ public class ShotGunAI : MonoBehaviour
 		target = GameObject.FindWithTag ("Player");
         transform.LookAt(target.transform.position);
         transform.Rotate(new Vector3(0, -90, 0), Space.Self);
+        pool = GameObject.FindWithTag("PoolFallen");
     }
 
     // Update is called once per frame
@@ -135,4 +138,7 @@ public class ShotGunAI : MonoBehaviour
 	{
 		canAttack = booleanSent;
 	}
+
+
+
 }
