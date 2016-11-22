@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Attack : MonoBehaviour
 {
-
-    public GameObject weaponPosition;
     public GameObject attackSpawn;
 
     //energy attack type
@@ -25,21 +23,32 @@ public class Attack : MonoBehaviour
     public GameObject projectileShotgun;
     public GameObject attackTypeShotgun;
 
-	// the wing particle effect
-	public GameObject wingParticleEffect;
+    // the wing particle effect
+    public GameObject wingParticleEffect;
+
+	public AudioClip standardFireSound;
+	public AudioClip beamFireSound;
+	public AudioClip bombFireSound;
+	public AudioClip fastShotFireSound;
+	public AudioClip shotGunFireSound;
+
+    [Header("Laser Parts")]
+    public GameObject laserParticles;
+    public GameObject laserMiddle;
+    //public GameObject laserEnd;
 
     //public float damage = 10;
     private float speedOfProjectile = 1f;
     private float rateOfFire = 4.0f;
 
     //Attack upgrades and souls text
-    public Text soulsText;
-	public Text energyUpgradeText;
-	public Text beamUpgradeText;
-	public Text bombUpgradeText;
-	public Text speedUpgradeText;
-	public Text shotgunUpgradeText;
+    public Text energySoulsText;
+    public Text beamSoulsText;
+    public Text bombSoulsText;
+    public Text speedSoulsText;
+    public Text shotgunSoulsText;
 
+	private AudioSource source;
 
     private GameObject projectile;
     private GameObject attackType;
@@ -57,8 +66,8 @@ public class Attack : MonoBehaviour
     private int energySouls = 1000;
     private int beamSouls = 1000;
     private int bombSouls = 1000;
-    private int shotgunSouls = 10000;
-    private int spookyGuySouls = 1000;
+    private int shotgunSouls = 1000;
+    private int speedSouls = 1000;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
     private int beamAttackLevel = 0;
@@ -66,11 +75,11 @@ public class Attack : MonoBehaviour
     private int shotgunAttackLevel = 0;
     private int speedAttackLevel = 0;
     //upgrade cost for each attack
-    private int energyUpgradeCost = 50;
-    private int beamUpgradeCost = 20;
-    private int bombUpgradeCost = 20;
-    private int shotgunUpgradeCost = 20;
-    private int spookyGuyUpgradeCost = 20;
+    private int energyUpgradeCost = 5;
+    private int beamUpgradeCost = 2;
+    private int bombUpgradeCost = 2;
+    private int shotgunUpgradeCost = 2;
+    private int spookyGuyUpgradeCost = 2;
     //max number of upgrades
     private int maxNumOfUpgrades = 36;
     private int maxUpgradeForWeapon = 7;
@@ -90,6 +99,12 @@ public class Attack : MonoBehaviour
     private GameObject bombAttackUpgradeIcon;
     private GameObject beamAttackUpgradeIcon;
 
+    //set up laser before hand
+    private GameObject middleOfLaser;
+    private GameObject laserStartParticles;
+    private GameObject laserHitParticles;
+    private GameObject leftSideLaser;
+    private GameObject rightSideLaser;
 
     // Use this for initialization
     void Start()
@@ -97,14 +112,16 @@ public class Attack : MonoBehaviour
         //set attack to initial energy ball with start properties
         projectile = projectileEnergy;
         attackType = attackTypeEnergy;
-        speedOfProjectile = 1f;
-        rateOfFire = 4.0f;
-        spookyGuyProjectileSpeed = 1.2f;
+        speedOfProjectile = 2f;
+        rateOfFire = 10.0f;
+        spookyGuyProjectileSpeed = 2.4f;
+
+		source = gameObject.AddComponent<AudioSource> ();
 
         //reset attack damage values otherwise they infinitely scale
         attackTypeEnergy.GetComponent<DoDamage>().damage = 5;
         attackTypeBeam.GetComponent<DoDamage>().damage = 1;
-        attackTypeBomb.GetComponent<DoDamage>().damage = 10;
+        attackTypeBomb.GetComponent<DoDamage>().damage = 6;
         attackTypeShotgun.GetComponent<DoDamage>().damage = 3;
         attackTypeSpeed.GetComponent<DoDamage>().damage = 2;
         //save initial damage done by attacks
@@ -114,21 +131,35 @@ public class Attack : MonoBehaviour
         shotgunInitialDamage = attackTypeShotgun.GetComponent<DoDamage>().damage;
         spookyGuyInitialDamage = attackTypeSpeed.GetComponent<DoDamage>().damage;
 
-        soulsText.text = "Souls: Energy= 0 Beam= 0 Bomb= 0 Speed= 0 Shotgun= 0";
-		energyUpgradeText.text = "1";
-
         energyShotUpgradeIcon = GameObject.Find("Attack level Basic");
         shotgunAttackUpgradeIcon = GameObject.Find("Attack level Shotgun");
         speedShotUpgradeIcon = GameObject.Find("Attack level Speed Shot");
         bombAttackUpgradeIcon = GameObject.Find("Attack level Bomb");
         beamAttackUpgradeIcon = GameObject.Find("Attack level Beam");
+
+        //create laser object
+        middleOfLaser = (GameObject)Instantiate(laserMiddle, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        middleOfLaser.transform.parent = this.transform;
+        middleOfLaser.SetActive(false);
+        laserStartParticles = (GameObject)Instantiate(laserParticles, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        laserStartParticles.SetActive(false);
+        laserHitParticles = (GameObject)Instantiate(laserParticles, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        laserHitParticles.SetActive(false);
+
+        //create offshoot lasers
+        leftSideLaser = (GameObject)Instantiate(laserMiddle, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        leftSideLaser.transform.parent = this.transform;
+        leftSideLaser.SetActive(false);
+        rightSideLaser = (GameObject)Instantiate(laserMiddle, attackSpawn.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        rightSideLaser.transform.parent = this.transform;
+        rightSideLaser.SetActive(false);
     }
 
     void Update()
     {
         if (projectile.name == projectileBeam.name)
         {
-			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (1, .34509f, .34509f, 1);
+            wingParticleEffect.GetComponent<ParticleSystem>().startColor = new Color(1, .34509f, .34509f, 1);
             //red skin
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.transform.GetChild(1).gameObject.SetActive(false);
@@ -138,7 +169,7 @@ public class Attack : MonoBehaviour
         }
         else if (projectile.name == projectileEnergy.name)
         {
-			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (.34509f, .768627f, 1, 1);
+            wingParticleEffect.GetComponent<ParticleSystem>().startColor = new Color(.34509f, .768627f, 1, 1);
             //blue skin
             this.transform.GetChild(0).gameObject.SetActive(true);
             this.transform.GetChild(1).gameObject.SetActive(false);
@@ -148,17 +179,17 @@ public class Attack : MonoBehaviour
         }
         else if (projectile.name == projectileShotgun.name)
         {
-			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (.23529f, 1, .34509f, 1);
+            wingParticleEffect.GetComponent<ParticleSystem>().startColor = new Color(.23529f, 1, .34509f, 1);
             //green skin
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.transform.GetChild(1).gameObject.SetActive(true);
-            this.transform.GetChild(2).gameObject.SetActive(false); 
+            this.transform.GetChild(2).gameObject.SetActive(false);
             this.transform.GetChild(3).gameObject.SetActive(false);
             this.transform.GetChild(4).gameObject.SetActive(false);
         }
         else if (projectile.name == projectileSpeed.name)
         {
-			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (1, .980392f, .34509f, 1);
+            wingParticleEffect.GetComponent<ParticleSystem>().startColor = new Color(1, .980392f, .34509f, 1);
             //yellow skin
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.transform.GetChild(1).gameObject.SetActive(false);
@@ -168,7 +199,7 @@ public class Attack : MonoBehaviour
         }
         else if (projectile.name == projectileBomb.name)
         {
-			wingParticleEffect.GetComponent<ParticleSystem> ().startColor = new Color (.81568f, .34509f, 1, 1);
+            wingParticleEffect.GetComponent<ParticleSystem>().startColor = new Color(.81568f, .34509f, 1, 1);
             //purple skin
             this.transform.GetChild(0).gameObject.SetActive(false);
             this.transform.GetChild(1).gameObject.SetActive(false);
@@ -178,10 +209,10 @@ public class Attack : MonoBehaviour
         }
     }
 
+
     public void Aim(Vector2 aimTarget)
     {
         aimLocation = aimTarget;
-        attackSpawn.transform.position = weaponPosition.transform.position;
         attackSpawn.transform.LookAt(aimLocation);
         attackAngle = attackSpawn.transform.forward;
     }
@@ -192,33 +223,31 @@ public class Attack : MonoBehaviour
         {
             if (projectile.name == projectileBeam.name && beamAttackLevel > 0)
             {
-                //may be wrong right now
-                //canAttack = false;
-                float beamTimer = 2f; //2 seconds
                 if (!startedOnce)
                 {
-                    StartCoroutine(BeamTimeLeft(beamTimer));
                     startedOnce = true;
-                }
-                canAttack = false;
-                
-                if (beamAttackLevel >= 1 && beamAttackLevel < 3)
-                {
-                    StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
-                    StartCoroutine(Cooldown(_rateOfFire));
                     
                 }
-                else if(beamAttackLevel >= 3 && beamAttackLevel < 5)
+                canAttack = false;
+                _rateOfFire = 0f;
+                if (beamAttackLevel >= 1 && beamAttackLevel < 3)
+                {
+					Debug.Log (attackSpawn.transform.position);
+                    StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
+                    StartCoroutine(Cooldown(_rateOfFire));
+
+                }
+                else if (beamAttackLevel >= 3 && beamAttackLevel < 5)
                 {
                     StartCoroutine(fireTripleBeam((Vector2)attackSpawn.transform.position, attackAngle));
                     StartCoroutine(Cooldown(_rateOfFire));
-                    
+
                 }
-                else if(beamAttackLevel >= 5)
+                else if (beamAttackLevel >= 5)
                 {
                     StartCoroutine(bigBeam((Vector2)attackSpawn.transform.position, attackAngle));
                     StartCoroutine(Cooldown(_rateOfFire));
-                    
+
                 }
 
             }
@@ -227,7 +256,7 @@ public class Attack : MonoBehaviour
                 {
                     _rateOfFire = 1 / rateOfFire;
                     canAttack = false;
-                    
+
                     if (bombAttackLevel >= 1 && bombAttackLevel < 3)
                     {
                         StartCoroutine(bombShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 1));
@@ -248,13 +277,13 @@ public class Attack : MonoBehaviour
                 {
                     _rateOfFire = 1 / rateOfFire;
                     canAttack = false;
-                    
+
                     if (speedAttackLevel >= 1)
                     {
                         StartCoroutine(spookyGuyProjectile((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, speedAttackLevel));  //pass attack level as penetration power of the shot
                         StartCoroutine(Cooldown(_rateOfFire));
                     }
-                    
+
 
                 }
                 else if (projectile.name == projectileShotgun.name && shotgunAttackLevel > 0)
@@ -262,7 +291,7 @@ public class Attack : MonoBehaviour
 
                     _rateOfFire = 1 / rateOfFire;
                     canAttack = false;
-                    
+
                     if (shotgunAttackLevel >= 1 && shotgunAttackLevel < 3)
                     {
                         StartCoroutine(shotgunShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
@@ -270,18 +299,20 @@ public class Attack : MonoBehaviour
                     }
                     else if (shotgunAttackLevel >= 3 && shotgunAttackLevel < 5)
                     {
-
+                        StartCoroutine(shotgunShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
+                        StartCoroutine(Cooldown(_rateOfFire));
                     }
                     else if (shotgunAttackLevel >= 5)
                     {
-
+                        StartCoroutine(shotgunShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
+                        StartCoroutine(Cooldown(_rateOfFire));
                     }
                 }
                 else
                 {
                     _rateOfFire = 1 / rateOfFire;
                     canAttack = false;
-                    
+
                     if (energyAttackLevel >= 1 && energyAttackLevel < 3)
                     {
                         StartCoroutine(energyShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile, 1.0f));
@@ -371,14 +402,22 @@ public class Attack : MonoBehaviour
     //fire powerful red beam in any direction
     //CURRENTLY ATTACKS TO FAST, DOES TOO MUCH DAMAGE
     IEnumerator fireBeam(Vector2 start, Vector2 next)
-    {
-        
+    {   
+		source.PlayOneShot (beamFireSound, .05f); // need assistance from chandler on this one
         //destroy object if it doesn't collide with anything after timeout amout of time
-        GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
-        createProjectile.transform.parent = this.transform;
+        if (!middleOfLaser.activeInHierarchy)
+        {
+            middleOfLaser.SetActive(true);
+        }
+        if(!laserStartParticles.activeInHierarchy)
+        {
+            laserStartParticles.SetActive(true);
+        }
+        laserStartParticles.transform.position = start;
+
         //get the sign of the direction of the aim
         float signOfLook = 1;
-        if (createProjectile.transform.position.y > next.y)
+        if (middleOfLaser.transform.position.y > next.y)
         {
             signOfLook = Mathf.Sign(next.y); //this will be negative if the mouse is below bullet, rotating it appropriately
         }
@@ -389,35 +428,98 @@ public class Attack : MonoBehaviour
             angle = angle * -1;
         }
         //rotate shot
-        createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        float maxLaser = 100f;
+        middleOfLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
+        float maxLaser = 200f;
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
-        RaycastHit2D[] hits = Physics2D.RaycastAll(createProjectile.transform.position, next, maxLaser, layerMask);
-        foreach (RaycastHit2D hit in hits)
+        int layerMaskPlanet = layerDepth << 12; //the planets
+        //raycast to both planets and enemies, to check which one the laser hits first
+        RaycastHit2D hit = Physics2D.Raycast(start, next, maxLaser, layerMask);
+        RaycastHit2D hitPlanet = Physics2D.Raycast(start, next, maxLaser, layerMaskPlanet);
+        Vector3[] positions = new Vector3[2];
+        positions[0] = new Vector3(start.x, start.y, 0);
+        positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
+        if (hit.collider != null && hitPlanet.collider != null)
         {
-            Instantiate(attackType, hit.point, Quaternion.identity);
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hit.point));
+            if(distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hit.point;
+                positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
+
+                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitPlanet.point;
+                positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+            }
         }
-        yield return new WaitForSeconds(.01f);
+        else if (hit.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hit.point;
+            positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
+
+            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+        else if (hitPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitPlanet.point;
+            positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+        }
+
+
+        middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
+        middleOfLaser.GetComponent<LineRenderer>().SetWidth(.6f, .45f);
+
+        yield return null;
         
-        Destroy(createProjectile);
     }
 
     //fire powerful beam with two offshoots
-    //OFFSHOOTS DON'T ACTUALLY HAVE RAYCASTS IN THE RIGHT DIRECTION, NEED TO HAVE THE NEXT VECTOR ADJUSTED
+    //offshoots slightly not correct
     IEnumerator fireTripleBeam(Vector2 start, Vector2 next)
     {
-        //destroy object if it doesn't collide with anything after timeout amout of time
-        GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
-        GameObject createProjectileLeft = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0)));
-        GameObject createProjectileRight = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0)));
-        createProjectile.transform.parent = this.transform;
-        createProjectileLeft.transform.parent = this.transform;
-        createProjectileRight.transform.parent = this.transform;
+		source.PlayOneShot (beamFireSound, .075f); // need assistance from chandler on this one
+        if (!middleOfLaser.activeInHierarchy)
+        {
+            middleOfLaser.SetActive(true);
+        }
+        if (!leftSideLaser.activeInHierarchy)
+        {
+            leftSideLaser.SetActive(true);
+        }
+        if (!rightSideLaser.activeInHierarchy)
+        {
+            rightSideLaser.SetActive(true);
+        }
+        if (!laserStartParticles.activeInHierarchy)
+        {
+            laserStartParticles.SetActive(true);
+        }
+        laserStartParticles.transform.position = start;
+
         //get the sign of the direction of the aim
         float signOfLook = 1;
-        if (createProjectile.transform.position.y > next.y)
+        if (middleOfLaser.transform.position.y > next.y)
         {
             signOfLook = Mathf.Sign(next.y); //this will be negative if the mouse is below bullet, rotating it appropriately
         }
@@ -429,44 +531,184 @@ public class Attack : MonoBehaviour
         }
         //rotate shot
         int rotationAmount = 25;
-        createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        createProjectileLeft.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        createProjectileRight.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        createProjectileLeft.transform.rotation = Quaternion.Euler(createProjectileLeft.transform.rotation.eulerAngles.x, createProjectileLeft.transform.rotation.eulerAngles.y, (createProjectileLeft.transform.rotation.eulerAngles.z)+ rotationAmount);
-        createProjectileRight.transform.rotation = Quaternion.Euler(createProjectileRight.transform.rotation.eulerAngles.x, createProjectileRight.transform.rotation.eulerAngles.y, (createProjectileRight.transform.rotation.eulerAngles.z) - rotationAmount);
-        
-        float maxLaser = 100f;
+        middleOfLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        leftSideLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        rightSideLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        leftSideLaser.transform.rotation = Quaternion.Euler(leftSideLaser.transform.rotation.eulerAngles.x, leftSideLaser.transform.rotation.eulerAngles.y, (leftSideLaser.transform.rotation.eulerAngles.z) + rotationAmount);
+        rightSideLaser.transform.rotation = Quaternion.Euler(rightSideLaser.transform.rotation.eulerAngles.x, rightSideLaser.transform.rotation.eulerAngles.y, (rightSideLaser.transform.rotation.eulerAngles.z) - rotationAmount);
+
+        float maxLaser = 200f;
 
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
-
+        int layerMaskPlanet = layerDepth << 12;
         float size = (float)Math.Sqrt(next.x * next.x + next.y * next.y);
 
-        Vector2 nextLeft = new Vector2((float)Math.Cos(createProjectileLeft.transform.rotation.eulerAngles.z * (Math.PI/180)) * size, (float)Math.Sin(createProjectileLeft.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
-        Vector2 nextRight = new Vector2((float)Math.Cos(createProjectileRight.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(createProjectileRight.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
+        Vector2 nextLeft = new Vector2((float)Math.Cos(leftSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(leftSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
+        Vector2 nextRight = new Vector2((float)Math.Cos(rightSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size, (float)Math.Sin(rightSideLaser.transform.rotation.eulerAngles.z * (Math.PI / 180)) * size);
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(createProjectile.transform.position, next, maxLaser, layerMask);
-        foreach (RaycastHit2D hit in hits)
+        RaycastHit2D hit = Physics2D.Raycast(middleOfLaser.transform.position, next, maxLaser, layerMask);
+        RaycastHit2D hitPlanet = Physics2D.Raycast(middleOfLaser.transform.position, next, maxLaser, layerMaskPlanet);
+        Vector3[] positions = new Vector3[2];
+        positions[0] = new Vector3(start.x, start.y, 0);
+        positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
+        if (hit.collider != null && hitPlanet.collider != null)
         {
-            Instantiate(attackType, hit.point, Quaternion.identity);
-        }
-        RaycastHit2D[] hitsLeft = Physics2D.RaycastAll(createProjectileLeft.transform.position, nextLeft, maxLaser, layerMask);
-        foreach (RaycastHit2D hit in hitsLeft)
-        {
-            Instantiate(attackType, hit.point, Quaternion.identity);
-            Debug.DrawLine(createProjectileLeft.transform.position, hit.point, new Color(255, 0, 0), 5);
-        }
-        RaycastHit2D[] hitsRight = Physics2D.RaycastAll(createProjectileRight.transform.position, nextRight, maxLaser, layerMask);
-        foreach (RaycastHit2D hit in hitsRight)
-        {
-            Instantiate(attackType, hit.point, Quaternion.identity);
-            Debug.DrawLine(createProjectileRight.transform.position, hit.point, new Color(0, 255, 0), 5);
-        }
-        yield return new WaitForSeconds(.01f);
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hit.point));
+            if (distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hit.point;
+                positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
 
-        Destroy(createProjectile);
-        Destroy(createProjectileLeft);
-        Destroy(createProjectileRight);
+                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitPlanet.point;
+                positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+            }
+        }
+        else if (hit.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hit.point;
+            positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
+
+            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+        else if (hitPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitPlanet.point;
+            positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+        }
+
+        RaycastHit2D hitLeft = Physics2D.Raycast(leftSideLaser.transform.position, nextLeft, maxLaser, layerMask);
+        RaycastHit2D hitLeftPlanet = Physics2D.Raycast(leftSideLaser.transform.position, nextLeft, maxLaser, layerMaskPlanet);
+        Vector3[] positionsLeft = new Vector3[2];
+        positionsLeft[0] = new Vector3(start.x, start.y, 0);
+        positionsLeft[1] = new Vector3(nextLeft.x * 1000, nextLeft.y * 1000, 0);
+        if (hitLeft.collider != null && hitLeftPlanet.collider != null)
+        {
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitLeftPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hitLeft.point));
+            if (distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitLeft.point;
+                positionsLeft[1] = new Vector3(hitLeft.point.x, hitLeft.point.y, 0);
+
+                Instantiate(attackType, hitLeft.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitLeftPlanet.point;
+                positionsLeft[1] = new Vector3(hitLeftPlanet.point.x, hitLeftPlanet.point.y, 0);
+            }
+        }
+        else if (hitLeft.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitLeft.point;
+            positionsLeft[1] = new Vector3(hitLeft.point.x, hitLeft.point.y, 0);
+
+            Instantiate(attackType, hitLeft.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+        else if (hitLeftPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitLeftPlanet.point;
+            positionsLeft[1] = new Vector3(hitLeftPlanet.point.x, hitLeftPlanet.point.y, 0);
+        }
+        RaycastHit2D hitRight = Physics2D.Raycast(rightSideLaser.transform.position, nextRight, maxLaser, layerMask);
+        RaycastHit2D hitRightPlanet = Physics2D.Raycast(rightSideLaser.transform.position, nextRight, maxLaser, layerMaskPlanet);
+        Vector3[] positionsRight = new Vector3[2];
+        positionsRight[0] = new Vector3(start.x, start.y, 0);
+        positionsRight[1] = new Vector3(nextRight.x * 1000, nextRight.y * 1000, 0);
+        if (hitRight.collider != null && hitRightPlanet.collider != null)
+        {
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitRightPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hitRight.point));
+            if (distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitRight.point;
+                positionsRight[1] = new Vector3(hitRight.point.x, hitRight.point.y, 0);
+
+                Instantiate(attackType, hitRight.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitRightPlanet.point;
+                positionsRight[1] = new Vector3(hitRightPlanet.point.x, hitRightPlanet.point.y, 0);
+            }
+        }
+        else if (hitRight.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitRight.point;
+            positionsRight[1] = new Vector3(hitRight.point.x, hitRight.point.y, 0);
+
+            Instantiate(attackType, hitRight.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+        else if (hitRightPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitRightPlanet.point;
+            positionsRight[1] = new Vector3(hitRightPlanet.point.x, hitRightPlanet.point.y, 0);
+        }
+
+        middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
+        middleOfLaser.GetComponent<LineRenderer>().SetWidth(.6f, .45f);
+
+        leftSideLaser.GetComponent<LineRenderer>().SetPositions(positionsLeft);
+        leftSideLaser.GetComponent<LineRenderer>().SetWidth(.6f, .35f);
+
+        rightSideLaser.GetComponent<LineRenderer>().SetPositions(positionsRight);
+        rightSideLaser.GetComponent<LineRenderer>().SetWidth(.6f, .35f);
+
+        yield return null;
 
     }
 
@@ -474,15 +716,22 @@ public class Attack : MonoBehaviour
     //HIT BOX IS NOT CORRECT CURRENTLY, LINE RAYCAST NEXT TO EACH OTHER
     IEnumerator bigBeam(Vector2 start, Vector2 next)
     {
-        
+		source.PlayOneShot (beamFireSound, .1f); // need assistance from chandler on this one
         //destroy object if it doesn't collide with anything after timeout amout of time
-        GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
-        createProjectile.transform.localScale *= 5;
-        //createProjectile.GetComponent<BoxCollider2D>();
-        createProjectile.transform.parent = this.transform;
+        //destroy object if it doesn't collide with anything after timeout amout of time
+        if (!middleOfLaser.activeInHierarchy)
+        {
+            middleOfLaser.SetActive(true);
+        }
+        if (!laserStartParticles.activeInHierarchy)
+        {
+            laserStartParticles.SetActive(true);
+        }
+        laserStartParticles.transform.position = start;
+
         //get the sign of the direction of the aim
         float signOfLook = 1;
-        if (createProjectile.transform.position.y > next.y)
+        if (middleOfLaser.transform.position.y > next.y)
         {
             signOfLook = Mathf.Sign(next.y); //this will be negative if the mouse is below bullet, rotating it appropriately
         }
@@ -493,19 +742,70 @@ public class Attack : MonoBehaviour
             angle = angle * -1;
         }
         //rotate shot
-        createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        float maxLaser = 100f;
+        middleOfLaser.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        float maxLaser = 200f;
 
         int layerDepth = 1;
         int layerMask = layerDepth << 9; //enemies on 9th layer
-        RaycastHit2D[] hits = Physics2D.RaycastAll(createProjectile.transform.position, next, maxLaser, layerMask); //STACK LINECASTING ALL RIGHT NEXT TO EACH OTHER FOR WHOLE WIDTH
-        foreach (RaycastHit2D hit in hits)
+        int layerMaskPlanet = layerDepth << 12; //the planets
+        //raycast to both planets and enemies, to check which one the laser hits first
+        RaycastHit2D hit = Physics2D.Raycast(start, next, maxLaser, layerMask); //create a perpendicular line that contains the stacked raycasts as it aims
+        RaycastHit2D hitPlanet = Physics2D.Raycast(start, next, maxLaser, layerMaskPlanet);
+        Vector3[] positions = new Vector3[2];
+        positions[0] = new Vector3(start.x, start.y, 0);
+        positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
+        if (hit.collider != null && hitPlanet.collider != null)
         {
-            Instantiate(attackType, hit.point, Quaternion.identity);
+            float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitPlanet.point));
+            float distanceToEnemy = Math.Abs(Vector2.Distance(start, hit.point));
+            if (distanceToEnemy <= distanceToPlanet)
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hit.point;
+                positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
+
+                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                if (!laserHitParticles.activeInHierarchy)
+                {
+                    laserHitParticles.SetActive(true);
+                }
+                laserHitParticles.transform.position = hitPlanet.point;
+                positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+            }
         }
-        yield return new WaitForSeconds(.01f);
+        else if (hit.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hit.point;
+            positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
+
+            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+        else if (hitPlanet.collider != null)
+        {
+            if (!laserHitParticles.activeInHierarchy)
+            {
+                laserHitParticles.SetActive(true);
+            }
+            laserHitParticles.transform.position = hitPlanet.point;
+            positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
+        }
+
+        middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
+        middleOfLaser.GetComponent<LineRenderer>().SetWidth(3f, 2.25f);
+
         
-        Destroy(createProjectile);
+        yield return null;
     }
 
 
@@ -515,6 +815,8 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
+
+		source.PlayOneShot (bombFireSound, .05f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -549,19 +851,19 @@ public class Attack : MonoBehaviour
             if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
             {
                 impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
-                if(splitAmount == 1)
+                if (splitAmount == 1)
                 {
                     Instantiate(attackType, impact.point, Quaternion.identity);
                 }
-                else if(splitAmount == 3)
+                else if (splitAmount == 3)
                 {
                     Instantiate(attackType, impact.point + new Vector2(0, 5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
                 }
-                else if(splitAmount == 5)
+                else if (splitAmount == 5)
                 {
-                    Instantiate(attackType, impact.point + new Vector2(0, 5), Quaternion.identity);
+                    Instantiate(attackType, impact.point + new Vector2(0, 0), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(5, 5), Quaternion.identity);
@@ -575,7 +877,7 @@ public class Attack : MonoBehaviour
         Destroy(createProjectile);
     }
 
-    
+
     //charges up large shot
     //Needs to be adjusted
     IEnumerator energyShot(Vector2 start, Vector2 next, float attackSpeed, float scaleFactor)
@@ -583,6 +885,8 @@ public class Attack : MonoBehaviour
 
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
+		source.PlayOneShot (standardFireSound, .05f);
+
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
         //createProjectile.transform.localScale *= maxCharge;
@@ -636,6 +940,7 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
+		source.PlayOneShot (fastShotFireSound, .05f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -671,19 +976,19 @@ public class Attack : MonoBehaviour
             int layerDepth = 1;
             int layerMask = layerDepth << 9; //enemies on 9th layer
             if (createProjectile != null && Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask) && !hit)
-            {                
+            {
                 //Penetration of the bullet increases with each level up, and only works when entered into the enemy the first time.
-                if(penetrationPower > 0 && !entered)
+                if (penetrationPower > 0 && !entered)
                 {
                     impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
                     Instantiate(attackType, impact.point, Quaternion.identity);
                     penetrationPower--;
-                    entered = true; 
+                    entered = true;
                 }
-                if(penetrationPower <=0)
+                if (penetrationPower <= 0)
                 {
                     hit = true;
-                }  
+                }
             }
             else
             {
@@ -715,6 +1020,7 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
+		source.PlayOneShot (shotGunFireSound, .075f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -771,7 +1077,7 @@ public class Attack : MonoBehaviour
             yield return null;
         }
         canAttack = true;
-        
+
     }
 
     IEnumerator BeamTimeLeft(float beamTimer)
@@ -795,26 +1101,30 @@ public class Attack : MonoBehaviour
         }
         else if (attackTypeString == "DemonicSonic(Clone)")
         {
-            energySouls += 10;
-            beamSouls += 10;
+            energySouls += 1;
+            beamSouls += 1;
         }
         else if (attackTypeString == "BoomEnemy(Clone)")
         {
-            energySouls += 20;
-            bombSouls += 10;
+            energySouls += 2;
+            bombSouls += 1;
         }
         else if (attackTypeString == "SpookyGuy(Clone)")
         {
 
-            energySouls += 25;
-            spookyGuySouls += 10;
+            energySouls += 3;
+            speedSouls += 1;
         }
         else if (attackTypeString == "FallenGuy(Clone)")
         {
-            energySouls += 15;
-            shotgunSouls += 10;
+            energySouls += 2;
+            shotgunSouls += 1;
         }
-        soulsText.text = "Souls: Energy= " + energySouls + " Beam= " + beamSouls + " Bomb= " + bombSouls + " Speed= " + spookyGuySouls + " Shotgun= " + shotgunSouls;
+        energySoulsText.text = energySouls.ToString();
+        beamSoulsText.text = beamSouls.ToString();
+        bombSoulsText.text = bombSouls.ToString();
+        speedSoulsText.text = speedSouls.ToString();
+        shotgunSoulsText.text = shotgunSouls.ToString();
     }
 
     public void SwitchAttacks(string attackTypeString)
@@ -824,22 +1134,21 @@ public class Attack : MonoBehaviour
         {
             projectile = projectileEnergy;
             attackType = attackTypeEnergy;
-            speedOfProjectile = 1f;
-            rateOfFire = 4.0f;
-            
+            speedOfProjectile = 2f;
+            rateOfFire = 8.5f;
+
         }
         else if (attackTypeString == "Beam" && beamAttackLevel > 0)
         {
             projectile = projectileBeam;
             attackType = attackTypeBeam;
-            rateOfFire = 1.0f;
 
         }
         else if (attackTypeString == "Bomb" && bombAttackLevel > 0)
         {
             projectile = projectileBomb;
             attackType = attackTypeBomb;
-            speedOfProjectile = .4f;
+            speedOfProjectile = .5f;
             rateOfFire = 1.0f;
 
         }
@@ -848,24 +1157,24 @@ public class Attack : MonoBehaviour
             projectile = projectileSpeed;
             attackType = attackTypeSpeed;
             speedOfProjectile = spookyGuyProjectileSpeed;
-            rateOfFire = 6.0f;
+            rateOfFire = 15.0f;
 
         }
         else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
         {
             projectile = projectileShotgun;
             attackType = attackTypeShotgun;
-            speedOfProjectile = .7f;
-            rateOfFire = 3.0f;
-            
+            speedOfProjectile = 1.4f;
+            rateOfFire = 4.5f;
+
         }
         else
         {
             //case occurs when player selects weapon that is not unlocked
             projectile = projectileEnergy;
             attackType = attackTypeEnergy;
-            speedOfProjectile = 1f;
-            rateOfFire = 4.0f;
+            speedOfProjectile = 2f;
+            rateOfFire = 8.5f;
             Debug.Log("Attack is not unlocked");
             //instantiate here a warning that the player has not unlocked that attack yet
         }
@@ -901,11 +1210,11 @@ public class Attack : MonoBehaviour
                 bombAttackUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(bombAttackLevel);
 
             }
-            else if (upgradeType == "Speed" && spookyGuySouls >= spookyGuyUpgradeCost && speedAttackLevel < maxUpgradeForWeapon)
+            else if (upgradeType == "Speed" && speedSouls >= spookyGuyUpgradeCost && speedAttackLevel < maxUpgradeForWeapon)
             {
                 speedAttackLevel += 1;
                 attackTypeSpeed.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * speedAttackLevel;
-                spookyGuySouls -= spookyGuyUpgradeCost;
+                speedSouls -= spookyGuyUpgradeCost;
                 spookyGuyUpgradeCost *= 2;
                 spookyGuyProjectileSpeed = 1.2f + (speedAttackLevel * .1f);
                 speedShotUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(speedAttackLevel);
@@ -926,13 +1235,11 @@ public class Attack : MonoBehaviour
                 //instantiate here a warning that the player does not have enough souls for the attack upgrade
                 numberOfUpgrades -= 1;
             }
-			energyUpgradeText.text = energyAttackLevel.ToString ();
-			beamUpgradeText.text = beamAttackLevel.ToString();
-			bombUpgradeText.text = bombAttackLevel.ToString();
-			speedUpgradeText.text = speedAttackLevel.ToString();
-			shotgunUpgradeText.text = shotgunAttackLevel.ToString();
-
-            soulsText.text = "Souls: Energy= " + energySouls + " Beam= " + beamSouls + " Bomb= " + bombSouls + " Speed= " + spookyGuySouls + " Shotgun= " + shotgunSouls;
+            energySoulsText.text = energySouls.ToString();
+            beamSoulsText.text = beamSouls.ToString();
+            bombSoulsText.text = bombSouls.ToString();
+            speedSoulsText.text = speedSouls.ToString();
+            shotgunSoulsText.text = shotgunSouls.ToString();
         }
         else
         {
@@ -941,25 +1248,13 @@ public class Attack : MonoBehaviour
 
     }
 
-    public int GetEnergyNumberOfSouls()
+    public void DeactivateLaser()
     {
-        return energySouls;
+        middleOfLaser.SetActive(false);
+        laserStartParticles.SetActive(false);
+        laserHitParticles.SetActive(false);
+        leftSideLaser.SetActive(false);
+        rightSideLaser.SetActive(false);
     }
 
-    public int GetBombNumberOfSouls()
-    {
-        return bombSouls;
-    }
-    public int GetSpookyNumberOfSouls()
-    {
-        return spookyGuySouls;
-    }
-    public int GetShotgunNumberOfSouls()
-    {
-        return shotgunSouls;
-    }
-    public int GetBeamNumberOfSouls()
-    {
-        return beamSouls;
-    }
 }

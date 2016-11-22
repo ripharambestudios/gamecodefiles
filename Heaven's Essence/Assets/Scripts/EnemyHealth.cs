@@ -10,6 +10,7 @@ public class EnemyHealth : MonoBehaviour {
 	private int currentHealth;
 	private GameObject player;
 
+    public GameObject pool;
 	private float timeForFlashGold = .5f;
 	private float timeForFlashRed = .1f;
 
@@ -19,6 +20,8 @@ public class EnemyHealth : MonoBehaviour {
 		currentHealth = startHealth;
 		enemyManager = GameObject.FindGameObjectWithTag ("Enemy Manager");
 		player = GameObject.FindGameObjectWithTag ("Player");
+        
+
 	}
 	
 	// Message sent from player that does damage to enemy
@@ -31,7 +34,8 @@ public class EnemyHealth : MonoBehaviour {
 		if (currentHealth <= 0) {
 			enemyManager.GetComponent<EnemySpawner> ().decrementNumOfEnemies ();
 			player.SendMessage ("UpdateScore", scoreValue, SendMessageOptions.DontRequireReceiver);
-			Destroy (this.gameObject);
+            //Destroy (this.gameObject);
+            pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
 		}
 			
 		if (currentHealth > 0)
@@ -56,7 +60,7 @@ public class EnemyHealth : MonoBehaviour {
 			{
 				if (this.gameObject.GetComponent<SpriteRenderer> ().color == new Color (1, 1, 1, 1))
 				{
-					this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .792156f, 0, 1);
+					this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .925f, 0, 1);
 				} 
 				else 
 				{
@@ -74,7 +78,7 @@ public class EnemyHealth : MonoBehaviour {
 
 	IEnumerator flashRed()
 	{
-		this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .35294f, .35294f, 1);
+		this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, .17647f, .17647f, 1);
 		yield return new WaitForSeconds (timeForFlashRed);
 		this.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
 	}

@@ -15,15 +15,17 @@ public class MeteorAI : MonoBehaviour {
 	private float launchSpeed = 1f;
     private bool track = true;
     private bool weakenedOnce = false;
+	private bool canAttack;
 
 	// Use this for initialization
 	void Start () {
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
+		canAttack = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (target.gameObject != null)
+		if (target.gameObject != null && canAttack)
         {
             distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
             if (track)
@@ -78,9 +80,9 @@ public class MeteorAI : MonoBehaviour {
 		int maxDistance = 10000;
 		int layerDepth = 1;
 		int layerMask = layerDepth << 8; //player on 8th layer
-		int obsticalMask = layerDepth << 12; //obsticale on 12th layer
+        int obsticalMask = layerDepth << 12; //obsticale on 12th layer
 		RaycastHit2D impact = Physics2D.Raycast(nextPosition, endLocation, maxDistance, layerMask);
-		RaycastHit2D impactObsticale = Physics2D.Raycast(nextPosition, endLocation, maxDistance, obsticalMask);
+        RaycastHit2D impactObsticale; // = Physics2D.Raycast(nextPosition, endLocation, maxDistance, obsticalMask);
 		//Debug.Log (impact.point + "TARGETING PLAYER");
 		yield return new WaitForSeconds (waitTime);
         
@@ -113,4 +115,12 @@ public class MeteorAI : MonoBehaviour {
 		yield return new WaitForSeconds (attackCooldown);
 		isAttacking = false;
 	}
+
+	public void setCanAttack(bool booleanSent)
+	{
+		canAttack = booleanSent;
+	}
+
+
+
 }
