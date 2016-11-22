@@ -12,6 +12,7 @@ public class MainCharacterController : MonoBehaviour
     public GameObject gameOverPanel;
     public Text HealthText;
     public Text ScoreText;
+    public bool useController;
 
     private int currentHealth;
     private Vector2 characterVector;
@@ -19,7 +20,7 @@ public class MainCharacterController : MonoBehaviour
     private Rigidbody2D player;
     private int totalScore = 0;
     private List<string> attackTypes = new List<string>();
-
+    private bool laserActivated = false;
 
     // Use this for initialization
     void Start()
@@ -42,85 +43,154 @@ public class MainCharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        characterVector.y = Input.GetAxis("Vertical");
-        characterVector.x = Input.GetAxis("Horizontal");
-
-        player.transform.Translate(characterVector.x * moveSpeed * Time.deltaTime, characterVector.y * moveSpeed * Time.deltaTime, 0);
-
         //this line will need to change
         //this.transform.LookAt((Vector2)this.transform.position +characterVector);
+        if (!useController)
+        {
+            characterVector.y = Input.GetAxis("Vertical");
+            characterVector.x = Input.GetAxis("Horizontal");
 
-        Vector3 lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lookDirection.z = 0f;
-        RaycastHit2D hit;
-        float distance = 100000;
-        if (Physics2D.Raycast(this.transform.position, lookDirection, distance))
+            player.transform.Translate(characterVector.x * moveSpeed * Time.deltaTime, characterVector.y * moveSpeed * Time.deltaTime, 0);
+            Vector3 lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            lookDirection.z = 0f;
+            RaycastHit2D hit;
+            float distance = 100000;
+            if (Physics2D.Raycast(this.transform.position, lookDirection, distance))
+            {
+                hit = Physics2D.Raycast(this.transform.position, lookDirection, distance);
+                this.GetComponent<Attack>().Aim(lookDirection);
+
+            }
+            if (Input.GetAxis("Fire1") > 0)
+            {
+                this.GetComponent<Attack>().Fire();
+            }
+            if (Input.GetKeyUp(KeyCode.Mouse0))
+            {
+                this.GetComponent<Attack>().DeactivateLaser();
+            }
+            if (Input.GetAxis("Fire2") > 0)
+            {
+                this.GetComponent<Attack>().AltFire();
+            }
+            if (Input.GetKeyUp("r"))
+            {
+                this.gameObject.SendMessage("EnemyAbsorbed", "Energy", SendMessageOptions.DontRequireReceiver);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Alpha1) && !Input.GetKey(KeyCode.LeftShift))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[0]);
+                //check for numbers 1-5 and also for numbers plus control key.  send signal to upgrade attack or change attack
+            }
+            if (Input.GetKeyUp(KeyCode.Alpha2) && !Input.GetKey(KeyCode.LeftShift))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[1]);
+            }
+            if (Input.GetKeyUp(KeyCode.Alpha3) && !Input.GetKey(KeyCode.LeftShift))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[2]);
+            }
+            if (Input.GetKeyUp(KeyCode.Alpha4) && !Input.GetKey(KeyCode.LeftShift))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[3]);
+            }
+            if (Input.GetKeyUp(KeyCode.Alpha5) && !Input.GetKey(KeyCode.LeftShift))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
+            }
+            if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
+            }
+            if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
+            }
+            if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
+
+            }
+            if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
+
+            }
+            if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
+
+            }
+        }
+        else
         {
-            hit = Physics2D.Raycast(this.transform.position, lookDirection, distance);
-            this.GetComponent<Attack>().Aim(lookDirection);
+            characterVector.y = Input.GetAxis("Vertical");
+            characterVector.x = Input.GetAxis("Horizontal");
+
+            player.transform.Translate(characterVector.x * moveSpeed * Time.deltaTime, characterVector.y * moveSpeed * Time.deltaTime, 0);
+
+            Vector3 playerDirection = new Vector3(10*Input.GetAxis("RHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("RVertical") + this.transform.position.y, 0);
+
+            if (Input.GetAxis("RHorizontal") != 0 || Input.GetAxis("RVertical") != 0)
+            {
+                this.GetComponent<Attack>().Aim(playerDirection);
+                this.GetComponent<Attack>().Fire();
+                laserActivated = true;
+            }
+            
+            if ((Input.GetAxis("RHorizontal") == 0 && Input.GetAxis("RVertical") == 0) && laserActivated)
+            {
+                this.GetComponent<Attack>().DeactivateLaser();
+                laserActivated = false;
+            }
+            if (Input.GetKeyUp(KeyCode.JoystickButton2) && !Input.GetKey(KeyCode.JoystickButton4))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[0]);
+                //check for numbers 1-5 and also for numbers plus control key.  send signal to upgrade attack or change attack
+            }
+            if (Input.GetKeyUp(KeyCode.JoystickButton1) && !Input.GetKey(KeyCode.JoystickButton4))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[1]);
+            }
+            if (Input.GetKeyUp(KeyCode.JoystickButton5) && !Input.GetKey(KeyCode.JoystickButton4))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[2]);
+            }
+            if (Input.GetKeyUp(KeyCode.JoystickButton3) && !Input.GetKey(KeyCode.JoystickButton4))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[3]);
+            }
+            if (Input.GetKeyUp(KeyCode.JoystickButton0) && !Input.GetKey(KeyCode.JoystickButton4))
+            {
+                this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
+            }
+            if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton2))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
+            }
+            if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton1))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
+            }
+            if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton5))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
+
+            }
+            if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton3))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
+
+            }
+            if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton0))
+            {
+                this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
+
+            }
+
 
         }
-        if (Input.GetAxis("Fire1") > 0)
-        {
-            this.GetComponent<Attack>().Fire();
-        }
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            this.GetComponent<Attack>().DeactivateLaser();
-        }
-        if (Input.GetAxis("Fire2") > 0)
-        {
-            this.GetComponent<Attack>().AltFire();
-        }
-        if (Input.GetKeyUp("r"))
-        {
-            this.gameObject.SendMessage("EnemyAbsorbed", "Energy", SendMessageOptions.DontRequireReceiver);
-        }
-
-        if (Input.GetKeyUp(KeyCode.Alpha1) && !Input.GetKey(KeyCode.LeftShift))
-        {
-            this.GetComponent<Attack>().SwitchAttacks(attackTypes[0]);
-            //check for numbers 1-5 and also for numbers plus control key.  send signal to upgrade attack or change attack
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha2) && !Input.GetKey(KeyCode.LeftShift))
-        {
-            this.GetComponent<Attack>().SwitchAttacks(attackTypes[1]);
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha3) && !Input.GetKey(KeyCode.LeftShift))
-        {
-            this.GetComponent<Attack>().SwitchAttacks(attackTypes[2]);
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha4) && !Input.GetKey(KeyCode.LeftShift))
-        {
-            this.GetComponent<Attack>().SwitchAttacks(attackTypes[3]);
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha5) && !Input.GetKey(KeyCode.LeftShift))
-        {
-            this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
-        }
-        if (Input.GetKey(KeyCode.LeftShift) && (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1)))
-        {
-            this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
-        }
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
-        }
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
-            
-        }
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
-            
-        }
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
-            
-		}
 	}
 			
 
