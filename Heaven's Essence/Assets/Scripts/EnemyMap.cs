@@ -17,7 +17,8 @@ public class EnemyMap : MonoBehaviour
 	public Sprite boomIcon;
 	public Sprite fallenIcon;
 	public Sprite spookIcon;
-	private Texture2D enemyTexture;
+	public Sprite playerIcon;
+
 
 	private Texture2D baseMap;
     // Use this for initialization
@@ -36,13 +37,10 @@ public class EnemyMap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		//map = baseMap;
 		clearMap(Color.black);
-        //updateMap();
 		placeEnemies();
         Sprite sprite = Sprite.Create(map, region, anchor);
         mapShower.GetComponent<UnityEngine.UI.Image>().sprite = sprite;
-
     }
 
 
@@ -77,65 +75,45 @@ public class EnemyMap : MonoBehaviour
 
 		foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyFallen"))
 		{
-			//Debug.Log("2 called");
-			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.green);
+			for (int i = 0; i < fallenIcon.texture.width; i++) {
+				for (int j = 0; j < fallenIcon.texture.height; j++) {
+					map.SetPixel((int)enemy.transform.position.x + width/2 + i, (int)enemy.transform.position.y + height/2+  j, fallenIcon.texture.GetPixel(i,j));
+				}
+			}
 		}
 
 		foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyBoom"))
 		{
-			//Debug.Log("3 called");
-			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.magenta);
+			for (int i = 0; i < boomIcon.texture.width; i++) {
+				for (int j = 0; j < boomIcon.texture.height; j++) {
+					map.SetPixel((int)enemy.transform.position.x + width/2 + i, (int)enemy.transform.position.y + height/2+  j, boomIcon.texture.GetPixel(i,j));
+				}
+			}
 		}
 
 		foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemySpook"))
 		{
-			//Debug.Log("4 called");
-			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.yellow);
+			for (int i = 0; i < spookIcon.texture.width; i++) {
+				for (int j = 0; j < spookIcon.texture.height; j++) {
+					map.SetPixel((int)enemy.transform.position.x + width/2 + i, (int)enemy.transform.position.y + height/2+  j, spookIcon.texture.GetPixel(i,j));
+				}
+			}
 		}
 
 		if (player != null) 
 		{
-			map.SetPixel ((int)player.transform.position.x + width / 2, (int)player.transform.position.y + height / 2, Color.blue);
+			for (int i = 0; i < playerIcon.texture.width; i++) {
+				for (int j = 0; j < playerIcon.texture.height; j++) {
+					map.SetPixel((int)player.transform.position.x + width/2 + i, (int)player.transform.position.y + height/2+  j, playerIcon.texture.GetPixel(i,j));
+				}
+			}
 		}
 			
 
 		map.Apply();
 
 	}
-    void updateMap()
-    {
-        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyDemonic"))
-        {
-            //Debug.Log("1 called");
-            map.SetPixel((int)enemy.transform.position.x + width/2, (int)enemy.transform.position.y + height/2, Color.red);
-        }
 
-        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyFallen"))
-        {
-            //Debug.Log("2 called");
-			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.green);
-        }
-
-        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemyBoom"))
-        {
-            //Debug.Log("3 called");
-			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.magenta);
-        }
-
-        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("EnemySpook"))
-        {
-            //Debug.Log("4 called");
-			map.SetPixel((int)enemy.transform.position.x + width / 2, (int)enemy.transform.position.y + height / 2, Color.yellow);
-        }
-
-		if (player != null) 
-		{
-			map.SetPixel ((int)player.transform.position.x + width / 2, (int)player.transform.position.y + height / 2, Color.blue);
-		}
-
-        map.Apply();
-
-    }
 
 
 }
