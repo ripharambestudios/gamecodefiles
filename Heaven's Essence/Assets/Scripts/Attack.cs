@@ -214,6 +214,7 @@ public class Attack : MonoBehaviour
 
     public void Aim(Vector2 aimTarget)
     {
+
         aimLocation = aimTarget;
         attackSpawn.transform.LookAt(aimLocation);
         attackAngle = attackSpawn.transform.forward;
@@ -874,7 +875,7 @@ public class Attack : MonoBehaviour
     //Needs to be adjusted
     IEnumerator energyShot(Vector2 start, Vector2 next, float attackSpeed, float scaleFactor)
     {
-
+		Debug.Log ("fire");
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
 		source.PlayOneShot (standardFireSound, .025f);
