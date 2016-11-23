@@ -805,7 +805,7 @@ public class Attack : MonoBehaviour
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
 
-		source.PlayOneShot (bombFireSound, .05f);
+		source.PlayOneShot (bombFireSound, .035f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -877,7 +877,7 @@ public class Attack : MonoBehaviour
 
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
-		source.PlayOneShot (standardFireSound, .05f);
+		source.PlayOneShot (standardFireSound, .025f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -932,7 +932,7 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
-		source.PlayOneShot (fastShotFireSound, .05f);
+		source.PlayOneShot (fastShotFireSound, .035f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -1012,7 +1012,7 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
-		source.PlayOneShot (shotGunFireSound, .075f);
+		source.PlayOneShot (shotGunFireSound, .05f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;

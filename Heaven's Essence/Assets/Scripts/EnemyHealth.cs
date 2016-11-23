@@ -6,6 +6,9 @@ public class EnemyHealth : MonoBehaviour {
 	public int startHealth = 100;
 	public int scoreValue= 0;
 	private GameObject enemyManager;
+	public AudioClip enemyHitSound;
+
+	private AudioSource source;
 
 	private int currentHealth;
 	private GameObject player;
@@ -20,12 +23,14 @@ public class EnemyHealth : MonoBehaviour {
 		currentHealth = startHealth;
 		enemyManager = GameObject.FindGameObjectWithTag ("Enemy Manager");
 		player = GameObject.FindGameObjectWithTag ("Player");
-        
+		source = gameObject.AddComponent<AudioSource> ();
 
 	}
 	
 	// Message sent from player that does damage to enemy
-	public void DealDamage (int damage) {
+	public void DealDamage (int damage)
+	{
+		source.PlayOneShot (enemyHitSound, .05f);
 		currentHealth -= damage;
 		if (damage == 1000000) {
 			scoreValue -= (scoreValue / 5);

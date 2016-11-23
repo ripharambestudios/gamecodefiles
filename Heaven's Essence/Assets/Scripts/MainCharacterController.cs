@@ -12,13 +12,18 @@ public class MainCharacterController : MonoBehaviour
     public GameObject gameOverPanel;
     public Text HealthText;
     public Text ScoreText;
+	public AudioClip playerHit;
+	public AudioClip playerDeath;
 
-    private int currentHealth;
+	private AudioSource source;
+	private int currentHealth;
     private Vector2 characterVector;
     private Vector2 healthStartVector;
     private Rigidbody2D player;
     private int totalScore = 0;
     private List<string> attackTypes = new List<string>();
+	private float timeForFlashRed = .1f;
+	private float timeForFlashGreen = .25f;
 
 
     // Use this for initialization
@@ -36,6 +41,7 @@ public class MainCharacterController : MonoBehaviour
         attackTypes.Add("Speed");
         attackTypes.Add("Shotgun");
         healthStartVector = healthBar.GetComponent<RectTransform>().sizeDelta;
+		source = this.gameObject.AddComponent<AudioSource> ();
         
     }
 
@@ -127,11 +133,16 @@ public class MainCharacterController : MonoBehaviour
     public void EnemyDamage(int damageDone)
     {
         currentHealth -= damageDone;
+		StartCoroutine (flashRed());
+		source.PlayOneShot (playerHit, .1f);
         if (currentHealth <= 0)
         {
             currentHealth = 0;
             gameOverPanel.SetActive(true);
-            Destroy(this.gameObject);
+			source.PlayOneShot (playerDeath, .75f);
+			this.GetComponentInChildren<SpriteRenderer> ().enabled = false;
+			this.GetComponentInChildren<BoxCollider2D> ().enabled = false;
+			Destroy(this.gameObject, playerDeath.length);
         }
         else if(currentHealth > 1000)
         {
@@ -139,6 +150,23 @@ public class MainCharacterController : MonoBehaviour
         }
         setHealthBar();
     }
+
+	public void ReturnHealth(int healthBack)
+	{
+		currentHealth += healthBack;
+		StartCoroutine (flashGreen());
+		if (currentHealth <= 0)
+		{
+			currentHealth = 0;
+			gameOverPanel.SetActive(true);
+			Destroy(this.gameObject);
+		}
+		else if(currentHealth > 1000)
+		{
+			currentHealth = 1000;
+		}
+		setHealthBar();
+	}
 
     public int GetHealth()
     {
@@ -166,4 +194,18 @@ public class MainCharacterController : MonoBehaviour
         }
 
     }
+
+	IEnumerator flashRed()
+	{
+		this.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, .17647f, .17647f, 1);
+		yield return new WaitForSeconds (timeForFlashRed);
+		this.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+	}
+
+	IEnumerator flashGreen()
+	{
+		this.GetComponentInChildren<SpriteRenderer> ().color = new Color (.17647f, 1, .17647f, 1);
+		yield return new WaitForSeconds (timeForFlashGreen);
+		this.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+	}
 }

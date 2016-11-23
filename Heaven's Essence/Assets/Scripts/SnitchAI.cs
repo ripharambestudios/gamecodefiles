@@ -8,7 +8,7 @@ public class SnitchAI : MonoBehaviour {
 	private float distanceToTarget;
 	private float minTether;
 	private bool canMove = true;
-	private int healthReGen = -150;
+	private int healthReGen = 150;
 
 	// Use this for initialization
 	void Start () {
@@ -44,7 +44,7 @@ public class SnitchAI : MonoBehaviour {
 	{
 		if (col.gameObject.tag == "Player") 
 		{
-			col.gameObject.SendMessage ("EnemyDamage", healthReGen, SendMessageOptions.DontRequireReceiver);
+			col.gameObject.SendMessage ("ReturnHealth", healthReGen, SendMessageOptions.DontRequireReceiver);
 			Destroy (this.gameObject);
 		}
 	}

@@ -12,14 +12,19 @@ public class SpriteForUpgradeChange : MonoBehaviour {
     public Sprite upgradeLevel5;
     public Sprite upgradeLevel6;
     public Sprite upgradeLevel7;
+	public AudioClip upgradeSound;
+
+	private AudioSource source;
 
     // Use this for initialization
     void Start () {
         this.GetComponent<Image>().sprite = upgradeLevel0;
+		source = this.gameObject.AddComponent<AudioSource> ();
 	}
 	
 	public void setSpriteLevel(int level)
     {
+		source.PlayOneShot (upgradeSound, .075f);
         switch(level)
         {
             case 0:
