@@ -32,7 +32,6 @@ public class PoolingSystem : MonoBehaviour {
             poolObjects.Add((info));
             DontDestroyOnLoad(info);
         }
-        Debug.Log("Pool Made");
     }
 
     public GameObject GetObject()

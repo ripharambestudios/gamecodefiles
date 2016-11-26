@@ -107,7 +107,6 @@ public class EdgeWrapping : MonoBehaviour {
 				distanceCovered = distanceToGo;
 				nextPosition = enemy.transform.position;
 			}
-
 			enemy.transform.position = nextPosition;
 			yield return null;
 		}

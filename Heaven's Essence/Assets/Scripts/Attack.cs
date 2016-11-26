@@ -7,6 +7,7 @@ public class Attack : MonoBehaviour
 {
     public GameObject attackSpawn;
 
+	[Header("Attack Types")]
     //energy attack type
     public GameObject projectileEnergy;
     public GameObject attackTypeEnergy;
@@ -21,16 +22,18 @@ public class Attack : MonoBehaviour
     public GameObject attackTypeSpeed;
     //fallen guy attack type
     public GameObject projectileShotgun;
-    public GameObject attackTypeShotgun;
 
+	[Header("Particle Effects")]
     // the wing particle effect
     public GameObject wingParticleEffect;
 
+	[Header("Audio Clips")]
 	public AudioClip standardFireSound;
 	public AudioClip beamFireSound;
 	public AudioClip bombFireSound;
 	public AudioClip fastShotFireSound;
 	public AudioClip shotGunFireSound;
+	public AudioClip bombExplodeSound;
 
     [Header("Laser Parts")]
     public GameObject laserParticles;
@@ -41,6 +44,7 @@ public class Attack : MonoBehaviour
     private float speedOfProjectile = 1f;
     private float rateOfFire = 4.0f;
 
+	[Header("Souls Text")]
     //Attack upgrades and souls text
     public Text energySoulsText;
     public Text beamSoulsText;
@@ -122,13 +126,11 @@ public class Attack : MonoBehaviour
         attackTypeEnergy.GetComponent<DoDamage>().damage = 5;
         attackTypeBeam.GetComponent<DoDamage>().damage = 1;
         attackTypeBomb.GetComponent<DoDamage>().damage = 6;
-        attackTypeShotgun.GetComponent<DoDamage>().damage = 3;
         attackTypeSpeed.GetComponent<DoDamage>().damage = 2;
         //save initial damage done by attacks
         energyInitialDamage = attackTypeEnergy.GetComponent<DoDamage>().damage;
         beamInitialDamage = attackTypeBeam.GetComponent<DoDamage>().damage;
         bombInitialDamage = attackTypeBomb.GetComponent<DoDamage>().damage;
-        shotgunInitialDamage = attackTypeShotgun.GetComponent<DoDamage>().damage;
         spookyGuyInitialDamage = attackTypeSpeed.GetComponent<DoDamage>().damage;
 
         energyShotUpgradeIcon = GameObject.Find("Attack level Basic");
@@ -212,6 +214,7 @@ public class Attack : MonoBehaviour
 
     public void Aim(Vector2 aimTarget)
     {
+
         aimLocation = aimTarget;
         attackSpawn.transform.LookAt(aimLocation);
         attackAngle = attackSpawn.transform.forward;
@@ -291,22 +294,9 @@ public class Attack : MonoBehaviour
 
                     _rateOfFire = 1 / rateOfFire;
                     canAttack = false;
-
-                    if (shotgunAttackLevel >= 1 && shotgunAttackLevel < 3)
-                    {
-                        StartCoroutine(shotgunShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
-                        StartCoroutine(Cooldown(_rateOfFire));
-                    }
-                    else if (shotgunAttackLevel >= 3 && shotgunAttackLevel < 5)
-                    {
-                        StartCoroutine(shotgunShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
-                        StartCoroutine(Cooldown(_rateOfFire));
-                    }
-                    else if (shotgunAttackLevel >= 5)
-                    {
-                        StartCoroutine(shotgunShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
-                        StartCoroutine(Cooldown(_rateOfFire));
-                    }
+                    StartCoroutine(shotgunShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
+                    StartCoroutine(Cooldown(_rateOfFire));
+                    
                 }
                 else
                 {
@@ -816,7 +806,7 @@ public class Attack : MonoBehaviour
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
 
-		source.PlayOneShot (bombFireSound, .05f);
+		source.PlayOneShot (bombFireSound, .035f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -853,16 +843,19 @@ public class Attack : MonoBehaviour
                 impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
                 if (splitAmount == 1)
                 {
+					source.PlayOneShot (bombExplodeSound, .075f);
                     Instantiate(attackType, impact.point, Quaternion.identity);
                 }
                 else if (splitAmount == 3)
                 {
+					source.PlayOneShot (bombExplodeSound, .15f);
                     Instantiate(attackType, impact.point + new Vector2(0, 5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
                 }
                 else if (splitAmount == 5)
                 {
+					source.PlayOneShot (bombExplodeSound, .3f);
                     Instantiate(attackType, impact.point + new Vector2(0, 0), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
@@ -882,10 +875,10 @@ public class Attack : MonoBehaviour
     //Needs to be adjusted
     IEnumerator energyShot(Vector2 start, Vector2 next, float attackSpeed, float scaleFactor)
     {
-
+		Debug.Log ("fire");
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
-		source.PlayOneShot (standardFireSound, .05f);
+		source.PlayOneShot (standardFireSound, .025f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -940,7 +933,7 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
-		source.PlayOneShot (fastShotFireSound, .05f);
+		source.PlayOneShot (fastShotFireSound, .035f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -1020,10 +1013,11 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
-		source.PlayOneShot (shotGunFireSound, .075f);
+		source.PlayOneShot (shotGunFireSound, .05f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
+		createProjectile.gameObject.GetComponent<ShotgunKnockback> ().upgradeLevel = shotgunAttackLevel; // changes shot gun level
 
 
         //get the sign of the direction of the aim
@@ -1163,10 +1157,10 @@ public class Attack : MonoBehaviour
         else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
         {
             projectile = projectileShotgun;
-            attackType = attackTypeShotgun;
+            speedOfProjectile = .7f;
+            rateOfFire = 3.0f;
             speedOfProjectile = 1.4f;
             rateOfFire = 4.5f;
-
         }
         else
         {
@@ -1223,7 +1217,6 @@ public class Attack : MonoBehaviour
             else if (upgradeType == "Shotgun" && shotgunSouls >= shotgunUpgradeCost && shotgunAttackLevel < maxUpgradeForWeapon)
             {
                 shotgunAttackLevel += 1;
-                attackTypeShotgun.GetComponent<DoDamage>().damage = shotgunInitialDamage * shotgunAttackLevel;
                 shotgunSouls -= shotgunUpgradeCost;
                 shotgunUpgradeCost *= 2;
                 shotgunAttackUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(shotgunAttackLevel);

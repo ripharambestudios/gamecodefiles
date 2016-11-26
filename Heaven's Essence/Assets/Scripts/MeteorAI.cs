@@ -8,6 +8,7 @@ public class MeteorAI : MonoBehaviour {
 	public float damage = 20f;
 	public float waitTime =0.25f;
 	public float attackCooldown = .25f;
+	public float knockBackDistance;
 
 	private GameObject target;
 	private float distanceToTarget;
@@ -19,6 +20,7 @@ public class MeteorAI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		knockBackDistance = 2;
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
 		canAttack = true;
 	}
@@ -91,7 +93,8 @@ public class MeteorAI : MonoBehaviour {
 		if (distanceToGo > 50f) {
 			distanceToGo = 50f;
 		}
-		while(distanceCovered < distanceToGo){
+		while(distanceCovered < distanceToGo && canAttack)
+		{
 			nextPosition += look.normalized * launchSpeed; //try time.detlatime to see if that can make it better
 			distanceCovered += Math.Abs (Vector2.Distance (this.transform.position, nextPosition));
 			if (Physics2D.Linecast (this.transform.position, nextPosition, layerMask) && !hasHit) {
@@ -120,7 +123,52 @@ public class MeteorAI : MonoBehaviour {
 	{
 		canAttack = booleanSent;
 	}
+		
+	public void startKnockBack(float degree)
+	{
+		StartCoroutine (BounceOff(degree, 1f));
+	}
+
+	public void setKnockBackAmount(int distance)
+	{
+		knockBackDistance = distance;
+	}
 
 
+	IEnumerator BounceOff(float degree, float knockBackSpeed)
+	{
+		//yield return null;
+		float numAddX = Mathf.Cos(degree * (Mathf.PI / 180)) * knockBackDistance;
+		float numAddY = Mathf.Sin(degree * (Mathf.PI / 180)) * knockBackDistance;
+		float endX = numAddX + this.gameObject.transform.position.x;
+		float endY = numAddY + this.gameObject.transform.position.y;
+		Vector2 endLocation = new Vector2 (endX, endY);
+		Vector2 nextPosition = this.gameObject.transform.position;
+		Vector2 look = endLocation - nextPosition;
+		float distanceCovered = 0;
+		int maxDistance = 100;
+		int layerDepth = 1;
+		int obsticalMask = layerDepth << 12; //obsticale on 12th layer
+		RaycastHit2D impactObsticale = Physics2D.Raycast(nextPosition, endLocation, maxDistance, obsticalMask);
 
+
+		float distanceToGo = knockBackDistance;
+		while(distanceCovered < distanceToGo)
+		{
+			nextPosition += look.normalized * knockBackSpeed;
+			distanceCovered += Math.Abs (Vector2.Distance (this.gameObject.transform.position, nextPosition));
+
+			if (Physics2D.Linecast (this.gameObject.transform.position, nextPosition, obsticalMask)) // if it his an obsticale it stops moving
+			{
+				impactObsticale = Physics2D.Linecast (this.gameObject.transform.position, nextPosition, obsticalMask);
+				distanceCovered = distanceToGo;
+				nextPosition = this.gameObject.transform.position;
+			}
+
+			this.gameObject.transform.position = nextPosition;
+			yield return null;
+		}
+		yield return new WaitForSeconds (.5f); // cooldown
+		canAttack = true;
+	}
 }
