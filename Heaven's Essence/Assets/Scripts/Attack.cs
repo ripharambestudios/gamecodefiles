@@ -1123,14 +1123,13 @@ public class Attack : MonoBehaviour
 
     public void SwitchAttacks(string attackTypeString)
     {
-
+        this.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         if (attackTypeString == "Energy")
         {
             projectile = projectileEnergy;
             attackType = attackTypeEnergy;
             speedOfProjectile = 2f;
             rateOfFire = 8.5f;
-
         }
         else if (attackTypeString == "Beam" && beamAttackLevel > 0)
         {
