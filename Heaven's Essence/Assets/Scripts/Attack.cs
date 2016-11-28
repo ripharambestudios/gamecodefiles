@@ -7,7 +7,7 @@ public class Attack : MonoBehaviour
 {
     public GameObject attackSpawn;
 
-	[Header("Attack Types")]
+    [Header("Attack Types")]
     //energy attack type
     public GameObject projectileEnergy;
     public GameObject attackTypeEnergy;
@@ -23,17 +23,17 @@ public class Attack : MonoBehaviour
     //fallen guy attack type
     public GameObject projectileShotgun;
 
-	[Header("Particle Effects")]
+    [Header("Particle Effects")]
     // the wing particle effect
     public GameObject wingParticleEffect;
 
-	[Header("Audio Clips")]
-	public AudioClip standardFireSound;
-	public AudioClip beamFireSound;
-	public AudioClip bombFireSound;
-	public AudioClip fastShotFireSound;
-	public AudioClip shotGunFireSound;
-	public AudioClip bombExplodeSound;
+    [Header("Audio Clips")]
+    public AudioClip standardFireSound;
+    public AudioClip beamFireSound;
+    public AudioClip bombFireSound;
+    public AudioClip fastShotFireSound;
+    public AudioClip shotGunFireSound;
+    public AudioClip bombExplodeSound;
 
     [Header("Laser Parts")]
     public GameObject laserParticles;
@@ -44,7 +44,7 @@ public class Attack : MonoBehaviour
     private float speedOfProjectile = 1f;
     private float rateOfFire = 4.0f;
 
-	[Header("Souls Text")]
+    [Header("Souls Text")]
     //Attack upgrades and souls text
     public Text energySoulsText;
     public Text beamSoulsText;
@@ -52,7 +52,7 @@ public class Attack : MonoBehaviour
     public Text speedSoulsText;
     public Text shotgunSoulsText;
 
-	private AudioSource source;
+    private AudioSource source;
 
     private GameObject projectile;
     private GameObject attackType;
@@ -120,7 +120,7 @@ public class Attack : MonoBehaviour
         rateOfFire = 10.0f;
         spookyGuyProjectileSpeed = 2.4f;
 
-		source = gameObject.AddComponent<AudioSource> ();
+        source = gameObject.AddComponent<AudioSource>();
 
         //reset attack damage values otherwise they infinitely scale
         attackTypeEnergy.GetComponent<DoDamage>().damage = 5;
@@ -229,13 +229,13 @@ public class Attack : MonoBehaviour
                 if (!startedOnce)
                 {
                     startedOnce = true;
-                    
+
                 }
                 canAttack = false;
                 _rateOfFire = 0f;
                 if (beamAttackLevel >= 1 && beamAttackLevel < 3)
                 {
-					Debug.Log (attackSpawn.transform.position);
+                    
                     StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
                     StartCoroutine(Cooldown(_rateOfFire));
 
@@ -296,7 +296,7 @@ public class Attack : MonoBehaviour
                     canAttack = false;
                     StartCoroutine(shotgunShot((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
                     StartCoroutine(Cooldown(_rateOfFire));
-                    
+
                 }
                 else
                 {
@@ -349,11 +349,9 @@ public class Attack : MonoBehaviour
                 attackTypeEnergy.GetComponent<DoDamage>().damage = energyInitialDamage * energyAttackLevel * 2;
                 StartCoroutine(Cooldown(_rateOfFire));
                 StartCoroutine(altEnergy((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
-
             }
             else if (projectile.name == projectileBeam.name && beamAttackLevel > 0)
             {
-
                 float beamTimer = 1f; //1 seconds
                 if (!startedOnce)
                 {
@@ -361,7 +359,6 @@ public class Attack : MonoBehaviour
                     startedOnce = true;
                 }
                 StartCoroutine(altBeam((Vector2)attackSpawn.transform.position, attackAngle));
-
             }
             else if (projectile.name == projectileSpeed.name && spookyGuyAttackLevel > 0)
             {
@@ -392,14 +389,14 @@ public class Attack : MonoBehaviour
     //fire powerful red beam in any direction
     //CURRENTLY ATTACKS TO FAST, DOES TOO MUCH DAMAGE
     IEnumerator fireBeam(Vector2 start, Vector2 next)
-    {   
-		source.PlayOneShot (beamFireSound, .05f); // need assistance from chandler on this one
+    {
+        source.PlayOneShot(beamFireSound, .05f); // need assistance from chandler on this one
         //destroy object if it doesn't collide with anything after timeout amout of time
         if (!middleOfLaser.activeInHierarchy)
         {
             middleOfLaser.SetActive(true);
         }
-        if(!laserStartParticles.activeInHierarchy)
+        if (!laserStartParticles.activeInHierarchy)
         {
             laserStartParticles.SetActive(true);
         }
@@ -434,7 +431,7 @@ public class Attack : MonoBehaviour
         {
             float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitPlanet.point));
             float distanceToEnemy = Math.Abs(Vector2.Distance(start, hit.point));
-            if(distanceToEnemy <= distanceToPlanet)
+            if (distanceToEnemy <= distanceToPlanet)
             {
                 if (!laserHitParticles.activeInHierarchy)
                 {
@@ -481,14 +478,14 @@ public class Attack : MonoBehaviour
         middleOfLaser.GetComponent<LineRenderer>().SetWidth(.6f, .45f);
 
         yield return null;
-        
+
     }
 
     //fire powerful beam with two offshoots
     //offshoots slightly not correct
     IEnumerator fireTripleBeam(Vector2 start, Vector2 next)
     {
-		source.PlayOneShot (beamFireSound, .075f); // need assistance from chandler on this one
+        source.PlayOneShot(beamFireSound, .075f); // need assistance from chandler on this one
         if (!middleOfLaser.activeInHierarchy)
         {
             middleOfLaser.SetActive(true);
@@ -706,7 +703,7 @@ public class Attack : MonoBehaviour
     //HIT BOX IS NOT CORRECT CURRENTLY, LINE RAYCAST NEXT TO EACH OTHER
     IEnumerator bigBeam(Vector2 start, Vector2 next)
     {
-		source.PlayOneShot (beamFireSound, .1f); // need assistance from chandler on this one
+        source.PlayOneShot(beamFireSound, .1f); // need assistance from chandler on this one
         //destroy object if it doesn't collide with anything after timeout amout of time
         //destroy object if it doesn't collide with anything after timeout amout of time
         if (!middleOfLaser.activeInHierarchy)
@@ -794,7 +791,7 @@ public class Attack : MonoBehaviour
         middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
         middleOfLaser.GetComponent<LineRenderer>().SetWidth(3f, 2.25f);
 
-        
+
         yield return null;
     }
 
@@ -806,7 +803,7 @@ public class Attack : MonoBehaviour
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
 
-		source.PlayOneShot (bombFireSound, .035f);
+        source.PlayOneShot(bombFireSound, .035f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -843,19 +840,19 @@ public class Attack : MonoBehaviour
                 impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
                 if (splitAmount == 1)
                 {
-					source.PlayOneShot (bombExplodeSound, .075f);
+                    source.PlayOneShot(bombExplodeSound, .075f);
                     Instantiate(attackType, impact.point, Quaternion.identity);
                 }
                 else if (splitAmount == 3)
                 {
-					source.PlayOneShot (bombExplodeSound, .15f);
+                    source.PlayOneShot(bombExplodeSound, .15f);
                     Instantiate(attackType, impact.point + new Vector2(0, 5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
                 }
                 else if (splitAmount == 5)
                 {
-					source.PlayOneShot (bombExplodeSound, .3f);
+                    source.PlayOneShot(bombExplodeSound, .3f);
                     Instantiate(attackType, impact.point + new Vector2(0, 0), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
                     Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
@@ -878,7 +875,7 @@ public class Attack : MonoBehaviour
 
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
-		source.PlayOneShot (standardFireSound, .025f);
+        source.PlayOneShot(standardFireSound, .025f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -933,7 +930,7 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
-		source.PlayOneShot (fastShotFireSound, .035f);
+        source.PlayOneShot(fastShotFireSound, .035f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
@@ -1013,11 +1010,11 @@ public class Attack : MonoBehaviour
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
-		source.PlayOneShot (shotGunFireSound, .05f);
+        source.PlayOneShot(shotGunFireSound, .05f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
         createProjectile.transform.parent = this.transform;
-		createProjectile.gameObject.GetComponent<ShotgunKnockback> ().upgradeLevel = shotgunAttackLevel; // changes shot gun level
+        createProjectile.gameObject.GetComponent<ShotgunKnockback>().upgradeLevel = shotgunAttackLevel; // changes shot gun level
 
 
         //get the sign of the direction of the aim

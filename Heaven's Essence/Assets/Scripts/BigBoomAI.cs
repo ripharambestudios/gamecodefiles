@@ -129,7 +129,7 @@ public class BigBoomAI : MonoBehaviour {
 				transform.position = new Vector3 (target.transform.position.x - (teleDistance * distanceForPlacement), target.transform.position.y, 0);
 			}
 
-			Collider2D[] collidersPlanets = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("Obsticale"));
+			Collider2D[] collidersPlanets = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("Obstacles"));
 			if (collidersPlanets.Length == 0) 
 			{
 				this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
