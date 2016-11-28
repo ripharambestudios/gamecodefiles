@@ -7,6 +7,8 @@ public class WeaponStoper : MonoBehaviour
     public GameObject actualExplosion;
     public float radius = 3.2f;
 
+    //Check for projectiles entering the planets and destroying them.
+    //Separate checks for player and enemies
     void OnTriggerEnter2D(Collider2D coll)
     {
         print("Collider Entered");
