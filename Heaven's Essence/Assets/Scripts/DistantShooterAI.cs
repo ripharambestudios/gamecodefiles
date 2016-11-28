@@ -93,12 +93,12 @@ public class DistantShooterAI : MonoBehaviour
 
     IEnumerator VolleyOfAttacks(float distance)
     {
-        for (int i = 0; i < numberOfProjectiles; i++)
-        {
-            yield return new WaitForSecondsRealtime(actualRateOfFire);
-            //numberOfProjectilesLaunched += 2;
 
+        while(numberOfProjectilesLaunched < numberOfProjectiles)
+        {
+            numberOfProjectilesLaunched += 2;
             StartCoroutine(DistantAttack(distance));
+            yield return new WaitForSecondsRealtime(actualRateOfFire);
         }
     }
 
@@ -116,33 +116,34 @@ public class DistantShooterAI : MonoBehaviour
         //Debug.Log("Bullet Making");
         GameObject createProjectile = (GameObject)Instantiate(projectile, launchPosition.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
         GameObject createProjectile2 = (GameObject)Instantiate(projectile, launchPosition.transform.position + new Vector3(0, -1, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
-        numberOfProjectilesLaunched += 2;
+        //numberOfProjectilesLaunched += 2;
         createProjectile.transform.parent = this.transform;
         createProjectile2.transform.parent = this.transform;
         
         
-        Vector2 nextPosition = launchPosition.transform.position;
-        Vector2 nextPosition2 = launchPosition.transform.position + new Vector3(0, -1, 0);
+        Vector2 nextPosition = this.transform.position;
+        Vector2 nextPosition2 = this.transform.position + new Vector3(0, -1, 0);
+        
         float signOfLook = 1;
         if (createProjectile.transform.position.y > nextPosition.y)
         {
             signOfLook = Mathf.Sign(nextPosition.y); //this will be negative if the mouse is below bullet, rotating it appropriately
         }
-        float angle = Vector3.Angle(Vector3.right, new Vector3(nextPosition.x, nextPosition.y, 0));
+        float angle = Vector3.Angle(Vector3.right, new Vector3(aim.x, aim.y, 0));
         
-        //angle *= signOfLook;
-        /*
-        if (this.transform.position.y < 0 && nextPosition.y < 0)
+        angle *= signOfLook;
+        if (this.transform.position.y < 0 && aim.y < 0)
         {
             angle = angle * -1;
         }
-        */
+
         //rotate shot
         createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         createProjectile2.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
+        
         bool hit = false;
-        while (timeout > 0f && !hit)
+        bool hit2 = false;
+        while (timeout > 0f && (!hit||!hit2))
         {
             timeout -= Time.deltaTime;
             int layerDepth = 1;
@@ -161,7 +162,11 @@ public class DistantShooterAI : MonoBehaviour
 
                 }
                 createProjectile.transform.position = nextPosition;
-
+                if (hit)
+                {
+                    DestroyImmediate(createProjectile.gameObject);
+                    numberOfProjectilesLaunched--;
+                }
             }
 
             if (createProjectile2 != null)
@@ -173,15 +178,14 @@ public class DistantShooterAI : MonoBehaviour
 
                     impact2 = Physics2D.Linecast(createProjectile2.transform.position, nextPosition2, layerMask);
                     impact2.collider.gameObject.SendMessage("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
-                    hit = true;
+                    hit2 = true;
 
                 }
                 createProjectile2.transform.position = nextPosition2;
-                if (hit)
+                if (hit2)
                 {
-                    DestroyImmediate(createProjectile.gameObject);
                     DestroyImmediate(createProjectile2.gameObject);
-                    numberOfProjectilesLaunched -= 2;
+                    numberOfProjectilesLaunched--;
                 }
                 yield return null;
             }
@@ -190,15 +194,13 @@ public class DistantShooterAI : MonoBehaviour
         if (!hit)
         {
             DestroyImmediate(createProjectile.gameObject);
-            DestroyImmediate(createProjectile2.gameObject);
-
-            numberOfProjectilesLaunched -= 2;
+            numberOfProjectilesLaunched--;
         }
-
-
-        //Debug.Log(numberOfProjectilesLaunched);
-
-
+        if (!hit2)
+        {
+            DestroyImmediate(createProjectile2.gameObject);
+            numberOfProjectilesLaunched--;
+        }
         //Debug.Log(numberOfProjectilesLaunched);
         if (numberOfProjectilesLaunched <= 0)
         {
@@ -266,4 +268,10 @@ public class DistantShooterAI : MonoBehaviour
 		yield return new WaitForSeconds (.5f); // cooldown
 		canAttack = true;
 	}
+
+    //used by external scripts to correctly calculate number of projectiles for spooky guy
+    public void decrementNumberOfProjectiles()
+    {
+        numberOfProjectilesLaunched -= 1;
+    }
 }
