@@ -13,28 +13,24 @@ public class BigBoomAI : MonoBehaviour {
 	public float edgeY = 54f;
 	public float edgeX = 105f;
 	public float knockBackDistance;
-
 	static private int direction = 0;
 	private GameObject target;
 	private float distanceToTarget;
 	private bool isAttacking = false;
     private Animator animator;
-
 	public GameObject attackType;
-
 	public float teleportTime = 2f;
-
 	public int teleDistance = 5;
 
 	private bool weakenedOnce = false;
-
 	private bool correctPlacement = false;
 	private bool canAttack = true;
 	private System.Random randNum;
 
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		knockBackDistance = 2;
 		isAttacking = false;
 		target = GameObject.FindWithTag ("Player");
@@ -130,7 +126,7 @@ public class BigBoomAI : MonoBehaviour {
 			}
 
 			Collider2D[] collidersPlanets = Physics2D.OverlapCircleAll (this.transform.position, radius, 1 << LayerMask.NameToLayer("Obsticale"));
-			if (collidersPlanets.Length == 0) 
+			if (collidersPlanets.Length == 0)
 			{
 				this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 				correctPlacement = true;

@@ -44,7 +44,7 @@ public class MainCharacterController : MonoBehaviour
         attackTypes.Add("Shotgun");
         healthStartVector = healthBar.GetComponent<RectTransform>().sizeDelta;
 		source = this.gameObject.AddComponent<AudioSource> ();
-		useController = false;
+		useController = true;
         
     }
 

@@ -36,7 +36,8 @@ public class PoolingSystem : MonoBehaviour {
 
     public GameObject GetObject()
     {
-        for(int i = 0; i < poolObjects.Count; i++) {
+        for(int i = 0; i < poolObjects.Count; i++) 
+		{
             if (poolObjects[i].activeSelf == false)
             {
                 poolObjects[i].SetActive(true);

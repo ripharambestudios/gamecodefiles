@@ -43,7 +43,7 @@ public class DistantShooterAI : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (target != null && canAttack)
         {
@@ -158,51 +158,60 @@ public class DistantShooterAI : MonoBehaviour
                     impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
                     impact.collider.gameObject.SendMessage("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
                     hit = true;
-
                 }
                 createProjectile.transform.position = nextPosition;
-
+				if (hit)
+				{
+					DestroyImmediate(createProjectile.gameObject);
+					numberOfProjectilesLaunched -= 1;
+					if (createProjectile2 != null) 
+					{
+						hit = false;
+					}
+				}
             }
-
-            if (createProjectile2 != null)
-            {
-                nextPosition2 += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
-                RaycastHit2D impact2;
-                if (Physics2D.Linecast(createProjectile2.transform.position, nextPosition2, layerMask))
-                {
-
-                    impact2 = Physics2D.Linecast(createProjectile2.transform.position, nextPosition2, layerMask);
-                    impact2.collider.gameObject.SendMessage("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
-                    hit = true;
-
-                }
-                createProjectile2.transform.position = nextPosition2;
-                if (hit)
-                {
-                    DestroyImmediate(createProjectile.gameObject);
-                    DestroyImmediate(createProjectile2.gameObject);
-                    numberOfProjectilesLaunched -= 2;
-                }
-                yield return null;
-            }
+			if (createProjectile2 != null) {
+				nextPosition2 += aim.normalized * projectileSpeed * Time.fixedDeltaTime;
+				RaycastHit2D impact2;
+				if (Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask)) {
+					impact2 = Physics2D.Linecast (createProjectile2.transform.position, nextPosition2, layerMask);
+					impact2.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
+					hit = true;
+				}
+				createProjectile2.transform.position = nextPosition2;
+				if (hit)
+				{
+					DestroyImmediate (createProjectile2.gameObject);
+					numberOfProjectilesLaunched -= 1;
+					if (createProjectile != null)
+					{
+						hit = false;
+					}
+				}
+			} 
+			yield return null;
         }
-
-        if (!hit)
+		if (!hit && createProjectile != null)
         {
             DestroyImmediate(createProjectile.gameObject);
-            DestroyImmediate(createProjectile2.gameObject);
-
-            numberOfProjectilesLaunched -= 2;
+            numberOfProjectilesLaunched -= 1;
         }
-
-
-        //Debug.Log(numberOfProjectilesLaunched);
-
-
-        //Debug.Log(numberOfProjectilesLaunched);
+		else if (!hit && createProjectile == null) 
+		{
+			numberOfProjectilesLaunched -= 1;
+		}
+		if (!hit && createProjectile2 != null) 
+		{
+			DestroyImmediate(createProjectile2.gameObject);
+			numberOfProjectilesLaunched -= 1;
+		}
+		else if (!hit && createProjectile2 == null) 
+		{
+			numberOfProjectilesLaunched -= 1;
+		}
         if (numberOfProjectilesLaunched <= 0)
         {
-            //Debug.Log("stopAttack");
+			numberOfProjectilesLaunched = 0;
             isAttacking = false;
             setAttackingAnimation(false);
         }
@@ -228,8 +237,7 @@ public class DistantShooterAI : MonoBehaviour
 	{
 		StartCoroutine (BounceOff(degree, 1f));
 	}
-
-
+		
 	IEnumerator BounceOff(float degree, float knockBackSpeed)
 	{
 		//yield return null;

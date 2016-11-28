@@ -97,7 +97,12 @@ public class MeteorAI : MonoBehaviour {
 		{
 			nextPosition += look.normalized * launchSpeed; //try time.detlatime to see if that can make it better
 			distanceCovered += Math.Abs (Vector2.Distance (this.transform.position, nextPosition));
-			if (Physics2D.Linecast (this.transform.position, nextPosition, layerMask) && !hasHit) {
+			if (Physics2D.Linecast (this.transform.position, nextPosition, layerMask) && !hasHit) 
+			{
+				if (!this.gameObject.GetComponent<BoxCollider2D> ().isTrigger)
+				{
+					this.gameObject.GetComponent<BoxCollider2D> ().isTrigger = true;
+				}
 				impact = Physics2D.Linecast (this.transform.position, nextPosition, layerMask);
 				impact.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
 				hasHit = true;

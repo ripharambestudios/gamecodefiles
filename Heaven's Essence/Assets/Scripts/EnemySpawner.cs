@@ -19,7 +19,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private System.Random randNum;
 	static private int numberOfEnemies;
-	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 's', 'b', 'b', 'f', 'g', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
+	private List<char> enemyPossibilities = new List<char>() {'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     static private int waveNum;
     private int numberOfEnemiesPerWave = 4;
 
@@ -38,7 +38,7 @@ public class EnemySpawner : MonoBehaviour {
 		waveNum = 1;
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
 		waveText.text = "";
-        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5); // what you add is the first round amount
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 1); // what you add is the first round amount
         
     }
 
@@ -67,7 +67,7 @@ public class EnemySpawner : MonoBehaviour {
 		}
         waveText.enabled = false;
         //waveText.text = "";
-        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 35); //increases number of enemies quickly initially and then slows down as it gets further
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 1); //increases number of enemies quickly initially and then slows down as it gets further
 		waveNum++;
 	}
 
@@ -75,62 +75,44 @@ public class EnemySpawner : MonoBehaviour {
 	//credit to unity3d.com and the team there as they provided the method to spawn
 	void Spawn (int type) {
 		char enemyChar = enemyPossibilities [type];
-		if (player.GetComponent<MainCharacterController> ().GetHealth () <= 0) {
+		if (player.GetComponent<MainCharacterController> ().GetHealth () <= 0) 
+		{
 			return;
 		}
-
-		correctPlacement = false;
+			
 		Vector3 spawnLocation = new Vector3 ();
-		while (!correctPlacement) 
+		spawnLocation = new Vector3 (randNum.Next (-105, 105), randNum.Next (-55, 55), 0);
+		GameObject spawn;
+		// demonic sonic
+		if (enemyChar == 's')
 		{
+			spawn = enemyPool.GetComponent<PoolingSystem> ().GetObject ();
+			spawn.transform.parent = null;
+			spawn.transform.position = spawnLocation;
+			spawn.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 			spawnLocation = new Vector3 (randNum.Next (-105, 105), randNum.Next (-55, 55), 0);
-            GameObject spawn;
-			//create new enemy and spawn him in somewhere random
-			if (enemyChar == 's') 
-			{
-                spawn = enemyPool.GetComponent<PoolingSystem>().GetObject();
-                spawn.transform.parent = null;
-                spawn.transform.position = spawnLocation;
-                //spawn.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                //GameObject newDemonic = (GameObject)Instantiate (enemyPool, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
-                Collider2D[] collidersPlanets = Physics2D.OverlapCircleAll (spawn.transform.position, demonicRadius, 1 << LayerMask.NameToLayer ("Obsticale"));
-				if (collidersPlanets.Length == 0) 
-				{
-					correctPlacement = true;
-				}
-				else 
-				{
-					Destroy (spawn);
-				}
-			}
-			//bomb guy
-			else if (enemyChar == 'b') 
-			{
-                spawn = enemyPool2.GetComponent<PoolingSystem>().GetObject();
-                spawn.transform.position = spawnLocation;
-                spawn.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                correctPlacement = true;
-			}
-			//spooky guy
-			else if (enemyChar == 'g')
-			{
-                spawn = enemyPool3.GetComponent<PoolingSystem>().GetObject();
-                spawn.transform.position = spawnLocation;
-                spawn.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                correctPlacement = true;
-			}
-			//fallen guy
-			else if (enemyChar == 'f') 
-			{
-                spawn = enemyPool4.GetComponent<PoolingSystem>().GetObject();
-                spawn.transform.position = spawnLocation;
-                spawn.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                correctPlacement = true;
-			}
 		}
-
-        Debug.Log(correctPlacement);
-		
+			//bomb guy
+		else if (enemyChar == 'b')
+		{
+			spawn = enemyPool2.GetComponent<PoolingSystem> ().GetObject ();
+			spawn.transform.position = spawnLocation;
+			spawn.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
+		}
+			//spooky guy
+		else if (enemyChar == 'g')
+		{
+			spawn = enemyPool3.GetComponent<PoolingSystem> ().GetObject ();
+			spawn.transform.position = spawnLocation;
+			spawn.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
+		}
+			//fallen guy
+		else if (enemyChar == 'f')
+		{
+			spawn = enemyPool4.GetComponent<PoolingSystem> ().GetObject ();
+			spawn.transform.position = spawnLocation;
+			spawn.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
+		}
 	}
 
 	public void decrementNumOfEnemies(){
