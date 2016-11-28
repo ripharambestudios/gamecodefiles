@@ -16,6 +16,7 @@ public class EnemyHealth : MonoBehaviour {
     public GameObject pool;
 	private float timeForFlashGold = .5f;
 	private float timeForFlashRed = .1f;
+    public string poolName;
 
 	// Use this for initialization
 	void Start ()
@@ -24,6 +25,7 @@ public class EnemyHealth : MonoBehaviour {
 		enemyManager = GameObject.FindGameObjectWithTag ("Enemy Manager");
 		player = GameObject.FindGameObjectWithTag ("Player");
 		source = gameObject.AddComponent<AudioSource> ();
+        pool = GameObject.FindGameObjectWithTag(poolName);
 
 	}
 	

@@ -72,7 +72,7 @@ public class ShotGunAI : MonoBehaviour
                     Debug.Log("Forward");
                     transform.position += transform.right * Time.deltaTime * movementSpeed;
                 }
-                else
+                else if(!weakenedOnce)
                 {
                     Debug.Log("Rotate");
                     //transform.position += transform.right * Time.deltaTime * speed;

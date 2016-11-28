@@ -24,6 +24,8 @@ public class EnemySpawner : MonoBehaviour {
     private int numberOfEnemiesPerWave = 4;
 
 	private bool correctPlacement;
+
+    private GameObject demonicPool;
     
 
     // Use this for initialization
@@ -39,6 +41,7 @@ public class EnemySpawner : MonoBehaviour {
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
 		waveText.text = "";
         numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5); // what you add is the first round amount
+        demonicPool = GameObject.FindGameObjectWithTag("PoolDemonic");
         
     }
 
@@ -93,14 +96,14 @@ public class EnemySpawner : MonoBehaviour {
                 spawn.transform.position = spawnLocation;
                 //spawn.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                 //GameObject newDemonic = (GameObject)Instantiate (enemyPool, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
-                Collider2D[] collidersPlanets = Physics2D.OverlapCircleAll (spawn.transform.position, demonicRadius, 1 << LayerMask.NameToLayer ("Obsticale"));
+                Collider2D[] collidersPlanets = Physics2D.OverlapCircleAll (spawn.transform.position, demonicRadius, 1 << LayerMask.NameToLayer ("Obstacles"));
 				if (collidersPlanets.Length == 0) 
 				{
 					correctPlacement = true;
 				}
 				else 
 				{
-					Destroy (spawn);
+                    demonicPool.GetComponent<PoolingSystem>().returnToPool(spawn);
 				}
 			}
 			//bomb guy
