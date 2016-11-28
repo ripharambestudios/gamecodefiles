@@ -875,7 +875,7 @@ public class Attack : MonoBehaviour
     //Needs to be adjusted
     IEnumerator energyShot(Vector2 start, Vector2 next, float attackSpeed, float scaleFactor)
     {
-		Debug.Log ("fire");
+
         //destroy object if it doesn't collide with anything after timeout amout of time
         float timeout = 3f;
 		source.PlayOneShot (standardFireSound, .025f);
