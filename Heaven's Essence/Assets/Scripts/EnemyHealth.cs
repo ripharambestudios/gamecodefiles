@@ -16,6 +16,7 @@ public class EnemyHealth : MonoBehaviour {
     public GameObject pool;
 	private float timeForFlashGold = .5f;
 	private float timeForFlashRed = .1f;
+    public string poolName;
 
 	// Use this for initialization
 	void Start ()
@@ -24,7 +25,7 @@ public class EnemyHealth : MonoBehaviour {
 		enemyManager = GameObject.FindGameObjectWithTag ("Enemy Manager");
 		player = GameObject.FindGameObjectWithTag ("Player");
 		source = gameObject.AddComponent<AudioSource> ();
-
+        pool = GameObject.FindGameObjectWithTag(poolName);
 	}
 	
 	// Message sent from player that does damage to enemy
@@ -39,6 +40,11 @@ public class EnemyHealth : MonoBehaviour {
 		if (currentHealth <= 0) {
 			enemyManager.GetComponent<EnemySpawner> ().decrementNumOfEnemies ();
 			player.SendMessage ("UpdateScore", scoreValue, SendMessageOptions.DontRequireReceiver);
+            int numOfObjects = this.transform.childCount;
+            for(int i = 0; i < numOfObjects; i++)
+            {
+                Destroy(this.transform.GetChild(i));
+            }
             //Destroy (this.gameObject);
             pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
 		}

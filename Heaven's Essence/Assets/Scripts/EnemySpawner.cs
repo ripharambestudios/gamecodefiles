@@ -24,6 +24,8 @@ public class EnemySpawner : MonoBehaviour {
     private int numberOfEnemiesPerWave = 4;
 
 	private bool correctPlacement;
+
+    private GameObject demonicPool;
     
 
     // Use this for initialization
@@ -38,8 +40,8 @@ public class EnemySpawner : MonoBehaviour {
 		waveNum = 1;
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
 		waveText.text = "";
-        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 1); // what you add is the first round amount
-        
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 5); // what you add is the first round amount
+        demonicPool = GameObject.FindGameObjectWithTag("PoolDemonic");
     }
 
 	void Update(){

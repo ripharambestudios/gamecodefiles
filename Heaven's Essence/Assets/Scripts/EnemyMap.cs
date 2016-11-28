@@ -72,8 +72,8 @@ public class EnemyMap : MonoBehaviour
 
 			for (int i = 0; i < demonicIcon.texture.width; i++) {
 				for (int j = 0; j < demonicIcon.texture.height; j++) {
-					if(demonicIcon.texture.GetPixel(i,j) != Color.clear){
-					map.SetPixel((int)enemy.transform.position.x/ scaleFactorX + width/2 + i, (int)enemy.transform.position.y/scaleFactorY + height/2+  j, demonicIcon.texture.GetPixel(i,j));
+					if(demonicIcon.texture.GetPixel(i,j) != Color.blue){
+					map.SetPixel((int)enemy.transform.position.x + width/2 + i, (int)enemy.transform.position.y + height/2 +  j, demonicIcon.texture.GetPixel(i,j));
 					}
 				}
 			}
@@ -84,8 +84,8 @@ public class EnemyMap : MonoBehaviour
 		{
 			for (int i = 0; i < fallenIcon.texture.width; i++) {
 				for (int j = 0; j < fallenIcon.texture.height; j++) {
-					if(fallenIcon.texture.GetPixel(i,j) != Color.clear){
-						map.SetPixel((int)enemy.transform.position.x/ scaleFactorX + width/2 + i, (int)enemy.transform.position.y/scaleFactorY + height/2+  j, fallenIcon.texture.GetPixel(i,j));
+					if(fallenIcon.texture.GetPixel(i,j) != Color.blue){
+						map.SetPixel((int)enemy.transform.position.x + width/2 + i, (int)enemy.transform.position.y + height/2+  j, fallenIcon.texture.GetPixel(i,j));
 					}
 				}
 			}
@@ -95,8 +95,8 @@ public class EnemyMap : MonoBehaviour
 		{
 			for (int i = 0; i < boomIcon.texture.width; i++) {
 				for (int j = 0; j < boomIcon.texture.height; j++) {
-					if(boomIcon.texture.GetPixel(i,j) != Color.clear){
-						map.SetPixel((int)enemy.transform.position.x/ scaleFactorX + width/2 + i, (int)enemy.transform.position.y/scaleFactorY + height/2+  j, boomIcon.texture.GetPixel(i,j));
+					if(boomIcon.texture.GetPixel(i,j) != Color.blue){
+						map.SetPixel((int)enemy.transform.position.x + width/2 + i, (int)enemy.transform.position.y + height/2+  j, boomIcon.texture.GetPixel(i,j));
 					}
 				}
 			}
@@ -106,8 +106,8 @@ public class EnemyMap : MonoBehaviour
 		{
 			for (int i = 0; i < spookIcon.texture.width; i++) {
 				for (int j = 0; j < spookIcon.texture.height; j++) {
-					if(spookIcon.texture.GetPixel(i,j) != Color.clear){
-						map.SetPixel((int)enemy.transform.position.x/ scaleFactorX + width/2 + i, (int)enemy.transform.position.y/scaleFactorY + height/2+  j, spookIcon.texture.GetPixel(i,j));
+					if(spookIcon.texture.GetPixel(i,j) != Color.blue){
+						map.SetPixel((int)enemy.transform.position.x + width/2 + i, (int)enemy.transform.position.y + height/2+  j, spookIcon.texture.GetPixel(i,j));
 					}
 				}
 			}
@@ -117,8 +117,8 @@ public class EnemyMap : MonoBehaviour
 		{
 			for (int i = 0; i < playerIcon.texture.width; i++) {
 				for (int j = 0; j < playerIcon.texture.height; j++) {
-					if(playerIcon.texture.GetPixel(i,j) != Color.clear){
-						map.SetPixel((int)player.transform.position.x/ scaleFactorX + width/2 + i, (int)player.transform.position.y/scaleFactorY + height/2+  j, playerIcon.texture.GetPixel(i,j));
+					if(playerIcon.texture.GetPixel(i,j) != Color.blue){
+						map.SetPixel((int)player.transform.position.x + width/2 + i, (int)player.transform.position.y + height/2+  j, playerIcon.texture.GetPixel(i,j));
 					}
 				}
 			}
