@@ -28,6 +28,8 @@ public class MainCharacterController : MonoBehaviour
 
     private bool laserActivated = false;
 
+    private List<GameObject> pools;
+
     // Use this for initialization
     void Start()
     {
@@ -45,7 +47,12 @@ public class MainCharacterController : MonoBehaviour
         healthStartVector = healthBar.GetComponent<RectTransform>().sizeDelta;
 		source = this.gameObject.AddComponent<AudioSource> ();
 		useController = false;
-        
+        pools = new List<GameObject>();
+        pools.Add(GameObject.FindGameObjectWithTag("PoolDemonic"));
+        pools.Add(GameObject.FindGameObjectWithTag("PoolSpook"));
+        pools.Add(GameObject.FindGameObjectWithTag("PoolFallen"));
+        pools.Add(GameObject.FindGameObjectWithTag("PoolBoom"));
+
     }
 
     // Update is called once per frame
@@ -212,6 +219,10 @@ public class MainCharacterController : MonoBehaviour
 			source.PlayOneShot (playerDeath, .75f);
 			this.GetComponentInChildren<SpriteRenderer> ().enabled = false;
 			this.GetComponentInChildren<BoxCollider2D> ().enabled = false;
+            for(int i = 0; i < pools.Count; i++)
+            {
+                pools[i].GetComponent<PoolingSystem>().FalsePool();
+            }
 			Destroy(this.gameObject, playerDeath.length);
         }
         else if(currentHealth > 1000)

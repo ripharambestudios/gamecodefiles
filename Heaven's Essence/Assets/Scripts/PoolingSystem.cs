@@ -66,9 +66,21 @@ public class PoolingSystem : MonoBehaviour {
 
     public void ClearPool()
     {
+        for(int i = 0; i < poolObjects.Count; i++)
+        {
+            poolObjects[i].SetActive(false);
+        }
         poolObjects.Clear();
 
         poolObjects = null;
+    }
+
+    public void FalsePool()
+    {
+        for (int i = 0; i < poolObjects.Count; i++)
+        {
+            poolObjects[i].SetActive(false);
+        }
     }
 
 
