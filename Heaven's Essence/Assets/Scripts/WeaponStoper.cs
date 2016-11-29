@@ -11,7 +11,7 @@ public class WeaponStoper : MonoBehaviour
     //Separate checks for player and enemies
     void OnTriggerEnter2D(Collider2D coll)
     {
-        print("Collider Entered");
+        
         if (coll.gameObject.layer == 10)
         {
             if (coll.gameObject.name == "BombBall(Clone)")

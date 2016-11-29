@@ -73,7 +73,7 @@ public class EnemyMap : MonoBehaviour
 			for (int i = 0; i < demonicIcon.texture.width; i++) {
 				for (int j = 0; j < demonicIcon.texture.height; j++) {
 					if(demonicIcon.texture.GetPixel(i,j) != Color.blue){
-						Debug.Log (enemy.transform.position.x);
+						
 					map.SetPixel((int)enemy.transform.position.x + width/2 + i, (int)enemy.transform.position.y + height/2 +  j, demonicIcon.texture.GetPixel(i,j));
 					}
 				}

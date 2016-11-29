@@ -67,11 +67,11 @@ public class Attack : MonoBehaviour
     private float maxCharge = 6f;  //time player needs to hold down for alt attack to fire
 
     //Number of souls player has obtained
-    private int energySouls = 1000;
-    private int beamSouls = 1000;
-    private int bombSouls = 1000;
-    private int shotgunSouls = 1000;
-    private int speedSouls = 1000;
+    private int energySouls = 0;
+    private int beamSouls = 0;
+    private int bombSouls = 0;
+    private int shotgunSouls = 0;
+    private int speedSouls = 0;
     //attack power of the different attacks
     private int energyAttackLevel = 1;
     private int beamAttackLevel = 0;

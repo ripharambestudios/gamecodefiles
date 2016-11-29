@@ -42,11 +42,6 @@ public class EnemyHealth : MonoBehaviour {
 			enemyManager.GetComponent<EnemySpawner> ().decrementNumOfEnemies ();
 			player.SendMessage ("UpdateScore", scoreValue, SendMessageOptions.DontRequireReceiver);
             int numOfObjects = this.transform.childCount;
-            //for(int i =0; i < numOfObjects; i++)
-            //{
-            //    Destroy(this.transform.GetChild(i));
-            //}
-            //Destroy (this.gameObject);
 			currentHealth = startHealth;
             pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
 		}

@@ -132,7 +132,7 @@ public class EnemySpawner : MonoBehaviour {
 			}
 		}
 
-        Debug.Log(correctPlacement);
+
 		
 	}
 
