@@ -19,7 +19,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private System.Random randNum;
 	static private int numberOfEnemies;
-	private List<char> enemyPossibilities = new List<char>() {'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
+	private List<char> enemyPossibilities = new List<char>() {'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     static private int waveNum;
     private int numberOfEnemiesPerWave = 4;
 
@@ -101,15 +101,15 @@ public class EnemySpawner : MonoBehaviour {
 			spawn.transform.position = spawnLocation;
 			spawn.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 		}
-			//spooky guy
-		else if (enemyChar == 'g')
+			//fallen guy
+		else if (enemyChar == 'f')
 		{
 			spawn = enemyPool3.GetComponent<PoolingSystem> ().GetObject ();
 			spawn.transform.position = spawnLocation;
 			spawn.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 		}
-			//fallen guy
-		else if (enemyChar == 'f')
+			//spooky guy
+		else if (enemyChar == 'g')
 		{
 			spawn = enemyPool4.GetComponent<PoolingSystem> ().GetObject ();
 			spawn.transform.position = spawnLocation;
