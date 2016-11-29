@@ -47,6 +47,7 @@ public class EnemyHealth : MonoBehaviour {
 			//    Destroy(this.transform.GetChild(i));
 			//}
 			//Destroy (this.gameObject);
+			currentHealth = startHealth;
 			pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
 		}
 
