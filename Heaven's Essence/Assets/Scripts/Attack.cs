@@ -22,6 +22,7 @@ public class Attack : MonoBehaviour
     public GameObject attackTypeSpeed;
     //fallen guy attack type
     public GameObject projectileShotgun;
+	public GameObject attackTypeShotgun;
 
     [Header("Particle Effects")]
     // the wing particle effect
@@ -65,10 +66,14 @@ public class Attack : MonoBehaviour
 
     private float chargeTime = 0; //used to track how long right click is held for energy attack alternate attack
     private float maxCharge = 6f;  //time player needs to hold down for alt attack to fire
+    private float laserTimer = 0f; //time for laser to do damage
+    private float leftLaserTimer = 0f;
+    private float rightLaserTimer = 0f;
+    private float maxLaserTime = .5f;
 
     //Number of souls player has obtained
     private int energySouls = 0;
-    private int beamSouls = 0;
+    private int beamSouls = 1000;
     private int bombSouls = 0;
     private int shotgunSouls = 0;
     private int speedSouls = 0;
@@ -209,6 +214,9 @@ public class Attack : MonoBehaviour
             this.transform.GetChild(3).gameObject.SetActive(false);
             this.transform.GetChild(4).gameObject.SetActive(false);
         }
+        laserTimer += Time.deltaTime;
+        leftLaserTimer += Time.deltaTime;
+        rightLaserTimer += Time.deltaTime;
     }
 
 
@@ -428,10 +436,10 @@ public class Attack : MonoBehaviour
         positions[0] = new Vector3(start.x, start.y, 0);
         positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
         if (hit.collider != null && hitPlanet.collider != null)
-        {
+        {  
             float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitPlanet.point));
             float distanceToEnemy = Math.Abs(Vector2.Distance(start, hit.point));
-            if (distanceToEnemy <= distanceToPlanet)
+            if (distanceToEnemy <= distanceToPlanet) 
             {
                 if (!laserHitParticles.activeInHierarchy)
                 {
@@ -439,8 +447,10 @@ public class Attack : MonoBehaviour
                 }
                 laserHitParticles.transform.position = hit.point;
                 positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
-
-                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                if (laserTimer >= maxLaserTime)
+                {
+                    Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
             }
             else
             {
@@ -460,8 +470,12 @@ public class Attack : MonoBehaviour
             }
             laserHitParticles.transform.position = hit.point;
             positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
-
-            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            if(laserTimer >= maxLaserTime)
+            {
+                laserTimer = 0f;
+                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            
         }
         else if (hitPlanet.collider != null)
         {
@@ -472,7 +486,6 @@ public class Attack : MonoBehaviour
             laserHitParticles.transform.position = hitPlanet.point;
             positions[1] = new Vector3(hitPlanet.point.x, hitPlanet.point.y, 0);
         }
-
 
         middleOfLaser.GetComponent<LineRenderer>().SetPositions(positions);
         middleOfLaser.GetComponent<LineRenderer>().SetWidth(.6f, .45f);
@@ -551,8 +564,11 @@ public class Attack : MonoBehaviour
                 }
                 laserHitParticles.transform.position = hit.point;
                 positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
-
-                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                if (laserTimer >= maxLaserTime)
+                {
+                    laserTimer = 0f;
+                    Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
             }
             else
             {
@@ -572,8 +588,11 @@ public class Attack : MonoBehaviour
             }
             laserHitParticles.transform.position = hit.point;
             positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
-
-            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            if (laserTimer >= maxLaserTime)
+            {
+                laserTimer = 0f;
+                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
         }
         else if (hitPlanet.collider != null)
         {
@@ -602,8 +621,11 @@ public class Attack : MonoBehaviour
                 }
                 laserHitParticles.transform.position = hitLeft.point;
                 positionsLeft[1] = new Vector3(hitLeft.point.x, hitLeft.point.y, 0);
-
-                Instantiate(attackType, hitLeft.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                if (leftLaserTimer >= maxLaserTime)
+                {
+                    leftLaserTimer = 0f;
+                    Instantiate(attackType, hitLeft.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
             }
             else
             {
@@ -623,8 +645,11 @@ public class Attack : MonoBehaviour
             }
             laserHitParticles.transform.position = hitLeft.point;
             positionsLeft[1] = new Vector3(hitLeft.point.x, hitLeft.point.y, 0);
-
-            Instantiate(attackType, hitLeft.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            if (leftLaserTimer >= maxLaserTime)
+            {
+                leftLaserTimer = 0f;
+                Instantiate(attackType, hitLeft.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
         }
         else if (hitLeftPlanet.collider != null)
         {
@@ -652,8 +677,11 @@ public class Attack : MonoBehaviour
                 }
                 laserHitParticles.transform.position = hitRight.point;
                 positionsRight[1] = new Vector3(hitRight.point.x, hitRight.point.y, 0);
-
-                Instantiate(attackType, hitRight.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                if (rightLaserTimer >= maxLaserTime)
+                {
+                    rightLaserTimer = 0f;
+                    Instantiate(attackType, hitRight.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
             }
             else
             {
@@ -673,8 +701,11 @@ public class Attack : MonoBehaviour
             }
             laserHitParticles.transform.position = hitRight.point;
             positionsRight[1] = new Vector3(hitRight.point.x, hitRight.point.y, 0);
-
-            Instantiate(attackType, hitRight.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            if (rightLaserTimer >= maxLaserTime)
+            {
+                rightLaserTimer = 0f;
+                Instantiate(attackType, hitRight.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
         }
         else if (hitRightPlanet.collider != null)
         {
@@ -754,8 +785,11 @@ public class Attack : MonoBehaviour
                 }
                 laserHitParticles.transform.position = hit.point;
                 positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
-
-                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                if (laserTimer >= maxLaserTime)
+                {
+                    laserTimer = 0f;
+                    Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
             }
             else
             {
@@ -775,8 +809,11 @@ public class Attack : MonoBehaviour
             }
             laserHitParticles.transform.position = hit.point;
             positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
-
-            Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            if (laserTimer >= maxLaserTime)
+            {
+                laserTimer = 0f;
+                Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
         }
         else if (hitPlanet.collider != null)
         {
@@ -1153,8 +1190,7 @@ public class Attack : MonoBehaviour
         else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
         {
             projectile = projectileShotgun;
-            speedOfProjectile = .7f;
-            rateOfFire = 3.0f;
+			attackType = attackTypeShotgun;
             speedOfProjectile = 1.4f;
             rateOfFire = 4.5f;
         }

@@ -13,22 +13,22 @@ public class EnemyHealth : MonoBehaviour {
 	private int currentHealth;
 	private GameObject player;
 
-    public GameObject pool;
+	public GameObject pool;
 	private float timeForFlashGold = .5f;
 	private float timeForFlashRed = .1f;
-    public string poolName;
+	public string poolName;
 
 	// Use this for initialization
 	void Start ()
-    {
+	{
 		currentHealth = startHealth;
 		enemyManager = GameObject.FindGameObjectWithTag ("Enemy Manager");
 		player = GameObject.FindGameObjectWithTag ("Player");
 		source = gameObject.AddComponent<AudioSource> ();
-        pool = GameObject.FindGameObjectWithTag(poolName);
+		pool = GameObject.FindGameObjectWithTag(poolName);
 
 	}
-	
+
 	// Message sent from player that does damage to enemy
 	public void DealDamage (int damage)
 	{
@@ -37,31 +37,37 @@ public class EnemyHealth : MonoBehaviour {
 		if (damage == 1000000) {
 			scoreValue -= (scoreValue / 5);
 		}
-			
+
 		if (currentHealth <= 0) {
 			enemyManager.GetComponent<EnemySpawner> ().decrementNumOfEnemies ();
 			player.SendMessage ("UpdateScore", scoreValue, SendMessageOptions.DontRequireReceiver);
-            int numOfObjects = this.transform.childCount;
+			int numOfObjects = this.transform.childCount;
+			for(int i =0; i < numOfObjects; i++)
+			{
+			    Destroy(this.transform.GetChild(i));
+			}
+			Destroy (this.gameObject);
+
 			currentHealth = startHealth;
-            pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
+			pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
 		}
-			
+
 		if (currentHealth > 0)
 		{
 			StartCoroutine (flashRed ());
 		}
 	}
 
-    public int GetEnemyHealth()
-    {
-        return currentHealth;
-    }
+	public int GetEnemyHealth()
+	{
+		return currentHealth;
+	}
 
-    public bool IsBelowTwentyPercent()
-    {
-        int aTenth = startHealth / 10;
-        if(currentHealth <= aTenth*2)
-        {
+	public bool IsBelowTwentyPercent()
+	{
+		int aTenth = startHealth / 10;
+		if(currentHealth <= aTenth*2)
+		{
 
 			timeForFlashGold -= Time.deltaTime;
 			if (timeForFlashGold <= 0)
@@ -76,13 +82,13 @@ public class EnemyHealth : MonoBehaviour {
 				}
 				timeForFlashGold = .5f;
 			}
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	IEnumerator flashRed()
 	{
