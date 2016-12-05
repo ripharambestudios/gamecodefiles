@@ -46,12 +46,12 @@ public class BigBoomAI : MonoBehaviour {
 		{
 			distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
 
-			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowThirtyFivePercent () || weakenedOnce)) 
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowThirtyFivePercent () || weakenedOnce) && gameObject.activeSelf) 
 			{
 				isAttacking = true;
 				StartCoroutine (LaunchAttack ());
 			}
-			else if (this.GetComponent<EnemyHealth> ().IsBelowThirtyFivePercent () && !weakenedOnce) 
+			else if (this.GetComponent<EnemyHealth> ().IsBelowThirtyFivePercent () && !weakenedOnce && gameObject.activeSelf) 
 			{
 				StartCoroutine (WeakenedState ());
 			}
@@ -138,26 +138,26 @@ public class BigBoomAI : MonoBehaviour {
 		}
 
 		//check for bounce off
-		if (this.gameObject.transform.position.x <= -edgeX) 
+		if (this.gameObject.transform.position.x <= -edgeX && gameObject.activeSelf) 
 		{
 			canAttack = false;
 			int randomDegree = randNum.Next (-30, 30);
 			StartCoroutine(BounceOff(this.gameObject, randomDegree));
 		} 
-		else if(this.gameObject.transform.position.x >= edgeX)
+		else if(this.gameObject.transform.position.x >= edgeX && gameObject.activeSelf)
 		{
 			canAttack = false;
 			int randomDegree = randNum.Next (150, 210);
 			StartCoroutine(BounceOff(this.gameObject, randomDegree));
 		}
 
-		if (this.gameObject.transform.position.y <= -edgeY) 
+		if (this.gameObject.transform.position.y <= -edgeY && gameObject.activeSelf) 
 		{
 			canAttack = false;
 			int randomDegree = randNum.Next (60, 120);
 			StartCoroutine(BounceOff(this.gameObject, randomDegree));
 		} 
-		else if(this.gameObject.transform.position.y >= edgeY)
+		else if(this.gameObject.transform.position.y >= edgeY && gameObject.activeSelf)
 		{
 			canAttack = false;
 			int randomDegree = randNum.Next (240, 300);
@@ -218,7 +218,9 @@ public class BigBoomAI : MonoBehaviour {
 		
 	public void startKnockBack(float degree)
 	{
-		StartCoroutine (BounceOff(degree, 1f));
+        if (gameObject.activeSelf) {
+            StartCoroutine(BounceOff(degree, 1f));
+        }
 	}
 
 	public void setKnockBackAmount(int distance)

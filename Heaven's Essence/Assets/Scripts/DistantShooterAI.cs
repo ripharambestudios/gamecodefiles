@@ -53,13 +53,13 @@ public class DistantShooterAI : MonoBehaviour
                 Vector2 tether = new Vector2(target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
                 float tetherMagnitude = Mathf.Sqrt((tether.x * tether.x) + (tether.y * tether.y));
 
-                if (tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce) && canAttack)
+                if (tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce) && canAttack && gameObject.activeSelf)
                 {
                     isAttacking = true;
                     StartCoroutine(VolleyOfAttacks(distanceToTarget)); // test
                                                                        //StartCoroutine (DistantAttack (distanceToTarget));
                 }
-                else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
+                else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce && gameObject.activeSelf)
                 {
                     canMove = false;
                     StartCoroutine(WeakenedState());
@@ -97,10 +97,13 @@ public class DistantShooterAI : MonoBehaviour
     IEnumerator VolleyOfAttacks(float distance)
     {
 
-        while (numberOfProjectilesLaunched < numberOfProjectiles)
+        while (numberOfProjectilesLaunched < numberOfProjectiles )
         {
             numberOfProjectilesLaunched += 2;
-            StartCoroutine(DistantAttack(distance));
+            if (gameObject.activeSelf)
+            {
+                StartCoroutine(DistantAttack(distance));
+            }
             yield return new WaitForSeconds(actualRateOfFire);
         }
     }
@@ -245,7 +248,10 @@ public class DistantShooterAI : MonoBehaviour
 
     public void startKnockBack(float degree)
     {
-        StartCoroutine(BounceOff(degree, 1f));
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(BounceOff(degree, 1f));
+        }
     }
 
     IEnumerator BounceOff(float degree, float knockBackSpeed)

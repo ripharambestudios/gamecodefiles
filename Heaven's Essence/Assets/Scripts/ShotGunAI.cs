@@ -46,13 +46,13 @@ public class ShotGunAI : MonoBehaviour
 		{
         	distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
 
-			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce) && gameObject.activeSelf)
         	{
             	isAttacking = true;
             	//setAttackingAnimation(true);
             	StartCoroutine(LaunchAttack());
         	}
-			else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
+			else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce && gameObject.activeSelf)
 			{
             	stopped = true;
 				StartCoroutine(WeakenedState());
@@ -149,7 +149,10 @@ public class ShotGunAI : MonoBehaviour
 
 	public void startKnockBack(float degree)
 	{
-		StartCoroutine (BounceOff(degree, 1f));
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(BounceOff(degree, 1f));
+        }
 	}
 
 

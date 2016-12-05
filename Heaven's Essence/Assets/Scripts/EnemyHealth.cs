@@ -62,7 +62,7 @@ public class EnemyHealth : MonoBehaviour
                 int numOfObjects = this.transform.childCount;
                 for(int i =0; i < numOfObjects; i++)
                 {
-                    if(this.transform.GetChild(i).tag == "Enemy")
+                    if(this.transform.GetChild(i).tag == "Enemy" && gameObject.activeSelf)
                     {
                         Destroy(this.transform.GetChild(i));
                     }
@@ -72,7 +72,7 @@ public class EnemyHealth : MonoBehaviour
                 pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
             }
 
-            if (currentHealth > 0)
+            if (currentHealth > 0 && gameObject.activeSelf)
             {
                 StartCoroutine(flashRed());
             }

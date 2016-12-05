@@ -10,37 +10,52 @@ public class SnitchSpawner : MonoBehaviour {
 	private System.Random randNum;
 	static private int waveNum;
 	public float timeOnMap;
+    private float timerMap;
 	private GameObject snitchSpawned;
 
+    public GameObject ArrowType;
+
+    private GameObject ArrowSpawned;
+
+    public int radius = 5;
 	public void startSpawn()
 	{
 		randNum = new System.Random();
 		randNum.Next ();
 		//waveNum = 1;
 		timeOnMap = 15f;
+       
 		Spawn ();
 	}
 
 	void Update()
 	{
-		timeOnMap -= Time.deltaTime;
-		if (timeOnMap <= 0 && this.gameObject != null)
+		timerMap -= Time.deltaTime;
+		if (timerMap <= 0 && gameObject != null)
 		{
 			Destroy (snitchSpawned);
+            Destroy(ArrowSpawned);
+            timerMap = timeOnMap;
 		}
+        if(snitchSpawned == null && ArrowSpawned != null)
+        {
+            Destroy(ArrowSpawned);
+        }
 	}
 
 	//Code to randomly spawn enemies in the map
 	//credit to unity3d.com and the team there as they provided the method to spawn
 	void Spawn ()
 	{
+        timerMap = timeOnMap;
 		if (player.GetComponent<MainCharacterController> ().GetHealth () <= 0) {
 			return;
 		}
 
 		Vector2 spawnLocation = new Vector2 (player.transform.position.x + randNum.Next (-20, 20), player.transform.position.y + randNum.Next (-20, 20));
-		//create new enemy and spawn him in somewhere random
-
+        //Vector2 arrowSpawnLocation = player.transform.position + new Vector3(0,0,0);
+        //create new enemy and spawn him in somewhere random
+        ArrowSpawned = (GameObject)Instantiate(ArrowType, player.transform.position, Quaternion.Euler(new Vector3(0,0,0)));
 		snitchSpawned = (GameObject)Instantiate (snitchType, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
 		//waveNum++;
 	}
