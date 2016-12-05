@@ -10,7 +10,7 @@ public class PauseScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown("p") || Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyUp("p") || Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.Joystick1Button7))
         {
             if (pausePanel.activeInHierarchy == false)
             {

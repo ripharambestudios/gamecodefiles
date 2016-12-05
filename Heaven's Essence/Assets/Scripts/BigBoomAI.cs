@@ -14,18 +14,18 @@ public class BigBoomAI : MonoBehaviour
     public float edgeY = 54f;
     public float edgeX = 105f;
     public float knockBackDistance;
-    static private int direction = 0;
-    private GameObject target;
-    private float distanceToTarget;
-    private bool isAttacking = false;
-    private Animator animator;
     public GameObject attackType;
     public float teleportTime = 2f;
     public int teleDistance = 5;
 
-    private bool weakenedOnce = false;
-    private bool correctPlacement = false;
-    private bool canAttack = true;
+    static private int direction = 0;
+    private GameObject target;
+    private float distanceToTarget;
+    private bool isAttacking;
+    private Animator animator;
+    private bool weakenedOnce;
+    private bool correctPlacement;
+    private bool canAttack;
     private System.Random randNum;
 
 
@@ -38,6 +38,10 @@ public class BigBoomAI : MonoBehaviour
         animator = this.GetComponent<Animator>();
         animator.SetInteger("Port", 0);
         randNum = new System.Random();
+        weakenedOnce = false;
+        correctPlacement = false;
+        canAttack = true;
+
     }
 
     // Update is called once per frame
@@ -285,5 +289,8 @@ public class BigBoomAI : MonoBehaviour
         animator = this.GetComponent<Animator>();
         animator.SetInteger("Port", 0);
         randNum = new System.Random();
+        weakenedOnce = false;
+        correctPlacement = false;
+        canAttack = true;
     }
 }

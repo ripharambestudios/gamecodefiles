@@ -48,7 +48,6 @@ public class MainCharacterController : MonoBehaviour
 		attackTypes.Add("Shotgun");
 		healthStartVector = healthBar.GetComponent<RectTransform>().sizeDelta;
 		source = this.gameObject.AddComponent<AudioSource> ();
-		useController = false;
 		pools = new List<GameObject>();
 		pools.Add(GameObject.FindGameObjectWithTag("PoolDemonic"));
 		pools.Add(GameObject.FindGameObjectWithTag("PoolSpook"));
@@ -196,23 +195,17 @@ public class MainCharacterController : MonoBehaviour
                 if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton5))
                 {
                     this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
-
                 }
                 if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton3))
                 {
                     this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
-
                 }
                 if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton0))
                 {
                     this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
-
                 }
-
-
             }
         }
-        
 	}
 
 

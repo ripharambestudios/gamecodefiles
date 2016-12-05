@@ -12,10 +12,10 @@ public class MeteorAI : MonoBehaviour {
 
 	private GameObject target;
 	private float distanceToTarget;
-	private bool isAttacking = false;
-	private float launchSpeed = 1f;
-    private bool track = true;
-    private bool weakenedOnce = false;
+    private bool isAttacking;
+	private float launchSpeed;
+    private bool track;
+    private bool weakenedOnce;
 	private bool canAttack;
 
 	// Use this for initialization
@@ -24,6 +24,10 @@ public class MeteorAI : MonoBehaviour {
 		knockBackDistance = 2;
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
 		canAttack = true;
+        weakenedOnce = false;
+        track = true;
+        isAttacking = false;
+        launchSpeed = 1f;
 	}
 	
 	// Update is called once per frame
@@ -196,9 +200,12 @@ public class MeteorAI : MonoBehaviour {
     /// </summary>
     public void ResetInfo()
     {
-        weakenedOnce = false;
         knockBackDistance = 2;
         target = GameObject.FindGameObjectWithTag("Player");  //may need to tweak this
         canAttack = true;
+        weakenedOnce = false;
+        track = true;
+        isAttacking = false;
+        launchSpeed = 1f;
     }
 }

@@ -4,29 +4,23 @@ using System;
 
 public class ShotGunAI : MonoBehaviour
 {
-
-    private float sightRadius = 10f;
     public float damage = 20f;
-    private float waitTime = 0.5f;
-    private float movementSpeed = 100f;
-    private float launchSpeed = 1000f;
-    private GameObject target;
-    private float distanceToTarget;
-    private bool isAttacking = false;
-    private bool weakenedOnce = false;
-
-    private bool stopped;
     public GameObject attackType;
-
     public GameObject pool;
-
-    private float attackTime = 3f;
-
-    private int rotateSpeed = 3;
     public float knockBackDistance;
 
-
-    private bool canAttack = true;
+    private float sightRadius;
+    private float waitTime;
+    private float movementSpeed;
+    private float launchSpeed;
+    private GameObject target;
+    private float distanceToTarget;
+    private bool isAttacking;
+    private bool weakenedOnce;
+    private bool stopped;
+    private float attackTime;
+    private int rotateSpeed;
+    private bool canAttack;
 
     // Use this for initialization
     void Start()
@@ -34,6 +28,14 @@ public class ShotGunAI : MonoBehaviour
         knockBackDistance = 2;
         isAttacking = false;
         stopped = false;
+        weakenedOnce = false;
+        canAttack = true;
+        rotateSpeed = 3;
+        attackTime = 3f;
+        sightRadius = 10f;
+        waitTime = 0.5f;
+        movementSpeed = 100f;
+        launchSpeed = 1000f;
         target = GameObject.FindWithTag("Player");
         transform.LookAt(target.transform.position);
         transform.Rotate(new Vector3(0, -90, 0), Space.Self);
@@ -223,10 +225,17 @@ public class ShotGunAI : MonoBehaviour
     /// </summary>
     public void ResetInfo()
     {
-        weakenedOnce = false;
         knockBackDistance = 2;
         isAttacking = false;
         stopped = false;
+        weakenedOnce = false;
+        canAttack = true;
+        rotateSpeed = 3;
+        attackTime = 3f;
+        sightRadius = 10f;
+        waitTime = 0.5f;
+        movementSpeed = 100f;
+        launchSpeed = 1000f;
         target = GameObject.FindWithTag("Player");
         transform.LookAt(target.transform.position);
         transform.Rotate(new Vector3(0, -90, 0), Space.Self);

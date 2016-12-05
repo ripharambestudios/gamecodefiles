@@ -17,14 +17,14 @@ public class DistantShooterAI : MonoBehaviour
 
     private GameObject target;
     private float actualRateOfFire;
-    private bool isAttacking = false;
+    private bool isAttacking;
     private float distanceToTarget;
     private float minTether;
     private float maxTether;
     private int numberOfProjectilesLaunched;
-    private bool weakenedOnce = false;
-    private bool canMove = true;
-    private bool canAttack = true;
+    private bool weakenedOnce;
+    private bool canMove;
+    private bool canAttack;
 
     // Use this for initialization
     void Start()
@@ -40,6 +40,10 @@ public class DistantShooterAI : MonoBehaviour
         }
         numberOfProjectilesLaunched = 0;
         actualRateOfFire = 1 / rateOfFire;
+        weakenedOnce = false;
+        canMove = true;
+        canAttack = true;
+        isAttacking = false;
     }
 
     // Update is called once per frame
@@ -304,7 +308,6 @@ public class DistantShooterAI : MonoBehaviour
     /// </summary>
     public void ResetInfo()
     {
-        weakenedOnce = false;
         knockBackDistance = 2;
         target = GameObject.FindGameObjectWithTag("Player");
 
@@ -316,5 +319,9 @@ public class DistantShooterAI : MonoBehaviour
         }
         numberOfProjectilesLaunched = 0;
         actualRateOfFire = 1 / rateOfFire;
+        weakenedOnce = false;
+        canMove = true;
+        canAttack = true;
+        isAttacking = false;
     }
 }
