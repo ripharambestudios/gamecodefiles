@@ -17,12 +17,14 @@ public class MeteorAI : MonoBehaviour {
     private bool track = true;
     private bool weakenedOnce = false;
 	private bool canAttack;
+	private float waitTimeBoxCollider = 0.5f;
 
 	// Use this for initialization
 	void Start () {
 		knockBackDistance = 2;
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
 		canAttack = true;
+		StartCoroutine (changeBoxCollider ());
 	}
 	
 	// Update is called once per frame
@@ -99,10 +101,6 @@ public class MeteorAI : MonoBehaviour {
 			distanceCovered += Math.Abs (Vector2.Distance (this.transform.position, nextPosition));
 			if (Physics2D.Linecast (this.transform.position, nextPosition, layerMask) && !hasHit) 
 			{
-				if (!this.gameObject.GetComponent<BoxCollider2D> ().isTrigger)
-				{
-					this.gameObject.GetComponent<BoxCollider2D> ().isTrigger = true;
-				}
 				impact = Physics2D.Linecast (this.transform.position, nextPosition, layerMask);
 				impact.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
 				hasHit = true;
@@ -175,5 +173,15 @@ public class MeteorAI : MonoBehaviour {
 		}
 		yield return new WaitForSeconds (.5f); // cooldown
 		canAttack = true;
+	}
+
+	IEnumerator changeBoxCollider()
+	{
+		while (waitTimeBoxCollider > 0) 
+		{
+			waitTimeBoxCollider -= Time.deltaTime;
+			yield return null;
+		}
+		this.gameObject.GetComponent<BoxCollider2D> ().isTrigger = true;
 	}
 }
