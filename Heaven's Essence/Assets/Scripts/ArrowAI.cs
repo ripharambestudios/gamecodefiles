@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System;
 
 public class ArrowAI : MonoBehaviour {
 
@@ -24,7 +24,7 @@ public class ArrowAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (target != null && Vector3.Distance(player.transform.position, target.transform.position) >= radius)
+        if (target != null && Math.Abs(Vector3.Distance(transform.position, target.transform.position)) > radius/2)
         {
             transform.LookAt(target.transform);
             transform.Rotate(new Vector3(0, -90, 0), Space.Self);
