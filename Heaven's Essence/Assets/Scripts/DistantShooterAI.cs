@@ -14,7 +14,9 @@ public class DistantShooterAI : MonoBehaviour
     public GameObject projectile;
     public GameObject launchPosition;
     public float knockBackDistance;
+	public AudioClip fireSound;
 
+	private AudioSource source;
     private GameObject target;
     private float actualRateOfFire;
     private bool isAttacking;
@@ -31,6 +33,7 @@ public class DistantShooterAI : MonoBehaviour
     {
         knockBackDistance = 2;
         target = GameObject.FindGameObjectWithTag("Player");
+		source = this.gameObject.AddComponent<AudioSource> ();
 
         minTether = 17f;
         maxTether = 21f;
@@ -124,10 +127,11 @@ public class DistantShooterAI : MonoBehaviour
         {
             aim = new Vector2(target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
         }
-        //Debug.Log("Bullet Making");
         GameObject createProjectile = (GameObject)Instantiate(projectile, launchPosition.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
         GameObject createProjectile2 = (GameObject)Instantiate(projectile, launchPosition.transform.position + new Vector3(0, -1, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
-        //numberOfProjectilesLaunched += 2;
+
+		source.PlayOneShot (fireSound, .015f);
+
         createProjectile.transform.parent = this.transform;
         createProjectile2.transform.parent = this.transform;
 

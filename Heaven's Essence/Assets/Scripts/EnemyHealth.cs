@@ -77,7 +77,10 @@ public class EnemyHealth : MonoBehaviour
 
             if (currentHealth > 0 && this.gameObject.activeInHierarchy)
             {
-                StartCoroutine(flashRed());
+				if (this.gameObject.GetComponent<SpriteRenderer> ().enabled == true && this.gameObject.activeInHierarchy) 
+				{
+					StartCoroutine (flashRed ());
+				}
             }
         }
     }

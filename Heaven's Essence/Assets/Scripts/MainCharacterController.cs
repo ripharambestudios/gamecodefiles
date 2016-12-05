@@ -15,6 +15,8 @@ public class MainCharacterController : MonoBehaviour
 	public Text ScoreText;
 	public AudioClip playerHit;
 	public AudioClip playerDeath;
+	public GameObject soundObject;
+	public AudioClip getHealthSound;
 	public bool useController;
 
 	private AudioSource source;
@@ -227,6 +229,14 @@ public class MainCharacterController : MonoBehaviour
 			}
 			Destroy(this.gameObject, playerDeath.length);
 		}
+		else if(currentHealth <= 400 && currentHealth > 200)
+		{
+			soundObject.GetComponent<AudioSource> ().pitch = 1.28f;
+		}
+		else if(currentHealth <= 200)
+		{
+			soundObject.GetComponent<AudioSource> ().pitch = 1.35f;
+		}
 		else if(currentHealth > 1000)
 		{
 			currentHealth = 1000;
@@ -237,14 +247,9 @@ public class MainCharacterController : MonoBehaviour
 	public void ReturnHealth(int healthBack)
 	{
 		currentHealth += healthBack;
+		source.PlayOneShot (getHealthSound, .1f);
 		StartCoroutine (flashGreen());
-		if (currentHealth <= 0)
-		{
-			currentHealth = 0;
-			gameOverPanel.SetActive(true);
-			Destroy(this.gameObject);
-		}
-		else if(currentHealth > 1000)
+		if(currentHealth > 1000)
 		{
 			currentHealth = 1000;
 		}

@@ -4,7 +4,6 @@ using System.Collections;
 public class SnitchAI : MonoBehaviour {
 
 	private GameObject target;
-
 	private float distanceToTarget;
 	private float minTether;
 	private bool canMove = true;

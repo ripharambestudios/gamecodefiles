@@ -4,11 +4,14 @@ using System;
 
 public class ShotGunAI : MonoBehaviour
 {
+
     public float damage = 20f;
     public GameObject attackType;
     public GameObject pool;
     public float knockBackDistance;
+    public AudioClip fireSound;
 
+    private AudioSource source;
     private float sightRadius;
     private float waitTime;
     private float movementSpeed;
@@ -40,6 +43,7 @@ public class ShotGunAI : MonoBehaviour
         transform.LookAt(target.transform.position);
         transform.Rotate(new Vector3(0, -90, 0), Space.Self);
         pool = GameObject.FindWithTag("PoolFallen");
+        source = this.gameObject.AddComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -145,6 +149,7 @@ public class ShotGunAI : MonoBehaviour
                     attacked = true;
                     GameObject createProjectile = (GameObject)Instantiate(attackType, transform.position + 1.0f * transform.right, transform.rotation);
                     createProjectile.GetComponent<Rigidbody2D>().AddForce(createProjectile.transform.right * launchSpeed);
+                    source.PlayOneShot(fireSound, .025f);
                     stopped = true;
                     this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                     yield return new WaitForSeconds(1);
@@ -242,4 +247,3 @@ public class ShotGunAI : MonoBehaviour
         pool = GameObject.FindWithTag("PoolFallen");
     }
 }
-

@@ -109,6 +109,10 @@ public class EdgeWrapping : MonoBehaviour {
 			}
 			enemy.transform.position = nextPosition;
 			yield return null;
+			if (enemy.gameObject == null)
+			{
+				distanceCovered = distanceToGo;
+			}
 		}
 		yield return new WaitForSeconds (.25f); // cooldown
 		enemy.SendMessage ("setCanAttack", true, SendMessageOptions.DontRequireReceiver);

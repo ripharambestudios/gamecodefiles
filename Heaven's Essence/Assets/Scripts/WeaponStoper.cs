@@ -5,8 +5,13 @@ public class WeaponStoper : MonoBehaviour
 {
 
     public GameObject actualExplosion;
-    public float radius = 3.2f;
+	public AudioClip bombExplodeSound;
+	private AudioSource source;
 
+	void Start()
+	{
+		source = this.gameObject.AddComponent<AudioSource> ();
+	}
     //Check for projectiles entering the planets and destroying them.
     //Separate checks for player and enemies
     void OnTriggerEnter2D(Collider2D coll)
@@ -16,10 +21,12 @@ public class WeaponStoper : MonoBehaviour
         {
             if (coll.gameObject.name == "BombBall(Clone)")
             {
-                Instantiate(actualExplosion, coll.transform.position, Quaternion.identity);
+				Instantiate(actualExplosion, coll.transform.position, Quaternion.identity);
+				source.PlayOneShot(bombExplodeSound, .075f);
                 Destroy(coll.gameObject);
             }
-            else {
+            else 
+			{
                 Destroy(coll.gameObject);
             }
         }
@@ -29,34 +36,3 @@ public class WeaponStoper : MonoBehaviour
         }
     }
 }
-
-/*
-//Collider2D[] collidersPlayerShots = Physics2D.OverlapCircleAll(this.transform.position, radius, 1 << LayerMask.NameToLayer("PlayerAttacks")); // for player attacks
-        foreach (Collider2D coll in collidersPlayerShots)
-        {
-            if (coll.gameObject.layer == 10)
-            {
-                if (coll.gameObject.name == "BombBall(Clone)")
-                {
-                    Instantiate(actualExplosion, coll.transform.position, Quaternion.identity);
-                    Destroy(coll.gameObject);
-                }
-                else {
-                    Destroy(coll.gameObject);
-                }
-            }
-        }
-
-        //Collider2D[] collidersEnemyShots = Physics2D.OverlapCircleAll(this.transform.position, radius, 1 << LayerMask.NameToLayer("EnemyAttacks")); // for enemy attacks
-        foreach (Collider2D coll in collidersEnemyShots)
-        {
-            if (coll.gameObject.layer == 11)
-            {
-                if (coll.gameObject.name == "SpookyGuyAttackObject(Clone)")
-                {
-                    coll.GetComponentInParent<DistantShooterAI>().decrementNumberOfProjectiles();
-                }
-                Destroy(coll.gameObject);
-            }
-        }
-*/

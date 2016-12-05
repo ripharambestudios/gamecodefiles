@@ -4,7 +4,6 @@ using System;
 
 public class BigBoomAI : MonoBehaviour
 {
-
     public float sightRadius = 800f;
     public float damage = 20f;
     public float waitTime = 0.5f;
@@ -17,7 +16,9 @@ public class BigBoomAI : MonoBehaviour
     public GameObject attackType;
     public float teleportTime = 2f;
     public int teleDistance = 5;
+    public AudioClip explodeSound;
 
+    private AudioSource source;
     static private int direction = 0;
     private GameObject target;
     private float distanceToTarget;
@@ -41,6 +42,7 @@ public class BigBoomAI : MonoBehaviour
         weakenedOnce = false;
         correctPlacement = false;
         canAttack = true;
+        source = this.gameObject.AddComponent<AudioSource>();
 
     }
 
@@ -97,6 +99,7 @@ public class BigBoomAI : MonoBehaviour
                 if (canAttack)
                 {
                     Instantiate(attackType, transform.position, Quaternion.identity);
+                    source.PlayOneShot(explodeSound, .075f);
                 }
                 timer = 0f;
             }
@@ -108,7 +111,6 @@ public class BigBoomAI : MonoBehaviour
         animator.SetInteger("Port", 0);
 		isAttacking = false;
 	}     
-
 
     private void enemyPlacement()
     {

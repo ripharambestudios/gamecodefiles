@@ -9,7 +9,8 @@ public class AlternatePlayerBoomAttack : MonoBehaviour {
     private int splitAmount;
 	private bool hasExploded;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
         splitAmount = 1;
 		source = gameObject.AddComponent<AudioSource> ();
 		hasExploded = false;

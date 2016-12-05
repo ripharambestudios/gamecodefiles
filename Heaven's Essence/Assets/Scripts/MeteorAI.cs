@@ -6,10 +6,12 @@ public class MeteorAI : MonoBehaviour {
 
 	public float sightRadius = 60f; //max distance can be from player and still in view
 	public float damage = 20f;
-	public float waitTime =0.25f;
+	public float waitTime = 0.25f;
 	public float attackCooldown = .25f;
 	public float knockBackDistance;
+	public AudioClip fireSound;
 
+	private AudioSource source;
 	private GameObject target;
 	private float distanceToTarget;
     private bool isAttacking;
@@ -17,6 +19,7 @@ public class MeteorAI : MonoBehaviour {
     private bool track;
     private bool weakenedOnce;
 	private bool canAttack;
+	private float waitTimeBoxCollider;
 
 	// Use this for initialization
 	void Start ()
@@ -28,53 +31,56 @@ public class MeteorAI : MonoBehaviour {
         track = true;
         isAttacking = false;
         launchSpeed = 1f;
-	}
+		source = this.gameObject.AddComponent<AudioSource> ();
+		StartCoroutine (changeBoxCollider ());
+        waitTimeBoxCollider = 0.6f;
+    }
 	
 	// Update is called once per frame
 	void Update ()
-    {
-        if(Time.timeScale != 0)
-        {
-            if (target.gameObject != null && canAttack)
-            {
-                if (this.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude > 0)
-                {
-                    this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                }
-                distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
-                if (track)
-                {
-                    Vector2 endLocation = target.transform.position;
-                    Vector2 nextPosition = this.transform.position;
-                    Vector2 look = endLocation - nextPosition;
+	{
+		if(Time.timeScale != 0)
+		{
+			if (target.gameObject != null && canAttack)
+			{
+				if (this.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude > 0)
+				{
+					this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+				}
+				distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
+				if (track)
+				{
+					Vector2 endLocation = target.transform.position;
+					Vector2 nextPosition = this.transform.position;
+					Vector2 look = endLocation - nextPosition;
 
-                    //THIS SHOULD ALL BE PUT INTO A HELPER METHOD FOR ROTATION
-                    //get the sign of the direction of the aim
-                    float signOfLook = 1;
-                    if (this.transform.position.y > target.transform.position.y)
-                    {
-                        signOfLook = Mathf.Sign(look.y); //this will be negative if the player is below demonic sonic, rotating him appropriately
-                    }
-                    float angle = Vector3.Angle(Vector3.right, new Vector3(look.x, look.y, 0));
-                    angle *= signOfLook;
-                    //rotate demonic sonic
-                    this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                }
-                //should only attack if in range, isn't attacking, health isn't below ten percent health, or if it is it has already entered its weakened state and can attack again
-                if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
-                {
-                    isAttacking = true;
-                    StartCoroutine(LaunchAttack(distanceToTarget));
+					//THIS SHOULD ALL BE PUT INTO A HELPER METHOD FOR ROTATION
+					//get the sign of the direction of the aim
+					float signOfLook = 1;
+					if (this.transform.position.y > target.transform.position.y)
+					{
+						signOfLook = Mathf.Sign(look.y); //this will be negative if the player is below demonic sonic, rotating him appropriately
+					}
+					float angle = Vector3.Angle(Vector3.right, new Vector3(look.x, look.y, 0));
+					angle *= signOfLook;
+					//rotate demonic sonic
+					this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+				}
+				//should only attack if in range, isn't attacking, health isn't below ten percent health, or if it is it has already entered its weakened state and can attack again
+				if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
+				{
+					isAttacking = true;
+					StartCoroutine(LaunchAttack(distanceToTarget));
 
-                }
-                else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
-                {
-                    this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                    StartCoroutine(WeakenedState());
+				}
+				else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
+				{
+					this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+					StartCoroutine(WeakenedState());
 
-                }
-            }
-        }
+				}
+			}
+		}
 	}
 
     IEnumerator WeakenedState()
@@ -87,6 +93,7 @@ public class MeteorAI : MonoBehaviour {
 	//start method for enemy to launch at player
 	IEnumerator LaunchAttack(float distance)
 	{
+		source.PlayOneShot (fireSound, .075f);
 		//yield return null;
 		Vector2 endLocation = target.transform.position;
 		Vector2 nextPosition = this.transform.position;
@@ -113,10 +120,6 @@ public class MeteorAI : MonoBehaviour {
 			distanceCovered += Math.Abs (Vector2.Distance (this.transform.position, nextPosition));
 			if (Physics2D.Linecast (this.transform.position, nextPosition, layerMask) && !hasHit) 
 			{
-				if (!this.gameObject.GetComponent<BoxCollider2D> ().isTrigger)
-				{
-					this.gameObject.GetComponent<BoxCollider2D> ().isTrigger = true;
-				}
 				impact = Physics2D.Linecast (this.transform.position, nextPosition, layerMask);
 				impact.collider.gameObject.SendMessage ("EnemyDamage", damage, SendMessageOptions.DontRequireReceiver);
 				hasHit = true;
@@ -193,6 +196,16 @@ public class MeteorAI : MonoBehaviour {
 		yield return new WaitForSeconds (.5f); // cooldown
 		canAttack = true;
 	}
+		
+	IEnumerator changeBoxCollider()
+	{
+		while (waitTimeBoxCollider > 0) 
+		{
+			waitTimeBoxCollider -= Time.deltaTime;
+			yield return null;
+		}
+		this.gameObject.GetComponent<BoxCollider2D> ().isTrigger = true;
+	}
 
     /// <summary>
     /// Reset information dealing with the start of the enemy.
@@ -207,5 +220,8 @@ public class MeteorAI : MonoBehaviour {
         track = true;
         isAttacking = false;
         launchSpeed = 1f;
+        source = this.gameObject.AddComponent<AudioSource>();
+        StartCoroutine(changeBoxCollider());
+        waitTimeBoxCollider = 0.6f;
     }
 }
