@@ -19,7 +19,8 @@ public class MeteorAI : MonoBehaviour {
 	private bool canAttack;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 		knockBackDistance = 2;
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
 		canAttack = true;
@@ -176,4 +177,15 @@ public class MeteorAI : MonoBehaviour {
 		yield return new WaitForSeconds (.5f); // cooldown
 		canAttack = true;
 	}
+
+    /// <summary>
+    /// Reset information dealing with the start of the enemy.
+    /// Used for when the enemy is returned to the pool of objects.
+    /// </summary>
+    public void ResetInfo()
+    {
+        knockBackDistance = 2;
+        target = GameObject.FindGameObjectWithTag("Player");  //may need to tweak this
+        canAttack = true;
+    }
 }

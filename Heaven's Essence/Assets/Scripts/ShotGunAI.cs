@@ -7,32 +7,33 @@ public class ShotGunAI : MonoBehaviour
 
     private float sightRadius = 10f;
     public float damage = 20f;
-    public float waitTime = 0.5f;
+    private float waitTime = 0.5f;
     private float movementSpeed = 100f;
     private float launchSpeed = 1000f;
     private GameObject target;
-    public float distanceToTarget;
-    public bool isAttacking = false;
+    private float distanceToTarget;
+    private bool isAttacking = false;
     private bool weakenedOnce = false;
 
-    private bool stopped = false;
-    public GameObject createProjectile;
+    private bool stopped;
     public GameObject attackType;
 
     public GameObject pool;
 
-    public float attackTime = 3f;
+    private float attackTime = 3f;
 
-    public int rotateSpeed = 3;
+    private int rotateSpeed = 3;
 	public float knockBackDistance;
 
-    private bool attacked = false;
+
 	private bool canAttack = true;
+
     // Use this for initialization
     void Start()
     {
 		knockBackDistance = 2;
         isAttacking = false;
+        stopped = false;
         target = GameObject.FindWithTag("Player");
         transform.LookAt(target.transform.position);
         transform.Rotate(new Vector3(0, -90, 0), Space.Self);
@@ -63,18 +64,16 @@ public class ShotGunAI : MonoBehaviour
 
             if (!stopped)
             {
-                Vector3 dir = target.transform.position - transform.position;
+                Vector2 dir = target.transform.position - this.transform.position;
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
                 if (distanceToTarget >= sightRadius - 1.0f)
                 {
-                    Debug.Log("Forward");
                     transform.position += transform.right * Time.deltaTime * movementSpeed;
                 }
                 else if(!weakenedOnce)
                 {
-                    Debug.Log("Rotate");
                     //transform.position += transform.right * Time.deltaTime * speed;
                     transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 500);
                 }
@@ -94,18 +93,14 @@ public class ShotGunAI : MonoBehaviour
     //start method for enemy to launch at player
     IEnumerator LaunchAttack()
     {
+        bool attacked = false;
         yield return null;
         Vector2 endLocation = target.transform.position;
         Vector2 nextPosition = this.transform.position;
-        Vector3 look = endLocation - nextPosition;
-        look.x += 3;
-        look.y += 3;
+        Vector2 look = endLocation - nextPosition;
 
         float timer = attackTime;
-
-        //this.transform.LookAt(target);
-        //yield return new WaitForSeconds (waitTime);
-        //yield return new WaitForSeconds (waitTime);
+        
         while (distanceToTarget <= sightRadius && !attacked)
         {
             if(Time.timeScale != 0)
@@ -113,22 +108,23 @@ public class ShotGunAI : MonoBehaviour
                 timer += Time.deltaTime;
                 if (timer >= attackTime && !attacked)
                 {
+                    setAttackingAnimation(true);
                     attacked = true;
-                    createProjectile = (GameObject)Instantiate(attackType, transform.position + 1.0f * transform.right, transform.rotation);
+                    GameObject createProjectile = (GameObject)Instantiate(attackType, transform.position + 1.0f * transform.right, transform.rotation);
                     createProjectile.GetComponent<Rigidbody2D>().AddForce(createProjectile.transform.right * launchSpeed);
                     stopped = true;
-                    Debug.Log("attacked");
                     yield return new WaitForSeconds(1);
                     stopped = false;
                     timer = 0f;
                 }
             }
+            setAttackingAnimation(false);
             yield return null;
         }
         isAttacking = false;
         attacked = false;
 
-        //setAttackingAnimation(false);
+        
 
     }
 
@@ -189,5 +185,20 @@ public class ShotGunAI : MonoBehaviour
 		yield return new WaitForSeconds (.5f); // cooldown
 		canAttack = true;
 	}
+
+    /// <summary>
+    /// Reset information dealing with the start of the enemy.
+    /// Used for when the enemy is returned to the pool of objects.
+    /// </summary>
+    public void ResetInfo()
+    {
+        knockBackDistance = 2;
+        isAttacking = false;
+        stopped = false;
+        target = GameObject.FindWithTag("Player");
+        transform.LookAt(target.transform.position);
+        transform.Rotate(new Vector3(0, -90, 0), Space.Self);
+        pool = GameObject.FindWithTag("PoolFallen");
+    }
 }
 

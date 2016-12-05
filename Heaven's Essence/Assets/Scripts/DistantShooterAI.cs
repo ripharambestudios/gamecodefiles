@@ -290,4 +290,23 @@ public class DistantShooterAI : MonoBehaviour
     {
         numberOfProjectilesLaunched -= 1;
     }
+
+    /// <summary>
+    /// Reset information dealing with the start of the enemy.
+    /// Used for when the enemy is returned to the pool of objects.
+    /// </summary>
+    public void ResetInfo()
+    {
+        knockBackDistance = 2;
+        target = GameObject.FindGameObjectWithTag("Player");
+
+        minTether = 17f;
+        maxTether = 21f;
+        if (sightRadius != maxTether)
+        {
+            sightRadius = maxTether;
+        }
+        numberOfProjectilesLaunched = 0;
+        actualRateOfFire = 1 / rateOfFire;
+    }
 }
