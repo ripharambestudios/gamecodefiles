@@ -6,8 +6,8 @@ public class EnemyMap : MonoBehaviour
 
     Texture2D map;
 
-    public int height = 90;
-    public int width = 160;
+    public int height = 170;
+    public int width = 230;
 	private int scaleFactorX;
 	private int scaleFactorY;
 	private Vector2 anchor;

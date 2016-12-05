@@ -22,7 +22,7 @@ public class Attack : MonoBehaviour
     public GameObject attackTypeSpeed;
     //fallen guy attack type
     public GameObject projectileShotgun;
-	public GameObject attackTypeShotgun;
+    public GameObject attackTypeShotgun;
 
     [Header("Particle Effects")]
     // the wing particle effect
@@ -73,8 +73,8 @@ public class Attack : MonoBehaviour
 
     //Number of souls player has obtained
     private int energySouls = 0;
-    private int beamSouls = 1000;
-    private int bombSouls = 0;
+    private int beamSouls = 0;
+    private int bombSouls = 1000;
     private int shotgunSouls = 0;
     private int speedSouls = 0;
     //attack power of the different attacks
@@ -222,7 +222,6 @@ public class Attack : MonoBehaviour
 
     public void Aim(Vector2 aimTarget)
     {
-
         aimLocation = aimTarget;
         attackSpawn.transform.LookAt(aimLocation);
         attackAngle = attackSpawn.transform.forward;
@@ -243,7 +242,7 @@ public class Attack : MonoBehaviour
                 _rateOfFire = 0f;
                 if (beamAttackLevel >= 1 && beamAttackLevel < 3)
                 {
-                    
+
                     StartCoroutine(fireBeam((Vector2)attackSpawn.transform.position, attackAngle));
                     StartCoroutine(Cooldown(_rateOfFire));
 
@@ -436,10 +435,10 @@ public class Attack : MonoBehaviour
         positions[0] = new Vector3(start.x, start.y, 0);
         positions[1] = new Vector3(next.x * 1000, next.y * 1000, 0);
         if (hit.collider != null && hitPlanet.collider != null)
-        {  
+        {
             float distanceToPlanet = Math.Abs(Vector2.Distance(start, hitPlanet.point));
             float distanceToEnemy = Math.Abs(Vector2.Distance(start, hit.point));
-            if (distanceToEnemy <= distanceToPlanet) 
+            if (distanceToEnemy <= distanceToPlanet)
             {
                 if (!laserHitParticles.activeInHierarchy)
                 {
@@ -470,12 +469,12 @@ public class Attack : MonoBehaviour
             }
             laserHitParticles.transform.position = hit.point;
             positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
-            if(laserTimer >= maxLaserTime)
+            if (laserTimer >= maxLaserTime)
             {
                 laserTimer = 0f;
                 Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
             }
-            
+
         }
         else if (hitPlanet.collider != null)
         {
@@ -865,40 +864,43 @@ public class Attack : MonoBehaviour
         bool hit = false;
         while (createProjectile != null && timeout > 0f && !hit)
         {
-            createProjectile.GetComponent<AlternatePlayerBoomAttack>().setSplitAmount(splitAmount);
-            timeout -= Time.deltaTime;
-            nextPosition += next * attackSpeed;
-
-            RaycastHit2D impact;
-            int layerDepth = 1;
-            int layerMask = layerDepth << 9; //enemies on 9th layer
-            if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
+            if (Time.timeScale != 0)
             {
-                impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
-                if (splitAmount == 1)
+                createProjectile.GetComponent<AlternatePlayerBoomAttack>().setSplitAmount(splitAmount);
+                timeout -= Time.deltaTime;
+                nextPosition += next * attackSpeed;
+
+                RaycastHit2D impact;
+                int layerDepth = 1;
+                int layerMask = layerDepth << 9; //enemies on 9th layer
+                if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
                 {
-                    source.PlayOneShot(bombExplodeSound, .075f);
-                    Instantiate(attackType, impact.point, Quaternion.identity);
+                    impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
+                    if (splitAmount == 1)
+                    {
+                        source.PlayOneShot(bombExplodeSound, .075f);
+                        Instantiate(attackType, impact.point, Quaternion.identity);
+                    }
+                    else if (splitAmount == 3)
+                    {
+                        source.PlayOneShot(bombExplodeSound, .15f);
+                        Instantiate(attackType, impact.point + new Vector2(0, 5), Quaternion.identity);
+                        Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
+                        Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
+                    }
+                    else if (splitAmount == 5)
+                    {
+                        source.PlayOneShot(bombExplodeSound, .3f);
+                        Instantiate(attackType, impact.point + new Vector2(0, 0), Quaternion.identity);
+                        Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
+                        Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
+                        Instantiate(attackType, impact.point + new Vector2(5, 5), Quaternion.identity);
+                        Instantiate(attackType, impact.point + new Vector2(-5, 5), Quaternion.identity);
+                    }
+                    hit = true;
                 }
-                else if (splitAmount == 3)
-                {
-                    source.PlayOneShot(bombExplodeSound, .15f);
-                    Instantiate(attackType, impact.point + new Vector2(0, 5), Quaternion.identity);
-                    Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
-                    Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
-                }
-                else if (splitAmount == 5)
-                {
-                    source.PlayOneShot(bombExplodeSound, .3f);
-                    Instantiate(attackType, impact.point + new Vector2(0, 0), Quaternion.identity);
-                    Instantiate(attackType, impact.point + new Vector2(-5, -5), Quaternion.identity);
-                    Instantiate(attackType, impact.point + new Vector2(5, -5), Quaternion.identity);
-                    Instantiate(attackType, impact.point + new Vector2(5, 5), Quaternion.identity);
-                    Instantiate(attackType, impact.point + new Vector2(-5, 5), Quaternion.identity);
-                }
-                hit = true;
+                createProjectile.transform.position = nextPosition;
             }
-            createProjectile.transform.position = nextPosition;
             yield return null;
         }
         Destroy(createProjectile);
@@ -939,22 +941,25 @@ public class Attack : MonoBehaviour
         bool hit = false;
         while (createProjectile != null && timeout > 0f && !hit)
         {
-            timeout -= Time.deltaTime;
-            nextPosition += next * attackSpeed;
-
-            RaycastHit2D impact;
-            int layerDepth = 1;
-            int layerMask = layerDepth << 9; //enemies on 9th layer
-            if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
+            if (Time.timeScale != 0)
             {
-                impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
+                timeout -= Time.deltaTime;
+                nextPosition += next * attackSpeed;
 
-                Instantiate(attackType, impact.point, Quaternion.identity);
-                hit = true;
+                RaycastHit2D impact;
+                int layerDepth = 1;
+                int layerMask = layerDepth << 9; //enemies on 9th layer
+                if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
+                {
+                    impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
 
+                    Instantiate(attackType, impact.point, Quaternion.identity);
+                    hit = true;
+
+                }
+
+                createProjectile.transform.position = nextPosition;
             }
-
-            createProjectile.transform.position = nextPosition;
             yield return null;
         }
 
@@ -988,50 +993,53 @@ public class Attack : MonoBehaviour
         //rotate shot
         createProjectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-
         Vector2 nextPosition = start;
 
         bool hit = false;
         bool entered = false;
         while (createProjectile != null && timeout > 0f && !hit)
         {
-            timeout -= Time.deltaTime;
-            nextPosition += next * attackSpeed;
-
-            RaycastHit2D impact;
-
-            int layerDepth = 1;
-            int layerMask = layerDepth << 9; //enemies on 9th layer
-            if (createProjectile != null && Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask) && !hit)
+            if (Time.timeScale != 0)
             {
-                //Penetration of the bullet increases with each level up, and only works when entered into the enemy the first time.
-                if (penetrationPower > 0 && !entered)
+                timeout -= Time.deltaTime;
+                nextPosition += next * attackSpeed;
+
+                RaycastHit2D impact;
+
+                int layerDepth = 1;
+                int layerMask = layerDepth << 9; //enemies on 9th layer
+                if (createProjectile != null && Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask) && !hit)
                 {
-                    impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
-                    Instantiate(attackType, impact.point, Quaternion.identity);
-                    penetrationPower--;
-                    entered = true;
+                    //Penetration of the bullet increases with each level up, and only works when entered into the enemy the first time.
+                    if (penetrationPower > 0 && !entered)
+                    {
+                        impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
+                        Instantiate(attackType, impact.point, Quaternion.identity);
+                        penetrationPower--;
+                        entered = true;
+                    }
+                    if (penetrationPower <= 0)
+                    {
+                        hit = true;
+                    }
                 }
-                if (penetrationPower <= 0)
+                else
                 {
-                    hit = true;
+                    //when the bullet leaves the enter then it can allow to attack again
+                    entered = false;
+                }
+
+                if (createProjectile != null)
+                {
+                    createProjectile.transform.position = nextPosition;
+                }
+
+                if (hit)
+                {
+                    Destroy(createProjectile);
                 }
             }
-            else
-            {
-                //when the bullet leaves the enter then it can allow to attack again
-                entered = false;
-            }
 
-            if (createProjectile != null)
-            {
-                createProjectile.transform.position = nextPosition;
-            }
-
-            if (hit)
-            {
-                Destroy(createProjectile);
-            }
             yield return null;
         }
 
@@ -1074,20 +1082,23 @@ public class Attack : MonoBehaviour
         bool hit = false;
         while (createProjectile != null && timeout > 0f && !hit)
         {
-            timeout -= Time.deltaTime;
-            nextPosition += next * attackSpeed;
-
-            RaycastHit2D impact;
-            int layerDepth = 1;
-            int layerMask = layerDepth << 9; //enemies on 9th layer
-            if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
+            if (Time.timeScale != 0)
             {
-                impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
-                Instantiate(attackType, impact.point, Quaternion.identity);
-                hit = true;
+                timeout -= Time.deltaTime;
+                nextPosition += next * attackSpeed;
+
+                RaycastHit2D impact;
+                int layerDepth = 1;
+                int layerMask = layerDepth << 9; //enemies on 9th layer
+                if (Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask))
+                {
+                    impact = Physics2D.Linecast(createProjectile.transform.position, nextPosition, layerMask);
+                    Instantiate(attackType, impact.point, Quaternion.identity);
+                    hit = true;
+                }
+                createProjectile.transform.position = nextPosition;
             }
 
-            createProjectile.transform.position = nextPosition;
             yield return null;
         }
         Destroy(createProjectile);
@@ -1190,7 +1201,7 @@ public class Attack : MonoBehaviour
         else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
         {
             projectile = projectileShotgun;
-			attackType = attackTypeShotgun;
+            attackType = attackTypeShotgun;
             speedOfProjectile = 1.4f;
             rateOfFire = 4.5f;
         }

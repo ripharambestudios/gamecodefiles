@@ -12,16 +12,18 @@ public class BigBoomAI : MonoBehaviour {
 	public float bounceSpeed = .5f;
 	public float edgeY = 54f;
 	public float edgeX = 105f;
-	public float knockBackDistance;
-	static private int direction = 0;
-	private GameObject target;
-	private float distanceToTarget;
-	private bool isAttacking = false;
+	public float knockBackDistance = 2;
     private Animator animator;
 	public GameObject attackType;
 	public float teleportTime = 2f;
 	public int teleDistance = 5;
+	public AudioClip bombExplodeSound;
 
+	static private int direction = 0;
+	private GameObject target;
+	private float distanceToTarget;
+	private bool isAttacking = false;
+	private AudioSource source;
 	private bool weakenedOnce = false;
 	private bool correctPlacement = false;
 	private bool canAttack = true;
@@ -31,7 +33,7 @@ public class BigBoomAI : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		knockBackDistance = 2;
+		source = this.gameObject.AddComponent<AudioSource> ();
 		isAttacking = false;
 		target = GameObject.FindWithTag ("Player");
         animator = this.GetComponent<Animator>();
@@ -46,12 +48,12 @@ public class BigBoomAI : MonoBehaviour {
 		{
 			distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
 
-			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () || weakenedOnce)) 
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowThirtyFivePercent () || weakenedOnce)) 
 			{
 				isAttacking = true;
 				StartCoroutine (LaunchAttack ());
 			}
-			else if (this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () && !weakenedOnce) 
+			else if (this.GetComponent<EnemyHealth> ().IsBelowThirtyFivePercent () && !weakenedOnce) 
 			{
 				StartCoroutine (WeakenedState ());
 			}
@@ -87,6 +89,7 @@ public class BigBoomAI : MonoBehaviour {
 				if (canAttack) 
 				{
 					Instantiate (attackType, transform.position, Quaternion.identity);
+					source.PlayOneShot(bombExplodeSound, .05f);
 				}
 				timer = 0f;
 			}
@@ -163,12 +166,12 @@ public class BigBoomAI : MonoBehaviour {
 			int randomDegree = randNum.Next (240, 300);
 			StartCoroutine(BounceOff(this.gameObject, randomDegree));
 		}
-			
-			
-		if (direction < 3) {
+		if (direction < 3) 
+		{
 			direction++;
 		} 
-		else {
+		else 
+		{
 			direction = 0;
 		}
 	}
@@ -180,7 +183,7 @@ public class BigBoomAI : MonoBehaviour {
 	}
 
 
-	IEnumerator BounceOff(GameObject enemy, int randomDegree)
+	IEnumerator BounceOff(GameObject enemy, int randomDegree) // this bounce off it for the edges
 	{
 		//yield return null;
 		float numAddX = Mathf.Cos(randomDegree * (Mathf.PI / 180)) * 50;
@@ -227,7 +230,7 @@ public class BigBoomAI : MonoBehaviour {
 	}
 
 
-	IEnumerator BounceOff(float degree, float knockBackSpeed)
+	IEnumerator BounceOff(float degree, float knockBackSpeed) // this bounce off it for the shotgun
 	{
 		//yield return null;
 		float numAddX = Mathf.Cos(degree * (Mathf.PI / 180)) * knockBackDistance;

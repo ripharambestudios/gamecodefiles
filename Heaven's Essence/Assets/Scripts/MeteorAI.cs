@@ -9,7 +9,9 @@ public class MeteorAI : MonoBehaviour {
 	public float waitTime =0.25f;
 	public float attackCooldown = .25f;
 	public float knockBackDistance;
+	public AudioClip fireSound;
 
+	private AudioSource source;
 	private GameObject target;
 	private float distanceToTarget;
 	private bool isAttacking = false;
@@ -17,13 +19,14 @@ public class MeteorAI : MonoBehaviour {
     private bool track = true;
     private bool weakenedOnce = false;
 	private bool canAttack;
-	private float waitTimeBoxCollider = 0.5f;
+	private float waitTimeBoxCollider = 0.6f;
 
 	// Use this for initialization
 	void Start () {
 		knockBackDistance = 2;
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
 		canAttack = true;
+		source = this.gameObject.AddComponent<AudioSource> ();
 		StartCoroutine (changeBoxCollider ());
 	}
 	
@@ -51,16 +54,14 @@ public class MeteorAI : MonoBehaviour {
                 this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
             //should only attack if in range, isn't attacking, health isn't below ten percent health, or if it is it has already entered its weakened state and can attack again
-            if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
+            if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
             {
                 isAttacking = true;
                 StartCoroutine(LaunchAttack(distanceToTarget));
-
             }
-            else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+            else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
             {
                 StartCoroutine(WeakenedState());
-                
             }
         }
 	}
@@ -75,6 +76,7 @@ public class MeteorAI : MonoBehaviour {
 	//start method for enemy to launch at player
 	IEnumerator LaunchAttack(float distance)
 	{
+		source.PlayOneShot (fireSound, .075f);
 		//yield return null;
 		Vector2 endLocation = target.transform.position;
 		Vector2 nextPosition = this.transform.position;

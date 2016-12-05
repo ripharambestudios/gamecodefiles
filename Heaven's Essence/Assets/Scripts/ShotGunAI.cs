@@ -4,28 +4,25 @@ using System;
 
 public class ShotGunAI : MonoBehaviour
 {
-
-    private float sightRadius = 10f;
-    public float damage = 20f;
+	public float damage = 20f;
+	public int rotateSpeed = 3;
+	public float knockBackDistance;
     public float waitTime = 0.5f;
-    private float movementSpeed = 100f;
-    private float launchSpeed = 1000f;
-    private GameObject target;
     public float distanceToTarget;
     public bool isAttacking = false;
-    private bool weakenedOnce = false;
-
-    private bool stopped = false;
     public GameObject createProjectile;
     public GameObject attackType;
-
     public GameObject pool;
-
     public float attackTime = 3f;
+	public AudioClip fireSound;
 
-    public int rotateSpeed = 3;
-	public float knockBackDistance;
-
+	private AudioSource source;
+	private bool stopped = false;
+	private bool weakenedOnce = false;
+	private float movementSpeed = 100f;
+	private float launchSpeed = 1000f;
+	private GameObject target;
+	private float sightRadius = 10f;
     private bool attacked = false;
 	private bool canAttack = true;
     // Use this for initialization
@@ -37,6 +34,7 @@ public class ShotGunAI : MonoBehaviour
         transform.LookAt(target.transform.position);
         transform.Rotate(new Vector3(0, -90, 0), Space.Self);
         pool = GameObject.FindWithTag("PoolFallen");
+		source = this.gameObject.AddComponent<AudioSource> ();
     }
 
     // Update is called once per frame
@@ -46,13 +44,13 @@ public class ShotGunAI : MonoBehaviour
 		{
         	distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
 
-			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
         	{
             	isAttacking = true;
             	//setAttackingAnimation(true);
             	StartCoroutine(LaunchAttack());
         	}
-			else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+			else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
 			{
             	stopped = true;
 				StartCoroutine(WeakenedState());
@@ -69,12 +67,10 @@ public class ShotGunAI : MonoBehaviour
 
                 if (distanceToTarget >= sightRadius - 1.0f)
                 {
-                    Debug.Log("Forward");
                     transform.position += transform.right * Time.deltaTime * movementSpeed;
                 }
                 else if(!weakenedOnce)
                 {
-                    Debug.Log("Rotate");
                     //transform.position += transform.right * Time.deltaTime * speed;
                     transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 500);
                 }
@@ -95,7 +91,12 @@ public class ShotGunAI : MonoBehaviour
     IEnumerator LaunchAttack()
     {
         yield return null;
-        Vector2 endLocation = target.transform.position;
+		source.PlayOneShot (fireSound, .025f);
+		Vector2 endLocation = new Vector2();
+		if(target != null)
+		{
+        	endLocation = target.transform.position;
+		}
         Vector2 nextPosition = this.transform.position;
         Vector3 look = endLocation - nextPosition;
         look.x += 3;
@@ -108,26 +109,25 @@ public class ShotGunAI : MonoBehaviour
         //yield return new WaitForSeconds (waitTime);
         while (distanceToTarget <= sightRadius && !attacked)
         {
-            timer += Time.deltaTime;
-            if (timer >= attackTime && !attacked)
+            if(Time.timeScale != 0)
             {
-                attacked = true;
-                createProjectile = (GameObject)Instantiate(attackType, transform.position + 1.0f * transform.right, transform.rotation);
-                createProjectile.GetComponent<Rigidbody2D>().AddForce(createProjectile.transform.right * launchSpeed);
-                stopped = true;
-                Debug.Log("attacked");
-                yield return new WaitForSeconds(1);
-                stopped = false;
-                timer = 0f;
+                timer += Time.deltaTime;
+                if (timer >= attackTime && !attacked)
+                {
+                    attacked = true;
+                    createProjectile = (GameObject)Instantiate(attackType, transform.position + 1.0f * transform.right, transform.rotation);
+                    createProjectile.GetComponent<Rigidbody2D>().AddForce(createProjectile.transform.right * launchSpeed);
+                    stopped = true;
+                    Debug.Log("attacked");
+                    yield return new WaitForSeconds(1);
+                    stopped = false;
+                    timer = 0f;
+                }
             }
             yield return null;
-
         }
         isAttacking = false;
         attacked = false;
-
-        //setAttackingAnimation(false);
-
     }
 
     void setAttackingAnimation(bool status)
