@@ -73,8 +73,8 @@ public class Attack : MonoBehaviour
 
     //Number of souls player has obtained
     private int energySouls = 0;
-    private int beamSouls = 0;
-    private int bombSouls = 1000;
+    private int beamSouls = 10;
+    private int bombSouls = 0;
     private int shotgunSouls = 0;
     private int speedSouls = 0;
     //attack power of the different attacks
@@ -448,6 +448,7 @@ public class Attack : MonoBehaviour
                 positions[1] = new Vector3(hit.point.x, hit.point.y, 0);
                 if (laserTimer >= maxLaserTime)
                 {
+                    laserTimer = 0f;
                     Instantiate(attackType, hit.point, Quaternion.Euler(new Vector3(0, 0, 0)));
                 }
             }

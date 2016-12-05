@@ -55,8 +55,9 @@ public class PoolingSystem : MonoBehaviour {
     {
         if (poolObjects.Contains(obj) && obj.activeSelf)
         {
+            obj.gameObject.SendMessage("ResetInfo", SendMessageOptions.DontRequireReceiver);
             obj.SetActive(false);
-            poolCount--;   
+            poolCount--;
         }
         else
         {

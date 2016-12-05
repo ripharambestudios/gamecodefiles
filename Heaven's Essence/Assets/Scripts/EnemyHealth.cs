@@ -18,7 +18,7 @@ public class EnemyHealth : MonoBehaviour
     private bool pulseGold;
     private float timeForFlashRed = .1f;
     private float timeForInvinciblity = 0;
-    private bool invincible = false;
+    private bool invincible;
     public string poolName;
 
 
@@ -31,15 +31,18 @@ public class EnemyHealth : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         source = gameObject.AddComponent<AudioSource>();
         pool = GameObject.FindGameObjectWithTag(poolName);
-
-
+        this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        invincible = false;
     }
 
     // Message sent from player that does damage to enemy
     public void DealDamage(int damage)
     {
         if (IsBelowThirtyFivePercent() && !invincible)
+        {
             timeForInvinciblity = 1f;
+
+        }
         invincible = true;
 
         if (timeForInvinciblity > 0)
@@ -60,9 +63,9 @@ public class EnemyHealth : MonoBehaviour
                 enemyManager.GetComponent<EnemySpawner>().decrementNumOfEnemies();
                 player.SendMessage("UpdateScore", scoreValue, SendMessageOptions.DontRequireReceiver);
                 int numOfObjects = this.transform.childCount;
-                for(int i =0; i < numOfObjects; i++)
+                for (int i = 0; i < numOfObjects; i++)
                 {
-                    if(this.transform.GetChild(i).tag == "Enemy")
+                    if(this.transform.GetChild(i).tag == "Enemy" && gameObject.activeSelf)
                     {
                         Destroy(this.transform.GetChild(i));
                     }
@@ -72,7 +75,7 @@ public class EnemyHealth : MonoBehaviour
                 pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
             }
 
-            if (currentHealth > 0)
+            if (currentHealth > 0 && this.gameObject.activeInHierarchy)
             {
 				if (this.gameObject.GetComponent<SpriteRenderer> ().enabled == true && this.gameObject.activeInHierarchy) 
 				{
@@ -86,7 +89,7 @@ public class EnemyHealth : MonoBehaviour
     {
         return currentHealth;
     }
-    
+
     /// <summary>
     /// Checks health of enemy to see if they can be absorbed.
     /// Enemy health must be 35 percent or lower to be absorbed.
@@ -128,5 +131,20 @@ public class EnemyHealth : MonoBehaviour
         this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, .17647f, .17647f, 1);
         yield return new WaitForSeconds(timeForFlashRed);
         this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+    }
+
+    /// <summary>
+    /// Reset information dealing with the start of the enemy.
+    /// Used for when the enemy is returned to the pool of objects.
+    /// </summary>
+    public void ResetInfo()
+    {
+        currentHealth = startHealth;
+        enemyManager = GameObject.FindGameObjectWithTag("Enemy Manager");
+        player = GameObject.FindGameObjectWithTag("Player");
+        source = gameObject.AddComponent<AudioSource>();
+        pool = GameObject.FindGameObjectWithTag(poolName);
+        this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        invincible = false;
     }
 }

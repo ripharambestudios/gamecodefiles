@@ -6,7 +6,7 @@ public class MeteorAI : MonoBehaviour {
 
 	public float sightRadius = 60f; //max distance can be from player and still in view
 	public float damage = 20f;
-	public float waitTime =0.25f;
+	public float waitTime = 0.25f;
 	public float attackCooldown = .25f;
 	public float knockBackDistance;
 	public AudioClip fireSound;
@@ -22,7 +22,8 @@ public class MeteorAI : MonoBehaviour {
 	private float waitTimeBoxCollider = 0.6f;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 		knockBackDistance = 2;
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
 		canAttack = true;
@@ -31,39 +32,50 @@ public class MeteorAI : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (target.gameObject != null && canAttack)
-        {
-            distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
-            if (track)
-            {
-                Vector2 endLocation = target.transform.position;
-                Vector2 nextPosition = this.transform.position;
-                Vector2 look = endLocation - nextPosition;
+	void Update ()
+	{
+		if(Time.timeScale != 0)
+		{
+			if (target.gameObject != null && canAttack)
+			{
+				if (this.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude > 0)
+				{
+					this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+				}
+				distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
+				if (track)
+				{
+					Vector2 endLocation = target.transform.position;
+					Vector2 nextPosition = this.transform.position;
+					Vector2 look = endLocation - nextPosition;
 
-                //THIS SHOULD ALL BE PUT INTO A HELPER METHOD FOR ROTATION
-                //get the sign of the direction of the aim
-                float signOfLook = 1;
-                if (this.transform.position.y > target.transform.position.y)
-                {
-                    signOfLook = Mathf.Sign(look.y); //this will be negative if the player is below demonic sonic, rotating him appropriately
-                }
-                float angle = Vector3.Angle(Vector3.right, new Vector3(look.x, look.y, 0));
-                angle *= signOfLook;
-                //rotate demonic sonic
-                this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            }
-            //should only attack if in range, isn't attacking, health isn't below ten percent health, or if it is it has already entered its weakened state and can attack again
-            if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
-            {
-                isAttacking = true;
-                StartCoroutine(LaunchAttack(distanceToTarget));
-            }
-            else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
-            {
-                StartCoroutine(WeakenedState());
-            }
-        }
+					//THIS SHOULD ALL BE PUT INTO A HELPER METHOD FOR ROTATION
+					//get the sign of the direction of the aim
+					float signOfLook = 1;
+					if (this.transform.position.y > target.transform.position.y)
+					{
+						signOfLook = Mathf.Sign(look.y); //this will be negative if the player is below demonic sonic, rotating him appropriately
+					}
+					float angle = Vector3.Angle(Vector3.right, new Vector3(look.x, look.y, 0));
+					angle *= signOfLook;
+					//rotate demonic sonic
+					this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+				}
+				//should only attack if in range, isn't attacking, health isn't below ten percent health, or if it is it has already entered its weakened state and can attack again
+				if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
+				{
+					isAttacking = true;
+					StartCoroutine(LaunchAttack(distanceToTarget));
+
+				}
+				else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
+				{
+					this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+					StartCoroutine(WeakenedState());
+
+				}
+			}
+		}
 	}
 
     IEnumerator WeakenedState()
@@ -131,7 +143,10 @@ public class MeteorAI : MonoBehaviour {
 		
 	public void startKnockBack(float degree)
 	{
-		StartCoroutine (BounceOff(degree, 1f));
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(BounceOff(degree, 1f));
+        }
 	}
 
 	public void setKnockBackAmount(int distance)
@@ -176,7 +191,7 @@ public class MeteorAI : MonoBehaviour {
 		yield return new WaitForSeconds (.5f); // cooldown
 		canAttack = true;
 	}
-
+		
 	IEnumerator changeBoxCollider()
 	{
 		while (waitTimeBoxCollider > 0) 
@@ -186,4 +201,16 @@ public class MeteorAI : MonoBehaviour {
 		}
 		this.gameObject.GetComponent<BoxCollider2D> ().isTrigger = true;
 	}
+
+    /// <summary>
+    /// Reset information dealing with the start of the enemy.
+    /// Used for when the enemy is returned to the pool of objects.
+    /// </summary>
+    public void ResetInfo()
+    {
+        weakenedOnce = false;
+        knockBackDistance = 2;
+        target = GameObject.FindGameObjectWithTag("Player");  //may need to tweak this
+        canAttack = true;
+    }
 }

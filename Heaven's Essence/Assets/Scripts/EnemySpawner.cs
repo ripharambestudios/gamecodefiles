@@ -19,8 +19,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private System.Random randNum;
 	static private int numberOfEnemies;
-
-	private List<char> enemyPossibilities = new List<char>() { 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
+	private List<char> enemyPossibilities = new List<char>() { 'b', 'b', 'b', 'b', 'b', 'f', 'f', 'f', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     static private int waveNum;
     private int numberOfEnemiesPerWave = 4;
 
@@ -41,7 +40,7 @@ public class EnemySpawner : MonoBehaviour {
 		waveNum = 1;
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
 		waveText.text = "";
-        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 1); // what you add is the first round amount
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 7); // what you add is the first round amount
         demonicPool = GameObject.FindGameObjectWithTag("PoolDemonic");
     }
 
@@ -69,7 +68,7 @@ public class EnemySpawner : MonoBehaviour {
 		}
         waveText.enabled = false;
         //waveText.text = "";
-        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 1); //increases number of enemies quickly initially and then slows down as it gets further
+        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 7); //increases number of enemies quickly initially and then slows down as it gets further
 		waveNum++;
 	}
 
