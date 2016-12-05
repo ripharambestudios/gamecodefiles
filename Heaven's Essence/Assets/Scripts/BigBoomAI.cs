@@ -43,18 +43,26 @@ public class BigBoomAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target != null && canAttack)
+        if(Time.timeScale != 0)
         {
-            distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
+            if (target != null && canAttack)
+            {
+                if (this.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude > 0)
+                {
+                    this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                }
+                distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
 
-            if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
-            {
-                isAttacking = true;
-                StartCoroutine(LaunchAttack());
-            }
-            else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
-            {
-                StartCoroutine(WeakenedState());
+                if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
+                {
+                    isAttacking = true;
+                    StartCoroutine(LaunchAttack());
+                }
+                else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
+                {
+                    this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                    StartCoroutine(WeakenedState());
+                }
             }
         }
     }
@@ -79,11 +87,9 @@ public class BigBoomAI : MonoBehaviour
 
             if (timer >= teleportTime)
             {
-                //Debug.Log ("Teleporting");
-
                 enemyPlacement();
                 //add check if on top of other enemies to move off slightly
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(.25f);
                 animator.SetInteger("Port", 1);
                 if (canAttack)
                 {
@@ -273,6 +279,7 @@ public class BigBoomAI : MonoBehaviour
     /// </summary>
     public void ResetInfo()
     {
+        weakenedOnce = false;
         knockBackDistance = 2;
         isAttacking = false;
         target = GameObject.FindWithTag("Player");

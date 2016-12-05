@@ -75,7 +75,7 @@ public class EnemyHealth : MonoBehaviour
                 pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
             }
 
-            if (currentHealth > 0)
+            if (currentHealth > 0 && this.gameObject.activeInHierarchy)
             {
                 StartCoroutine(flashRed());
             }

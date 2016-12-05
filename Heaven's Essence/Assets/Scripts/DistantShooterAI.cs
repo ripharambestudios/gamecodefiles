@@ -61,6 +61,7 @@ public class DistantShooterAI : MonoBehaviour
                 }
                 else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
                 {
+                    this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                     canMove = false;
                     StartCoroutine(WeakenedState());
                 }
@@ -297,6 +298,7 @@ public class DistantShooterAI : MonoBehaviour
     /// </summary>
     public void ResetInfo()
     {
+        weakenedOnce = false;
         knockBackDistance = 2;
         target = GameObject.FindGameObjectWithTag("Player");
 

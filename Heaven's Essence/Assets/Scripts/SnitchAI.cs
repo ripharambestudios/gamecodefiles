@@ -30,7 +30,7 @@ public class SnitchAI : MonoBehaviour {
 				//motion slightly jerky still
 				if (tetherMagnitude < minTether)
 				{ 			
-					this.GetComponent<Rigidbody2D> ().velocity = -tether * 1.25f; 
+					this.GetComponent<Rigidbody2D> ().velocity = -tether * 1.5f; 
 				} 
 				else 
 				{		

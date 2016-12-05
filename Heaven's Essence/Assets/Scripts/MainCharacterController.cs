@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class MainCharacterController : MonoBehaviour
 {
 
-	public float moveSpeed = 10;
+	public float moveSpeed = 25;
 	public int health = 1000;
 	public GameObject healthBar;
 	public GameObject gameOverPanel;
@@ -64,9 +64,13 @@ public class MainCharacterController : MonoBehaviour
         {
             characterVector.y = Input.GetAxis("Vertical");
             characterVector.x = Input.GetAxis("Horizontal");
+            if(player.velocity.magnitude > 0)
+            {
+                player.velocity = Vector2.zero;
+            }
             if (characterVector.x == 0 && characterVector.y == 0)
             {
-                player.velocity = new Vector2(0, 0);
+                player.velocity = Vector2.zero;
             }
             player.transform.Translate(characterVector.x * moveSpeed * Time.deltaTime, characterVector.y * moveSpeed * Time.deltaTime, 0);
             if (!useController)
