@@ -37,7 +37,7 @@ public class instructionsScript : MonoBehaviour
         //controllerText = GameObject.FindGameObjectWithTag("ControllerText");
 
         controllerNames = Input.GetJoystickNames();
-        if (controllerNames[0] != "")
+        if (controllerNames.Length > 0 && controllerNames[0] != "")
         {
             keyboardText.SetActive(false);
             controllerText.SetActive(true);
