@@ -24,8 +24,14 @@ public class Absorption : MonoBehaviour {
                 if (hit.GetComponent<EnemyHealth>() != null && hit.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent())
                 {
                     string attackType = hit.name;
-                    this.gameObject.SendMessage("EnemyAbsorbed", attackType, SendMessageOptions.DontRequireReceiver);
-                    hit.gameObject.SendMessage("DealDamage", killEnemy, SendMessageOptions.DontRequireReceiver);
+                    if (gameObject.activeSelf)
+                    {
+                        this.gameObject.SendMessage("EnemyAbsorbed", attackType, SendMessageOptions.DontRequireReceiver);
+                    }
+                    if (hit.gameObject.activeSelf)
+                    {
+                        hit.gameObject.SendMessage("DealDamage", killEnemy, SendMessageOptions.DontRequireReceiver);
+                    }
                 }
             }
         }

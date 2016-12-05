@@ -43,50 +43,73 @@ public class ShotGunAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Time.timeScale != 0)
+
+        if (Time.timeScale != 0)
         {
             if (target != null && canAttack && this.gameObject != null)
-            {
-                distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
 
-                if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
+                if (target != null && canAttack && this.gameObject != null)
                 {
-                    isAttacking = true;
-                    //setAttackingAnimation(true);
-                    StartCoroutine(LaunchAttack());
-                }
-                else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
-                {
-                    stopped = true;
-                    this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                    StartCoroutine(WeakenedState());
-                }
+                    distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
 
-                //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
-                //GetComponent<Rigidbody2D>().velocity = -velocity;
-
-                if (!stopped)
-                {
-                    Vector2 dir = target.transform.position - this.transform.position;
-                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-                    if (distanceToTarget >= sightRadius)
+                    if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce) && gameObject.activeSelf)
                     {
-
-                        this.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(dir.x, dir.y) * Time.deltaTime * movementSpeed);
-
-                        //transform.position += transform.right * Time.deltaTime * movementSpeed;
+                        isAttacking = true;
+                        //setAttackingAnimation(true);
+                        StartCoroutine(LaunchAttack());
                     }
-                    else if (!weakenedOnce)
+                    else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce && gameObject.activeSelf)
                     {
-                        //transform.position += transform.right * Time.deltaTime * speed;
-                        transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 100);
+                        stopped = true;
+                        StartCoroutine(WeakenedState());
+                    }
+
+                    //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
+                    //GetComponent<Rigidbody2D>().velocity = -velocity;
+
+                    if (!stopped)
+
+                    {
+                        distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
+
+                        if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
+                        {
+                            isAttacking = true;
+                            //setAttackingAnimation(true);
+                            StartCoroutine(LaunchAttack());
+                        }
+                        else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
+                        {
+                            stopped = true;
+                            this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                            StartCoroutine(WeakenedState());
+                        }
+
+                        //Vector2 velocity = new Vector2((transform.position.x - target.transform.position.x - 5) * inverseLaunchSpeed, (transform.position.y - target.transform.position.y - 5) * inverseLaunchSpeed);
+                        //GetComponent<Rigidbody2D>().velocity = -velocity;
+
+                        if (!stopped)
+                        {
+                            Vector2 dir = target.transform.position - this.transform.position;
+                            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+                            if (distanceToTarget >= sightRadius)
+                            {
+
+                                this.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(dir.x, dir.y) * Time.deltaTime * movementSpeed);
+
+                                //transform.position += transform.right * Time.deltaTime * movementSpeed;
+                            }
+                            else if (!weakenedOnce)
+                            {
+                                //transform.position += transform.right * Time.deltaTime * speed;
+                                transform.RotateAround(target.transform.position, Vector3.forward, rotateSpeed * Time.deltaTime * 100);
+                            }
+                        }
                     }
                 }
-            }
         }
-        
     }
 
 
@@ -138,6 +161,7 @@ public class ShotGunAI : MonoBehaviour
     {
         this.GetComponent<EnemyAnimationScript>().isAttacking = status;
     }
+
 
     public void setCanAttack(bool booleanSent)
     {
@@ -191,6 +215,7 @@ public class ShotGunAI : MonoBehaviour
         yield return new WaitForSeconds(.5f); // cooldown
         canAttack = true;
     }
+
 
     /// <summary>
     /// Reset information dealing with the start of the enemy.

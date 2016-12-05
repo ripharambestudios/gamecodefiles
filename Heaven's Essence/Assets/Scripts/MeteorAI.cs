@@ -141,7 +141,10 @@ public class MeteorAI : MonoBehaviour {
 		
 	public void startKnockBack(float degree)
 	{
-		StartCoroutine (BounceOff(degree, 1f));
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(BounceOff(degree, 1f));
+        }
 	}
 
 	public void setKnockBackAmount(int distance)

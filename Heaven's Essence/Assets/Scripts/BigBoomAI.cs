@@ -74,7 +74,6 @@ public class BigBoomAI : MonoBehaviour
         yield return null;
     }
 
-
     //start method for enemy to launch at player
     IEnumerator LaunchAttack()
     {
@@ -103,8 +102,8 @@ public class BigBoomAI : MonoBehaviour
         animator.SetInteger("Port", 2);
         yield return new WaitForSeconds(.5f);
         animator.SetInteger("Port", 0);
-        isAttacking = false;
-    }
+		isAttacking = false;
+	}     
 
 
     private void enemyPlacement()
@@ -145,26 +144,26 @@ public class BigBoomAI : MonoBehaviour
         }
 
         //check for bounce off
-        if (this.gameObject.transform.position.x <= -edgeX)
+        if (this.gameObject.transform.position.x <= -edgeX && gameObject.activeSelf) 
         {
             canAttack = false;
             int randomDegree = randNum.Next(-30, 30);
             StartCoroutine(BounceOff(this.gameObject, randomDegree));
         }
-        else if (this.gameObject.transform.position.x >= edgeX)
+        else if (this.gameObject.transform.position.x >= edgeX && gameObject.activeSelf)
         {
             canAttack = false;
             int randomDegree = randNum.Next(150, 210);
             StartCoroutine(BounceOff(this.gameObject, randomDegree));
         }
 
-        if (this.gameObject.transform.position.y <= -edgeY)
+        if (this.gameObject.transform.position.y <= -edgeY && gameObject.activeSelf)
         {
             canAttack = false;
             int randomDegree = randNum.Next(60, 120);
             StartCoroutine(BounceOff(this.gameObject, randomDegree));
         }
-        else if (this.gameObject.transform.position.y >= edgeY)
+        else if (this.gameObject.transform.position.y >= edgeY && gameObject.activeSelf)
         {
             canAttack = false;
             int randomDegree = randNum.Next(240, 300);
