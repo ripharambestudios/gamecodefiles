@@ -38,7 +38,7 @@ public class EnemyHealth : MonoBehaviour
     // Message sent from player that does damage to enemy
     public void DealDamage(int damage)
     {
-        if (IsBelowTwentyPercent() && !invincible)
+        if (IsBelowThirtyFivePercent() && !invincible)
             timeForInvinciblity = 1f;
         invincible = true;
 
@@ -60,12 +60,15 @@ public class EnemyHealth : MonoBehaviour
                 enemyManager.GetComponent<EnemySpawner>().decrementNumOfEnemies();
                 player.SendMessage("UpdateScore", scoreValue, SendMessageOptions.DontRequireReceiver);
                 int numOfObjects = this.transform.childCount;
-                //for(int i =0; i < numOfObjects; i++)
-                //{
-                //    Destroy(this.transform.GetChild(i));
-                //}
-                //Destroy (this.gameObject);
+                for(int i =0; i < numOfObjects; i++)
+                {
+                    if(this.transform.GetChild(i).tag == "Enemy")
+                    {
+                        Destroy(this.transform.GetChild(i));
+                    }
+                }
                 currentHealth = startHealth;
+                this.gameObject.GetComponentInChildren<Light>().intensity = 0f;
                 pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
             }
 
@@ -80,8 +83,13 @@ public class EnemyHealth : MonoBehaviour
     {
         return currentHealth;
     }
-
-    public bool IsBelowTwentyPercent()
+    
+    /// <summary>
+    /// Checks health of enemy to see if they can be absorbed.
+    /// Enemy health must be 35 percent or lower to be absorbed.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsBelowThirtyFivePercent()
     {
         int aTenth = startHealth / 10;
         if (currentHealth <= aTenth * 3.5f)

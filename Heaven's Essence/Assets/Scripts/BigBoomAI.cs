@@ -46,12 +46,12 @@ public class BigBoomAI : MonoBehaviour {
 		{
 			distanceToTarget = Vector2.Distance (this.transform.position, target.transform.position);
 
-			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () || weakenedOnce)) 
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth> ().IsBelowThirtyFivePercent () || weakenedOnce)) 
 			{
 				isAttacking = true;
 				StartCoroutine (LaunchAttack ());
 			}
-			else if (this.GetComponent<EnemyHealth> ().IsBelowTwentyPercent () && !weakenedOnce) 
+			else if (this.GetComponent<EnemyHealth> ().IsBelowThirtyFivePercent () && !weakenedOnce) 
 			{
 				StartCoroutine (WeakenedState ());
 			}

@@ -56,8 +56,7 @@ public class PoolingSystem : MonoBehaviour {
         if (poolObjects.Contains(obj) && obj.activeSelf)
         {
             obj.SetActive(false);
-            poolCount--;
-            
+            poolCount--;   
         }
         else
         {

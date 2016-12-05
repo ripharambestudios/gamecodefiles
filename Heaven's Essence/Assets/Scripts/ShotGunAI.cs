@@ -46,13 +46,13 @@ public class ShotGunAI : MonoBehaviour
 		{
         	distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
 
-			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
+			if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
         	{
             	isAttacking = true;
             	//setAttackingAnimation(true);
             	StartCoroutine(LaunchAttack());
         	}
-			else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+			else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
 			{
             	stopped = true;
 				StartCoroutine(WeakenedState());
@@ -108,20 +108,22 @@ public class ShotGunAI : MonoBehaviour
         //yield return new WaitForSeconds (waitTime);
         while (distanceToTarget <= sightRadius && !attacked)
         {
-            timer += Time.deltaTime;
-            if (timer >= attackTime && !attacked)
+            if(Time.timeScale != 0)
             {
-                attacked = true;
-                createProjectile = (GameObject)Instantiate(attackType, transform.position + 1.0f * transform.right, transform.rotation);
-                createProjectile.GetComponent<Rigidbody2D>().AddForce(createProjectile.transform.right * launchSpeed);
-                stopped = true;
-                Debug.Log("attacked");
-                yield return new WaitForSeconds(1);
-                stopped = false;
-                timer = 0f;
+                timer += Time.deltaTime;
+                if (timer >= attackTime && !attacked)
+                {
+                    attacked = true;
+                    createProjectile = (GameObject)Instantiate(attackType, transform.position + 1.0f * transform.right, transform.rotation);
+                    createProjectile.GetComponent<Rigidbody2D>().AddForce(createProjectile.transform.right * launchSpeed);
+                    stopped = true;
+                    Debug.Log("attacked");
+                    yield return new WaitForSeconds(1);
+                    stopped = false;
+                    timer = 0f;
+                }
             }
             yield return null;
-
         }
         isAttacking = false;
         attacked = false;

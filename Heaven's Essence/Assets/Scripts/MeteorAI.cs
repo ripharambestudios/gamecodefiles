@@ -49,13 +49,13 @@ public class MeteorAI : MonoBehaviour {
                 this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
             //should only attack if in range, isn't attacking, health isn't below ten percent health, or if it is it has already entered its weakened state and can attack again
-            if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() || weakenedOnce))
+            if (distanceToTarget <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce))
             {
                 isAttacking = true;
                 StartCoroutine(LaunchAttack(distanceToTarget));
 
             }
-            else if (this.GetComponent<EnemyHealth>().IsBelowTwentyPercent() && !weakenedOnce)
+            else if (this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() && !weakenedOnce)
             {
                 StartCoroutine(WeakenedState());
                 
