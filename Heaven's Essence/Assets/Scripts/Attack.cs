@@ -1179,6 +1179,7 @@ public class Attack : MonoBehaviour
 			attackType = attackTypeEnergy;
 			speedOfProjectile = 2f;
 			rateOfFire = 6.5f;
+            DeactivateLaser();
 		} 
 		else if (attackTypeString == "Beam" && beamAttackLevel > 0)
 		{
@@ -1191,21 +1192,24 @@ public class Attack : MonoBehaviour
 			attackType = attackTypeBomb;
 			speedOfProjectile = .5f;
 			rateOfFire = 1.0f;
-		} 
+            DeactivateLaser();
+        } 
 		else if (attackTypeString == "Speed" && speedAttackLevel > 0) 
 		{
 			projectile = projectileSpeed;
 			attackType = attackTypeSpeed;
 			speedOfProjectile = spookyGuyProjectileSpeed;
 			rateOfFire = 15.0f;
-		} 
+            DeactivateLaser();
+        } 
 		else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
 		{
 			projectile = projectileShotgun;
 			attackType = attackTypeShotgun;
 			speedOfProjectile = 1.4f;
 			rateOfFire = 4.5f;
-		} 
+            DeactivateLaser();
+        } 
 		else 
 		{
 			StartCoroutine (changeErrorText ("You don't have enough souls to upgrade and that weapon isn't unlocked"));
