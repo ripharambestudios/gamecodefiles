@@ -224,5 +224,6 @@ public class MeteorAI : MonoBehaviour {
         source = this.gameObject.AddComponent<AudioSource>();
         StartCoroutine(changeBoxCollider());
         waitTimeBoxCollider = 0.6f;
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
     }
 }

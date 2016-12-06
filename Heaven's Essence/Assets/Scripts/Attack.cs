@@ -1265,7 +1265,7 @@ public class Attack : MonoBehaviour
             }
 
             energySoulsText.text = energySouls.ToString();
-			if (energySouls > energyUpgradeCost) 
+			if (energySouls >= energyUpgradeCost) 
 			{
 				energySoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
@@ -1275,7 +1275,7 @@ public class Attack : MonoBehaviour
 			}
 
             beamSoulsText.text = beamSouls.ToString();
-			if (beamSouls > beamUpgradeCost) 
+			if (beamSouls >= beamUpgradeCost) 
 			{
 				beamSoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
@@ -1285,7 +1285,7 @@ public class Attack : MonoBehaviour
 			}
 
             bombSoulsText.text = bombSouls.ToString();
-			if (bombSouls > bombUpgradeCost) 
+			if (bombSouls >= bombUpgradeCost) 
 			{
 				bombSoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
@@ -1295,7 +1295,7 @@ public class Attack : MonoBehaviour
 			}
 
             speedSoulsText.text = speedSouls.ToString();
-			if (speedSouls > spookyGuyUpgradeCost) 
+			if (speedSouls >= spookyGuyUpgradeCost) 
 			{
 				speedSoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
@@ -1305,7 +1305,7 @@ public class Attack : MonoBehaviour
 			}
 
             shotgunSoulsText.text = shotgunSouls.ToString();
-			if (shotgunSouls > shotgunUpgradeCost) 
+			if (shotgunSouls >= shotgunUpgradeCost) 
 			{
 				shotgunSoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
