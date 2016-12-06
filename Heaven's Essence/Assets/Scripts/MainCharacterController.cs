@@ -106,23 +106,28 @@ public class MainCharacterController : MonoBehaviour
 
                 if (Input.GetKeyUp(KeyCode.Alpha1) && !Input.GetKey(KeyCode.LeftShift))
                 {
+                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[0]);
                     //check for numbers 1-5 and also for numbers plus control key.  send signal to upgrade attack or change attack
                 }
                 if (Input.GetKeyUp(KeyCode.Alpha2) && !Input.GetKey(KeyCode.LeftShift))
                 {
+                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[1]);
                 }
                 if (Input.GetKeyUp(KeyCode.Alpha3) && !Input.GetKey(KeyCode.LeftShift))
                 {
+                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[2]);
                 }
                 if (Input.GetKeyUp(KeyCode.Alpha4) && !Input.GetKey(KeyCode.LeftShift))
                 {
+                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[3]);
                 }
                 if (Input.GetKeyUp(KeyCode.Alpha5) && !Input.GetKey(KeyCode.LeftShift))
                 {
+                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
                 }
                 if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Alpha1))

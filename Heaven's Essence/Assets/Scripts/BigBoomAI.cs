@@ -94,7 +94,7 @@ public class BigBoomAI : MonoBehaviour
             {
                 enemyPlacement();
                 //add check if on top of other enemies to move off slightly
-                yield return new WaitForSeconds(.25f);
+                yield return new WaitForSeconds(.3f);
                 animator.SetInteger("Port", 1);
                 if (canAttack)
                 {

@@ -7,10 +7,10 @@ public class ShotGunAI : MonoBehaviour
 
     public float damage = 20f;
     public GameObject attackType;
-    public GameObject pool;
     public float knockBackDistance;
     public AudioClip fireSound;
 
+    private GameObject pool;
     private AudioSource source;
     private float sightRadius;
     private float waitTime;

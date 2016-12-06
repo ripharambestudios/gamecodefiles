@@ -27,10 +27,13 @@ public class PoolingSystem : MonoBehaviour {
         for (int i = 0; i < amount; i++)
         {
             GameObject info = Instantiate(type, Vector3.zero, Quaternion.identity) as GameObject;
-            info.GetComponent<EnemyHealth>().pool = gameObject;
+            if (info.GetComponent<EnemyHealth>() != null)
+            {
+                info.GetComponent<EnemyHealth>().pool = gameObject;
+            }
             info.SetActive(false);
             poolObjects.Add((info));
-            //DontDestroyOnLoad(info);
+            
         }
     }
 
