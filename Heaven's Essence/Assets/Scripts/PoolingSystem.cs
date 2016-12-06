@@ -30,7 +30,7 @@ public class PoolingSystem : MonoBehaviour {
             info.GetComponent<EnemyHealth>().pool = gameObject;
             info.SetActive(false);
             poolObjects.Add((info));
-            DontDestroyOnLoad(info);
+            //DontDestroyOnLoad(info);
         }
     }
 

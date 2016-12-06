@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PauseScript : MonoBehaviour {
     public GameObject pausePanel;
+	public GameObject controlsPanel;
     // Use this for initialization
     void Start () {
 
@@ -10,7 +11,7 @@ public class PauseScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyUp("p") || Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.Joystick1Button7))
+		if ((Input.GetKeyUp("p") || Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.Joystick1Button7)) && !controlsPanel.activeSelf)
         {
             if (pausePanel.activeInHierarchy == false)
             {
