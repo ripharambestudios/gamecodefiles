@@ -19,7 +19,7 @@ public class MeteorAI : MonoBehaviour {
     private bool track = true;
     private bool weakenedOnce = false;
 	private bool canAttack;
-	private float waitTimeBoxCollider = 0.6f;
+	private float waitTimeBoxCollider = 0.75f;
 
 	// Use this for initialization
 	void Start ()

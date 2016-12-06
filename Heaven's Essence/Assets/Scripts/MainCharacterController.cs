@@ -50,7 +50,6 @@ public class MainCharacterController : MonoBehaviour
 		attackTypes.Add("Shotgun");
 		healthStartVector = healthBar.GetComponent<RectTransform>().sizeDelta;
 		source = this.gameObject.AddComponent<AudioSource> ();
-		useController = false;
 		pools = new List<GameObject>();
 		pools.Add(GameObject.FindGameObjectWithTag("PoolDemonic"));
 		pools.Add(GameObject.FindGameObjectWithTag("PoolSpook"));
@@ -166,50 +165,33 @@ public class MainCharacterController : MonoBehaviour
                     this.GetComponent<Attack>().DeactivateLaser();
                     laserActivated = false;
                 }
-                if (Input.GetKeyUp(KeyCode.JoystickButton2) && !Input.GetKey(KeyCode.JoystickButton4))
+                if (Input.GetKeyUp(KeyCode.JoystickButton2))
                 {
+					this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[0]);
-                    //check for numbers 1-5 and also for numbers plus control key.  send signal to upgrade attack or change attack
                 }
-                if (Input.GetKeyUp(KeyCode.JoystickButton1) && !Input.GetKey(KeyCode.JoystickButton4))
+                if (Input.GetKeyUp(KeyCode.JoystickButton1))
                 {
+					this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[1]);
                 }
-                if (Input.GetKeyUp(KeyCode.JoystickButton5) && !Input.GetKey(KeyCode.JoystickButton4))
+                if (Input.GetKeyUp(KeyCode.JoystickButton5))
                 {
+					this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[2]);
                 }
-                if (Input.GetKeyUp(KeyCode.JoystickButton3) && !Input.GetKey(KeyCode.JoystickButton4))
+                if (Input.GetKeyUp(KeyCode.JoystickButton3))
                 {
+					this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[3]);
                 }
-                if (Input.GetKeyUp(KeyCode.JoystickButton0) && !Input.GetKey(KeyCode.JoystickButton4))
+                if (Input.GetKeyUp(KeyCode.JoystickButton0))
                 {
+					this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
                     this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
-                }
-                if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton2))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
-                }
-                if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton1))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
-                }
-                if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton5))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
-                }
-                if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton3))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
-                }
-                if (Input.GetKey(KeyCode.JoystickButton4) && Input.GetKeyDown(KeyCode.JoystickButton0))
-                {
-                    this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
                 }
             }
         }
-        
 	}
 
 

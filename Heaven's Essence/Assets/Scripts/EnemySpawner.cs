@@ -67,7 +67,6 @@ public class EnemySpawner : MonoBehaviour {
 			Spawn (typeOfEnemy);
 		}
         waveText.enabled = false;
-        //waveText.text = "";
         numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 7); //increases number of enemies quickly initially and then slows down as it gets further
 		waveNum++;
 	}

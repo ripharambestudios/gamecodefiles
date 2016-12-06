@@ -6,12 +6,15 @@ public class AnimatorScript : MonoBehaviour
 
     public GameObject particleSystem;
     public GameObject attackPoint;
+	public bool useController;
     //public GameObject weaponPosition;
     private Animator animator;
+	private Vector3 lookDirection;
     // Use this for initialization
     void Start()
     {
         animator = this.GetComponent<Animator>();
+		Vector3 lookDirection = new Vector3();
     }
 
     // Update is called once per frame
@@ -19,8 +22,19 @@ public class AnimatorScript : MonoBehaviour
     {
         if(Time.timeScale != 0)
         {
-            //Attempt at making animation depend on mouse placement, will come back to.
-            Vector3 lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			Vector3 previousDirection = lookDirection;
+			if (useController)
+			{
+				lookDirection = new Vector3(10 * Input.GetAxis("RHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("RVertical") + this.transform.position.y, 0);
+				if (Input.GetAxis("RHorizontal") == 0 && Input.GetAxis("RVertical") == 0)
+				{
+					lookDirection = previousDirection;
+				}
+			}
+			else
+			{
+            	lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			}
             lookDirection.z = 0f;
 
             var xDiff = Mathf.Abs(this.transform.position.x - lookDirection.x);

@@ -39,19 +39,17 @@ public class Attack : MonoBehaviour
     [Header("Laser Parts")]
     public GameObject laserParticles;
     public GameObject laserMiddle;
-    //public GameObject laserEnd;
-
-    //public float damage = 10;
     private float speedOfProjectile = 1f;
     private float rateOfFire = 4.0f;
 
-    [Header("Souls Text")]
+    [Header("Text")]
     //Attack upgrades and souls text
     public Text energySoulsText;
     public Text beamSoulsText;
     public Text bombSoulsText;
     public Text speedSoulsText;
     public Text shotgunSoulsText;
+	public Text errorMessageText;
 
     private AudioSource source;
 
@@ -1167,58 +1165,49 @@ public class Attack : MonoBehaviour
         shotgunSoulsText.text = shotgunSouls.ToString();
     }
 
-    public void SwitchAttacks(string attackTypeString)
+	public void SwitchAttacks(string attackTypeString)
     {
         this.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-        if (attackTypeString == "Energy")
-        {
-            projectile = projectileEnergy;
-            attackType = attackTypeEnergy;
-            speedOfProjectile = 2f;
-            rateOfFire = 8.5f;
-        }
-        else if (attackTypeString == "Beam" && beamAttackLevel > 0)
-        {
-            projectile = projectileBeam;
-            attackType = attackTypeBeam;
-
-        }
-        else if (attackTypeString == "Bomb" && bombAttackLevel > 0)
-        {
-            projectile = projectileBomb;
-            attackType = attackTypeBomb;
-            speedOfProjectile = .5f;
-            rateOfFire = 1.0f;
-
-        }
-        else if (attackTypeString == "Speed" && speedAttackLevel > 0)
-        {
-            projectile = projectileSpeed;
-            attackType = attackTypeSpeed;
-            speedOfProjectile = spookyGuyProjectileSpeed;
-            rateOfFire = 15.0f;
-
-        }
-        else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
-        {
-            projectile = projectileShotgun;
-            attackType = attackTypeShotgun;
-            speedOfProjectile = 1.4f;
-            rateOfFire = 4.5f;
-        }
-        else
-        {
-            //case occurs when player selects weapon that is not unlocked
-            projectile = projectileEnergy;
-            attackType = attackTypeEnergy;
-            speedOfProjectile = 2f;
-            rateOfFire = 8.5f;
-            Debug.Log("Attack is not unlocked");
-            //instantiate here a warning that the player has not unlocked that attack yet
-        }
+		if (attackTypeString == "Energy") 
+		{
+			projectile = projectileEnergy;
+			attackType = attackTypeEnergy;
+			speedOfProjectile = 2f;
+			rateOfFire = 8.5f;
+		} 
+		else if (attackTypeString == "Beam" && beamAttackLevel > 0)
+		{
+			projectile = projectileBeam;
+			attackType = attackTypeBeam;
+		} 
+		else if (attackTypeString == "Bomb" && bombAttackLevel > 0) 
+		{
+			projectile = projectileBomb;
+			attackType = attackTypeBomb;
+			speedOfProjectile = .5f;
+			rateOfFire = 1.0f;
+		} 
+		else if (attackTypeString == "Speed" && speedAttackLevel > 0) 
+		{
+			projectile = projectileSpeed;
+			attackType = attackTypeSpeed;
+			speedOfProjectile = spookyGuyProjectileSpeed;
+			rateOfFire = 15.0f;
+		} 
+		else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
+		{
+			projectile = projectileShotgun;
+			attackType = attackTypeShotgun;
+			speedOfProjectile = 1.4f;
+			rateOfFire = 4.5f;
+		} 
+		else 
+		{
+			StartCoroutine (changeErrorText ("You don't have enough souls to upgrade and that weapon isn't unlocked"));
+		}
     }
 
-    public void UpgradeAttack(string upgradeType)
+	public void UpgradeAttack(string upgradeType)
     {
         numberOfUpgrades += 1;
         if (numberOfUpgrades <= maxNumOfUpgrades)
@@ -1267,10 +1256,7 @@ public class Attack : MonoBehaviour
             }
             else
             {
-                //case occurs when player selects weapon that they do not have enough to upgrade
-                Debug.Log("You do not have enough " + upgradeType + " type souls to upgrade this attack.");
-                //instantiate here a warning that the player does not have enough souls for the attack upgrade
-                numberOfUpgrades -= 1;
+				StartCoroutine (changeErrorText ("You do not have enough " + upgradeType + " type souls to upgrade this attack."));
             }
             energySoulsText.text = energySouls.ToString();
             beamSoulsText.text = beamSouls.ToString();
@@ -1293,5 +1279,13 @@ public class Attack : MonoBehaviour
         leftSideLaser.SetActive(false);
         rightSideLaser.SetActive(false);
     }
+
+	IEnumerator changeErrorText(string text)
+	{
+		errorMessageText.text = text;
+		errorMessageText.enabled = true;
+		yield return new WaitForSeconds(3.0f);
+		errorMessageText.enabled = false;
+	}
 
 }
