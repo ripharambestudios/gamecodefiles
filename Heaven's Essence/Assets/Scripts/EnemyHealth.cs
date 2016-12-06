@@ -67,7 +67,7 @@ public class EnemyHealth : MonoBehaviour
                 {
                     if(this.transform.GetChild(i).tag == "Enemy" && gameObject.activeSelf)
                     {
-                        Destroy(this.transform.GetChild(i));
+                        Destroy(this.transform.GetChild(i).gameObject);
                     }
                 }
                 currentHealth = startHealth;

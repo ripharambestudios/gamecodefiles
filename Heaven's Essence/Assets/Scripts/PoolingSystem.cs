@@ -33,7 +33,7 @@ public class PoolingSystem : MonoBehaviour {
             }
             info.SetActive(false);
             poolObjects.Add((info));
-            DontDestroyOnLoad(info);
+            
         }
     }
 
