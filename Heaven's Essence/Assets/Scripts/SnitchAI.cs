@@ -7,7 +7,7 @@ public class SnitchAI : MonoBehaviour {
 	private float distanceToTarget;
 	private float minTether;
 	private bool canMove = true;
-	private int healthReGen = 150;
+	private int healthReGen = 200;
 
 	// Use this for initialization
 	void Start () {

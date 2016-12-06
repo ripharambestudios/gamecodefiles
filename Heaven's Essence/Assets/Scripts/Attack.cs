@@ -72,7 +72,7 @@ public class Attack : MonoBehaviour
 
     //Number of souls player has obtained
     private int energySouls = 0;
-    private int beamSouls = 10;
+    private int beamSouls = 0;
     private int bombSouls = 0;
     private int shotgunSouls = 0;
     private int speedSouls = 0;
@@ -860,6 +860,30 @@ public class Attack : MonoBehaviour
             }
             yield return null;
         }
+        if (!hit && createProjectile != null)
+        {
+            if (splitAmount == 1)
+            {
+                source.PlayOneShot(bombExplodeSound, .075f);
+                Instantiate(attackType, createProjectile.transform.position, Quaternion.identity);
+            }
+            else if (splitAmount == 3)
+            {
+                source.PlayOneShot(bombExplodeSound, .15f);
+                Instantiate(attackType, createProjectile.transform.position + new Vector3(0, 5), Quaternion.identity);
+                Instantiate(attackType, createProjectile.transform.position + new Vector3(-5, -5), Quaternion.identity);
+                Instantiate(attackType, createProjectile.transform.position + new Vector3(5, -5), Quaternion.identity);
+            }
+            else if (splitAmount == 5)
+            {
+                source.PlayOneShot(bombExplodeSound, .3f);
+                Instantiate(attackType, createProjectile.transform.position + new Vector3(0, 0), Quaternion.identity);
+                Instantiate(attackType, createProjectile.transform.position + new Vector3(-5, -5), Quaternion.identity);
+                Instantiate(attackType, createProjectile.transform.position + new Vector3(5, -5), Quaternion.identity);
+                Instantiate(attackType, createProjectile.transform.position + new Vector3(5, 5), Quaternion.identity);
+                Instantiate(attackType, createProjectile.transform.position + new Vector3(-5, 5), Quaternion.identity);
+            }
+        }
         Destroy(createProjectile);
     }
 
@@ -870,7 +894,7 @@ public class Attack : MonoBehaviour
     {
 
         //destroy object if it doesn't collide with anything after timeout amout of time
-        float timeout = 3f;
+        float timeout = 1.5f;
         source.PlayOneShot(standardFireSound, .025f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
@@ -928,7 +952,7 @@ public class Attack : MonoBehaviour
     {
         yield return null;
         //destroy object if it doesn't collide with anything after timeout amout of time
-        float timeout = 3f;
+        float timeout = 1.5f;
         source.PlayOneShot(fastShotFireSound, .035f);
 
         GameObject createProjectile = (GameObject)Instantiate(projectile, start, Quaternion.Euler(new Vector3(0, 0, 0))); //make it kinda work: Euler (new Vector3(0,0,0))
@@ -1120,7 +1144,7 @@ public class Attack : MonoBehaviour
 
 
 		energySoulsText.text = energySouls.ToString();
-		if (energySouls > energyUpgradeCost) 
+		if (energySouls >= energyUpgradeCost) 
 		{
 			energySoulsText.color = new Color (1, .80392f, 0, 1);
 		} 
@@ -1130,7 +1154,7 @@ public class Attack : MonoBehaviour
 		}
 
 		beamSoulsText.text = beamSouls.ToString();
-		if (beamSouls > beamUpgradeCost) 
+		if (beamSouls >= beamUpgradeCost) 
 		{
 			beamSoulsText.color = new Color (1, .80392f, 0, 1);
 		} 
@@ -1140,7 +1164,7 @@ public class Attack : MonoBehaviour
 		}
 
 		bombSoulsText.text = bombSouls.ToString();
-		if (bombSouls > bombUpgradeCost) 
+		if (bombSouls >= bombUpgradeCost) 
 		{
 			bombSoulsText.color = new Color (1, .80392f, 0, 1);
 		} 
@@ -1150,7 +1174,7 @@ public class Attack : MonoBehaviour
 		}
 
 		speedSoulsText.text = speedSouls.ToString();
-		if (speedSouls > spookyGuyUpgradeCost) 
+		if (speedSouls >= spookyGuyUpgradeCost) 
 		{
 			speedSoulsText.color = new Color (1, .80392f, 0, 1);
 		} 
@@ -1160,7 +1184,7 @@ public class Attack : MonoBehaviour
 		}
 
 		shotgunSoulsText.text = shotgunSouls.ToString();
-		if (shotgunSouls > shotgunUpgradeCost) 
+		if (shotgunSouls >= shotgunUpgradeCost) 
 		{
 			shotgunSoulsText.color = new Color (1, .80392f, 0, 1);
 		} 
@@ -1179,6 +1203,7 @@ public class Attack : MonoBehaviour
 			attackType = attackTypeEnergy;
 			speedOfProjectile = 2f;
 			rateOfFire = 6.5f;
+            DeactivateLaser();
 		} 
 		else if (attackTypeString == "Beam" && beamAttackLevel > 0)
 		{
@@ -1191,21 +1216,24 @@ public class Attack : MonoBehaviour
 			attackType = attackTypeBomb;
 			speedOfProjectile = .5f;
 			rateOfFire = 1.0f;
-		} 
+            DeactivateLaser();
+        } 
 		else if (attackTypeString == "Speed" && speedAttackLevel > 0) 
 		{
 			projectile = projectileSpeed;
 			attackType = attackTypeSpeed;
 			speedOfProjectile = spookyGuyProjectileSpeed;
 			rateOfFire = 15.0f;
-		} 
+            DeactivateLaser();
+        } 
 		else if (attackTypeString == "Shotgun" && shotgunAttackLevel > 0)
 		{
 			projectile = projectileShotgun;
 			attackType = attackTypeShotgun;
 			speedOfProjectile = 1.4f;
 			rateOfFire = 4.5f;
-		} 
+            DeactivateLaser();
+        } 
 		else 
 		{
 			StartCoroutine (changeErrorText ("You don't have enough souls to upgrade and that weapon isn't unlocked"));
@@ -1265,7 +1293,7 @@ public class Attack : MonoBehaviour
             }
 
             energySoulsText.text = energySouls.ToString();
-			if (energySouls > energyUpgradeCost) 
+			if (energySouls >= energyUpgradeCost) 
 			{
 				energySoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
@@ -1275,7 +1303,7 @@ public class Attack : MonoBehaviour
 			}
 
             beamSoulsText.text = beamSouls.ToString();
-			if (beamSouls > beamUpgradeCost) 
+			if (beamSouls >= beamUpgradeCost) 
 			{
 				beamSoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
@@ -1285,7 +1313,7 @@ public class Attack : MonoBehaviour
 			}
 
             bombSoulsText.text = bombSouls.ToString();
-			if (bombSouls > bombUpgradeCost) 
+			if (bombSouls >= bombUpgradeCost) 
 			{
 				bombSoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
@@ -1295,7 +1323,7 @@ public class Attack : MonoBehaviour
 			}
 
             speedSoulsText.text = speedSouls.ToString();
-			if (speedSouls > spookyGuyUpgradeCost) 
+			if (speedSouls >= spookyGuyUpgradeCost) 
 			{
 				speedSoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
@@ -1305,7 +1333,7 @@ public class Attack : MonoBehaviour
 			}
 
             shotgunSoulsText.text = shotgunSouls.ToString();
-			if (shotgunSouls > shotgunUpgradeCost) 
+			if (shotgunSouls >= shotgunUpgradeCost) 
 			{
 				shotgunSoulsText.color = new Color (1, .80392f, 0, 1);
 			} 
