@@ -35,6 +35,7 @@ public class Attack : MonoBehaviour
     public AudioClip fastShotFireSound;
     public AudioClip shotGunFireSound;
     public AudioClip bombExplodeSound;
+	public AudioClip enemyAbsorbed;
 
     [Header("Laser Parts")]
     public GameObject laserParticles;
@@ -120,7 +121,7 @@ public class Attack : MonoBehaviour
         projectile = projectileEnergy;
         attackType = attackTypeEnergy;
         speedOfProjectile = 2f;
-        rateOfFire = 10.0f;
+        rateOfFire = 6.5f;
         spookyGuyProjectileSpeed = 2.4f;
 
         source = gameObject.AddComponent<AudioSource>();
@@ -341,49 +342,6 @@ public class Attack : MonoBehaviour
             {
                 //nothing, done in different script
             }
-
-
-            //alt fire removed for time being
-            /*
-            else if (projectile.name == projectileEnergy.name && chargeTime >= maxCharge)
-            {
-                canAttack = false;
-                speedOfProjectile = 1f;
-                rateOfFire = 4f;
-                _rateOfFire = 1 / rateOfFire;
-                attackTypeEnergy.GetComponent<DoDamage>().damage = energyInitialDamage * energyAttackLevel * 2;
-                StartCoroutine(Cooldown(_rateOfFire));
-                StartCoroutine(altEnergy((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
-            }
-            else if (projectile.name == projectileBeam.name && beamAttackLevel > 0)
-            {
-                float beamTimer = 1f; //1 seconds
-                if (!startedOnce)
-                {
-                    StartCoroutine(BeamTimeLeft(beamTimer));
-                    startedOnce = true;
-                }
-                StartCoroutine(altBeam((Vector2)attackSpawn.transform.position, attackAngle));
-            }
-            else if (projectile.name == projectileSpeed.name && spookyGuyAttackLevel > 0)
-            {
-                speedOfProjectile = 1.2f;
-                rateOfFire = 6.0f;
-                _rateOfFire = 1 / rateOfFire;
-                canAttack = false;
-                StartCoroutine(altSpeed((Vector2)attackSpawn.transform.position, attackAngle, speedOfProjectile));
-                StartCoroutine(Cooldown(_rateOfFire));
-            }
-            else if (projectile.name == projectileShotgun.name && shotgunAttackLevel > 0)
-            {
-                speedOfProjectile = .7f;
-                rateOfFire = 3.0f;
-                _rateOfFire = 1 / rateOfFire;
-                canAttack = false;
-                StartCoroutine(altShotgun(speedOfProjectile));
-                StartCoroutine(Cooldown(_rateOfFire));
-            }
-            */
         }
         if (chargeTime >= maxCharge)
         {
@@ -1133,6 +1091,7 @@ public class Attack : MonoBehaviour
 
     public void EnemyAbsorbed(string attackTypeString)
     {
+		source.PlayOneShot (enemyAbsorbed, .1f);
         if (attackTypeString == "Energy")
         {
             //add none because this only happens if player hits r
@@ -1151,18 +1110,64 @@ public class Attack : MonoBehaviour
         {
 
             energySouls += 3;
-            speedSouls += 1;
+            speedSouls += 3;
         }
         else if (attackTypeString == "FallenGuy(Clone)")
         {
             energySouls += 2;
-            shotgunSouls += 1;
+            shotgunSouls += 2;
         }
-        energySoulsText.text = energySouls.ToString();
-        beamSoulsText.text = beamSouls.ToString();
-        bombSoulsText.text = bombSouls.ToString();
-        speedSoulsText.text = speedSouls.ToString();
-        shotgunSoulsText.text = shotgunSouls.ToString();
+
+
+		energySoulsText.text = energySouls.ToString();
+		if (energySouls > energyUpgradeCost) 
+		{
+			energySoulsText.color = new Color (1, .80392f, 0, 1);
+		} 
+		else 
+		{
+			energySoulsText.color = new Color (0, 0, 0, 1);
+		}
+
+		beamSoulsText.text = beamSouls.ToString();
+		if (beamSouls > beamUpgradeCost) 
+		{
+			beamSoulsText.color = new Color (1, .80392f, 0, 1);
+		} 
+		else 
+		{
+			beamSoulsText.color = new Color (0, 0, 0, 1);
+		}
+
+		bombSoulsText.text = bombSouls.ToString();
+		if (bombSouls > bombUpgradeCost) 
+		{
+			bombSoulsText.color = new Color (1, .80392f, 0, 1);
+		} 
+		else 
+		{
+			bombSoulsText.color = new Color (0, 0, 0, 1);
+		}
+
+		speedSoulsText.text = speedSouls.ToString();
+		if (speedSouls > spookyGuyUpgradeCost) 
+		{
+			speedSoulsText.color = new Color (1, .80392f, 0, 1);
+		} 
+		else 
+		{
+			speedSoulsText.color = new Color (0, 0, 0, 1);
+		}
+
+		shotgunSoulsText.text = shotgunSouls.ToString();
+		if (shotgunSouls > shotgunUpgradeCost) 
+		{
+			shotgunSoulsText.color = new Color (1, .80392f, 0, 1);
+		} 
+		else 
+		{
+			shotgunSoulsText.color = new Color (0, 0, 0, 1);
+		}
     }
 
 	public void SwitchAttacks(string attackTypeString)
@@ -1173,7 +1178,7 @@ public class Attack : MonoBehaviour
 			projectile = projectileEnergy;
 			attackType = attackTypeEnergy;
 			speedOfProjectile = 2f;
-			rateOfFire = 8.5f;
+			rateOfFire = 6.5f;
 		} 
 		else if (attackTypeString == "Beam" && beamAttackLevel > 0)
 		{
@@ -1258,11 +1263,56 @@ public class Attack : MonoBehaviour
             {
 				StartCoroutine (changeErrorText ("You do not have enough " + upgradeType + " type souls to upgrade this attack."));
             }
+
             energySoulsText.text = energySouls.ToString();
+			if (energySouls > energyUpgradeCost) 
+			{
+				energySoulsText.color = new Color (1, .80392f, 0, 1);
+			} 
+			else 
+			{
+				energySoulsText.color = new Color (0, 0, 0, 1);
+			}
+
             beamSoulsText.text = beamSouls.ToString();
+			if (beamSouls > beamUpgradeCost) 
+			{
+				beamSoulsText.color = new Color (1, .80392f, 0, 1);
+			} 
+			else 
+			{
+				beamSoulsText.color = new Color (0, 0, 0, 1);
+			}
+
             bombSoulsText.text = bombSouls.ToString();
+			if (bombSouls > bombUpgradeCost) 
+			{
+				bombSoulsText.color = new Color (1, .80392f, 0, 1);
+			} 
+			else 
+			{
+				bombSoulsText.color = new Color (0, 0, 0, 1);
+			}
+
             speedSoulsText.text = speedSouls.ToString();
+			if (speedSouls > spookyGuyUpgradeCost) 
+			{
+				speedSoulsText.color = new Color (1, .80392f, 0, 1);
+			} 
+			else 
+			{
+				speedSoulsText.color = new Color (0, 0, 0, 1);
+			}
+
             shotgunSoulsText.text = shotgunSouls.ToString();
+			if (shotgunSouls > shotgunUpgradeCost) 
+			{
+				shotgunSoulsText.color = new Color (1, .80392f, 0, 1);
+			} 
+			else 
+			{
+				shotgunSoulsText.color = new Color (0, 0, 0, 1);
+			}
         }
         else
         {

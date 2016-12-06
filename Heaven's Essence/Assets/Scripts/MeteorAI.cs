@@ -14,12 +14,13 @@ public class MeteorAI : MonoBehaviour {
 	private AudioSource source;
 	private GameObject target;
 	private float distanceToTarget;
-	private bool isAttacking = false;
-	private float launchSpeed = 1f;
-    private bool track = true;
-    private bool weakenedOnce = false;
+    private bool isAttacking;
+	private float launchSpeed;
+    private bool track;
+    private bool weakenedOnce;
 	private bool canAttack;
-	private float waitTimeBoxCollider = 0.75f;
+	private float waitTimeBoxCollider;
+
 
 	// Use this for initialization
 	void Start ()
@@ -27,9 +28,14 @@ public class MeteorAI : MonoBehaviour {
 		knockBackDistance = 2;
 		target = GameObject.FindGameObjectWithTag ("Player");  //may need to tweak this
 		canAttack = true;
+        weakenedOnce = false;
+        track = true;
+        isAttacking = false;
+        launchSpeed = 1f;
 		source = this.gameObject.AddComponent<AudioSource> ();
 		StartCoroutine (changeBoxCollider ());
-	}
+        waitTimeBoxCollider = 0.75f;
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -208,9 +214,15 @@ public class MeteorAI : MonoBehaviour {
     /// </summary>
     public void ResetInfo()
     {
-        weakenedOnce = false;
         knockBackDistance = 2;
         target = GameObject.FindGameObjectWithTag("Player");  //may need to tweak this
         canAttack = true;
+        weakenedOnce = false;
+        track = true;
+        isAttacking = false;
+        launchSpeed = 1f;
+        source = this.gameObject.AddComponent<AudioSource>();
+        StartCoroutine(changeBoxCollider());
+        waitTimeBoxCollider = 0.6f;
     }
 }
