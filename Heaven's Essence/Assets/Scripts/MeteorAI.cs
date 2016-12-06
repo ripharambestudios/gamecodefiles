@@ -33,8 +33,8 @@ public class MeteorAI : MonoBehaviour {
         isAttacking = false;
         launchSpeed = 1f;
 		source = this.gameObject.AddComponent<AudioSource> ();
+		waitTimeBoxCollider = 0.75f;
 		StartCoroutine (changeBoxCollider ());
-        waitTimeBoxCollider = 0.75f;
     }
 	
 	// Update is called once per frame
@@ -224,5 +224,6 @@ public class MeteorAI : MonoBehaviour {
         source = this.gameObject.AddComponent<AudioSource>();
         StartCoroutine(changeBoxCollider());
         waitTimeBoxCollider = 0.6f;
+		this.gameObject.GetComponent<BoxCollider2D> ().isTrigger = false;
     }
 }
