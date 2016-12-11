@@ -17,6 +17,7 @@ public class BigBoomAI : MonoBehaviour
     public float teleportTime = 2f;
     public int teleDistance = 5;
     public AudioClip explodeSound;
+	public float waitTimeToExplode;
 
     private AudioSource source;
     static private int direction = 0;
@@ -94,7 +95,7 @@ public class BigBoomAI : MonoBehaviour
             {
                 enemyPlacement();
                 //add check if on top of other enemies to move off slightly
-                yield return new WaitForSeconds(.3f);
+				yield return new WaitForSeconds(waitTimeToExplode);
                 animator.SetInteger("Port", 1);
                 if (canAttack)
                 {

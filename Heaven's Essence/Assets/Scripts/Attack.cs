@@ -89,7 +89,7 @@ public class Attack : MonoBehaviour
     private int shotgunUpgradeCost = 2;
     private int spookyGuyUpgradeCost = 2;
     //max number of upgrades
-    private int maxNumOfUpgrades = 36;
+    private int maxNumOfUpgrades = 35;
     private int maxUpgradeForWeapon = 7;
     private int numberOfUpgrades = 0;
     //starting damage values
@@ -1242,11 +1242,11 @@ public class Attack : MonoBehaviour
 
 	public void UpgradeAttack(string upgradeType)
     {
-        numberOfUpgrades += 1;
         if (numberOfUpgrades <= maxNumOfUpgrades)
         {
             if (upgradeType == "Energy" && energySouls >= energyUpgradeCost && energyAttackLevel < maxUpgradeForWeapon)
             {
+				numberOfUpgrades += 1;
                 energyAttackLevel += 1;
                 attackTypeEnergy.GetComponent<DoDamage>().damage = energyInitialDamage * energyAttackLevel;
                 energySouls -= energyUpgradeCost;
@@ -1255,6 +1255,7 @@ public class Attack : MonoBehaviour
             }
             else if (upgradeType == "Beam" && beamSouls >= beamUpgradeCost && beamAttackLevel < maxUpgradeForWeapon)
             {
+				numberOfUpgrades += 1;
                 beamAttackLevel += 1;
                 attackTypeBeam.GetComponent<DoDamage>().damage = beamInitialDamage * beamAttackLevel;
                 beamSouls -= beamUpgradeCost;
@@ -1263,6 +1264,7 @@ public class Attack : MonoBehaviour
             }
             else if (upgradeType == "Bomb" && bombSouls >= bombUpgradeCost && bombAttackLevel < maxUpgradeForWeapon)
             {
+				numberOfUpgrades += 1;
                 bombAttackLevel += 1;
                 attackTypeBomb.GetComponent<DoDamage>().damage = bombInitialDamage * bombAttackLevel;
                 bombSouls -= bombUpgradeCost;
@@ -1272,6 +1274,7 @@ public class Attack : MonoBehaviour
             }
             else if (upgradeType == "Speed" && speedSouls >= spookyGuyUpgradeCost && speedAttackLevel < maxUpgradeForWeapon)
             {
+				numberOfUpgrades += 1;
                 speedAttackLevel += 1;
                 attackTypeSpeed.GetComponent<DoDamage>().damage = spookyGuyInitialDamage * speedAttackLevel;
                 speedSouls -= spookyGuyUpgradeCost;
@@ -1282,6 +1285,7 @@ public class Attack : MonoBehaviour
             }
             else if (upgradeType == "Shotgun" && shotgunSouls >= shotgunUpgradeCost && shotgunAttackLevel < maxUpgradeForWeapon)
             {
+				numberOfUpgrades += 1;
                 shotgunAttackLevel += 1;
                 shotgunSouls -= shotgunUpgradeCost;
                 shotgunUpgradeCost *= 2;
