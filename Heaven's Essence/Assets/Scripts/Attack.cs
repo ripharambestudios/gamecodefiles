@@ -1127,19 +1127,19 @@ public class Attack : MonoBehaviour
         }
         else if (attackTypeString == "BoomEnemy(Clone)")
         {
-            energySouls += 2;
+            energySouls += 1;
             bombSouls += 1;
         }
         else if (attackTypeString == "SpookyGuy(Clone)")
         {
 
-            energySouls += 3;
-            speedSouls += 3;
+            energySouls += 1;
+            speedSouls += 2;
         }
         else if (attackTypeString == "FallenGuy(Clone)")
         {
-            energySouls += 2;
-            shotgunSouls += 2;
+            energySouls += 1;
+            shotgunSouls += 3;
         }
 
 
