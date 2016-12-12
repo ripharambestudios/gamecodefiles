@@ -128,7 +128,7 @@ public class Attack : MonoBehaviour
 
         //reset attack damage values otherwise they infinitely scale
         attackTypeEnergy.GetComponent<DoDamage>().damage = 5;
-        attackTypeBeam.GetComponent<DoDamage>().damage = 1;
+        attackTypeBeam.GetComponent<DoDamage>().damage = 2;
         attackTypeBomb.GetComponent<DoDamage>().damage = 6;
         attackTypeSpeed.GetComponent<DoDamage>().damage = 2;
         //save initial damage done by attacks
@@ -1257,7 +1257,15 @@ public class Attack : MonoBehaviour
             {
 				numberOfUpgrades += 1;
                 beamAttackLevel += 1;
-                attackTypeBeam.GetComponent<DoDamage>().damage = beamInitialDamage * beamAttackLevel;
+                
+                if (beamAttackLevel >= 5)
+                {
+                    attackTypeBeam.GetComponent<DoDamage>().damage = beamInitialDamage * beamAttackLevel * 3;
+                }
+                else
+                {
+                    attackTypeBeam.GetComponent<DoDamage>().damage = beamInitialDamage * beamAttackLevel;
+                }
                 beamSouls -= beamUpgradeCost;
                 beamUpgradeCost *= 2;
                 beamAttackUpgradeIcon.GetComponent<SpriteForUpgradeChange>().setSpriteLevel(beamAttackLevel);
