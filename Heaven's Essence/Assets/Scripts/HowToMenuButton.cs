@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class HowToMenuButton : MonoBehaviour
 {
     public GameObject HowToPlayPanel;
     public GameObject mainPanel;
+    public GameObject mainMenuPlayButton;
+    
     // Use this for initialization
     void Start()
     {
@@ -21,5 +24,6 @@ public class HowToMenuButton : MonoBehaviour
     {
         mainPanel.SetActive(true);
         HowToPlayPanel.SetActive(false);
+        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(mainMenuPlayButton);
     }
 }

@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class PauseScript : MonoBehaviour {
     public GameObject pausePanel;
 	public GameObject controlsPanel;
+    public GameObject resumeButton;
+    public GameObject deathRestartButton;
     public bool PS4Controller;
     public bool XBoxController;
     // Use this for initialization
@@ -22,10 +25,12 @@ public class PauseScript : MonoBehaviour {
                 if (pausePanel.activeInHierarchy == false)
                 {
                     pauseMenuPanel();
+                    EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(resumeButton);
                 }
                 else
                 {
                     deactivatePauseMenuPanel();
+                    EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(deathRestartButton);
                 }
             }
         }
@@ -36,10 +41,13 @@ public class PauseScript : MonoBehaviour {
                 if (pausePanel.activeInHierarchy == false)
                 {
                     pauseMenuPanel();
+                    EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(resumeButton);
                 }
                 else
                 {
                     deactivatePauseMenuPanel();
+                    EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(deathRestartButton);
+
                 }
             }
         }
@@ -50,14 +58,26 @@ public class PauseScript : MonoBehaviour {
                 if (pausePanel.activeInHierarchy == false)
                 {
                     pauseMenuPanel();
+                    EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(resumeButton);
                 }
                 else
                 {
                     deactivatePauseMenuPanel();
+                    EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(deathRestartButton);
+
                 }
             }
         }
-        
+        if (EventSystem.current.GetComponent<EventSystem>().currentSelectedGameObject != resumeButton && pausePanel.activeInHierarchy)
+        {
+            if (EventSystem.current.GetComponent<EventSystem>().currentSelectedGameObject == null)
+            {
+
+                EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(resumeButton);
+
+            }
+        }
+
     }
 
     public void pauseMenuPanel()
