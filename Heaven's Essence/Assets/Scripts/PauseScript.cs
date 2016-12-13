@@ -4,22 +4,57 @@ using System.Collections;
 public class PauseScript : MonoBehaviour {
     public GameObject pausePanel;
 	public GameObject controlsPanel;
+    public bool PS4Controller;
+    public bool XBoxController;
     // Use this for initialization
     void Start () {
-
+        PS4Controller = true;
+        XBoxController = false;
     }
 
     // Update is called once per frame
-    void Update () {
-		if ((Input.GetKeyUp("p") || Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.Joystick1Button7)) && !controlsPanel.activeSelf)
+    void Update ()
+    {
+        if(PS4Controller)
         {
-            if (pausePanel.activeInHierarchy == false)
+            if ((Input.GetKeyUp("p") || Input.GetKeyUp(KeyCode.Escape)  || Input.GetKeyUp(KeyCode.Joystick1Button9)) && !controlsPanel.activeSelf)
             {
-                pauseMenuPanel();
+                if (pausePanel.activeInHierarchy == false)
+                {
+                    pauseMenuPanel();
+                }
+                else
+                {
+                    deactivatePauseMenuPanel();
+                }
             }
-            else
+        }
+        else if(XBoxController)
+        {
+            if ((Input.GetKeyUp("p") || Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.Joystick1Button7)) && !controlsPanel.activeSelf)
             {
-                deactivatePauseMenuPanel();
+                if (pausePanel.activeInHierarchy == false)
+                {
+                    pauseMenuPanel();
+                }
+                else
+                {
+                    deactivatePauseMenuPanel();
+                }
+            }
+        }
+        else
+        {
+            if ((Input.GetKeyUp("p") || Input.GetKeyUp(KeyCode.Escape)) && !controlsPanel.activeSelf)
+            {
+                if (pausePanel.activeInHierarchy == false)
+                {
+                    pauseMenuPanel();
+                }
+                else
+                {
+                    deactivatePauseMenuPanel();
+                }
             }
         }
         

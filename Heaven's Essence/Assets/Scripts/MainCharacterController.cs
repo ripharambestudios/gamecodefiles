@@ -18,8 +18,10 @@ public class MainCharacterController : MonoBehaviour
 	public GameObject soundObject;
 	public AudioClip getHealthSound;
 	public bool useController;
+    public bool PS4Controller;
+    public bool XBoxController;
 
-	private AudioSource source;
+    private AudioSource source;
 	private int currentHealth;
 	private Vector2 characterVector;
 	private Vector2 healthStartVector;
@@ -55,6 +57,8 @@ public class MainCharacterController : MonoBehaviour
 		pools.Add(GameObject.FindGameObjectWithTag("PoolSpook"));
 		pools.Add(GameObject.FindGameObjectWithTag("PoolFallen"));
 		pools.Add(GameObject.FindGameObjectWithTag("PoolBoom"));
+        PS4Controller = false;
+        XBoxController = false;
 
 	}
 
@@ -156,44 +160,99 @@ public class MainCharacterController : MonoBehaviour
             }
             else
             {
-                Vector3 playerDirection = new Vector3(10 * Input.GetAxis("RHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("RVertical") + this.transform.position.y, 0);
+                if (XBoxController)
+                {
+                    Vector3 playerDirection = new Vector3(10 * Input.GetAxis("XBoxRHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("XBoxRVertical") + this.transform.position.y, 0);
 
-                if (Input.GetAxis("RHorizontal") != 0 || Input.GetAxis("RVertical") != 0)
-                {
-                    this.GetComponent<Attack>().Aim(playerDirection);
-                    this.GetComponent<Attack>().Fire();
-                    laserActivated = true;
-                }
+                    if (Input.GetAxis("XBoxRHorizontal") != 0 || Input.GetAxis("XBoxRVertical") != 0)
+                    {
+                        this.GetComponent<Attack>().Aim(playerDirection);
+                        this.GetComponent<Attack>().Fire();
+                        laserActivated = true;
+                    }
 
-                if ((Input.GetAxis("RHorizontal") == 0 && Input.GetAxis("RVertical") == 0) && laserActivated)
-                {
-                    this.GetComponent<Attack>().DeactivateLaser();
-                    laserActivated = false;
+                    if ((Input.GetAxis("XBoxRHorizontal") == 0 && Input.GetAxis("XBoxRVertical") == 0) && laserActivated)
+                    {
+                        this.GetComponent<Attack>().DeactivateLaser();
+                        laserActivated = false;
+                    }
+                    //x button and energy attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton2))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[0]);
+                    }
+                    //b button and beam attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton1))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[1]);
+                    }
+                    //right bumper and bomb attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton5))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[2]);
+                    }
+                    //y button and speed attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton3))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[3]);
+                    }
+                    //a button and shotgun attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton0))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
+                    }
                 }
-                if (Input.GetKeyUp(KeyCode.JoystickButton2))
+                else if(PS4Controller)
                 {
-					this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
-                    this.GetComponent<Attack>().SwitchAttacks(attackTypes[0]);
-                }
-                if (Input.GetKeyUp(KeyCode.JoystickButton1))
-                {
-					this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
-                    this.GetComponent<Attack>().SwitchAttacks(attackTypes[1]);
-                }
-                if (Input.GetKeyUp(KeyCode.JoystickButton5))
-                {
-					this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
-                    this.GetComponent<Attack>().SwitchAttacks(attackTypes[2]);
-                }
-                if (Input.GetKeyUp(KeyCode.JoystickButton3))
-                {
-					this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
-                    this.GetComponent<Attack>().SwitchAttacks(attackTypes[3]);
-                }
-                if (Input.GetKeyUp(KeyCode.JoystickButton0))
-                {
-					this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
-                    this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
+                    Vector3 playerDirection = new Vector3(10 * Input.GetAxis("PS4RHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("PS4RVertical") + this.transform.position.y, 0);
+
+                    if (Input.GetAxis("PS4RHorizontal") != 0 || Input.GetAxis("PS4RVertical") != 0)
+                    {
+                        this.GetComponent<Attack>().Aim(playerDirection);
+                        this.GetComponent<Attack>().Fire();
+                        laserActivated = true;
+                    }
+
+                    if ((Input.GetAxis("PS4RHorizontal") == 0 && Input.GetAxis("PS4RVertical") == 0) && laserActivated)
+                    {
+                        this.GetComponent<Attack>().DeactivateLaser();
+                        laserActivated = false;
+                    }
+                    //square button and energy attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton0))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[0]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[0]);
+                    }
+                    //circle button and beam attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton2))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[1]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[1]);
+                    }
+                    //right bumper and bomb attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton5))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[2]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[2]);
+                    }
+                    //triangle button and speed attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton3))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[3]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[3]);
+                    }
+                    //x button and shotgun attack
+                    if (Input.GetKeyUp(KeyCode.JoystickButton1))
+                    {
+                        this.GetComponent<Attack>().UpgradeAttack(attackTypes[4]);
+                        this.GetComponent<Attack>().SwitchAttacks(attackTypes[4]);
+                    }
                 }
             }
         }

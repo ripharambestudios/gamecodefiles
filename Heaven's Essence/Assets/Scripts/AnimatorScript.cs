@@ -7,6 +7,9 @@ public class AnimatorScript : MonoBehaviour
     public GameObject particleSystem;
     public GameObject attackPoint;
 	public bool useController;
+    public bool PS4Controller;
+    public bool XBoxController;
+
     //public GameObject weaponPosition;
     private Animator animator;
 	private Vector3 lookDirection;
@@ -14,7 +17,9 @@ public class AnimatorScript : MonoBehaviour
     void Start()
     {
         animator = this.GetComponent<Animator>();
-		Vector3 lookDirection = new Vector3();
+        PS4Controller = false;
+        XBoxController = false;
+
     }
 
     // Update is called once per frame
@@ -25,11 +30,22 @@ public class AnimatorScript : MonoBehaviour
 			Vector3 previousDirection = lookDirection;
 			if (useController)
 			{
-				lookDirection = new Vector3(10 * Input.GetAxis("RHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("RVertical") + this.transform.position.y, 0);
-				if (Input.GetAxis("RHorizontal") == 0 && Input.GetAxis("RVertical") == 0)
-				{
-					lookDirection = previousDirection;
-				}
+                if(PS4Controller)
+                {
+                    lookDirection = new Vector3(10 * Input.GetAxis("PS4RHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("PS4RVertical") + this.transform.position.y, 0);
+                    if (Input.GetAxis("PS4RHorizontal") == 0 && Input.GetAxis("PS4RVertical") == 0)
+                    {
+                        lookDirection = previousDirection;
+                    }
+                }
+                else if(XBoxController)
+                {
+                    lookDirection = new Vector3(10 * Input.GetAxis("XBoxRHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("XBoxRVertical") + this.transform.position.y, 0);
+                    if (Input.GetAxis("XBoxRHorizontal") == 0 && Input.GetAxis("XBoxRVertical") == 0)
+                    {
+                        lookDirection = previousDirection;
+                    }
+                }
 			}
 			else
 			{
