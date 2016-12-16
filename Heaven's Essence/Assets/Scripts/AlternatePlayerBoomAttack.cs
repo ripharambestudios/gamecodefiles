@@ -8,17 +8,20 @@ public class AlternatePlayerBoomAttack : MonoBehaviour {
 
     private int splitAmount;
 	private bool hasExploded;
+    private GameObject player;
 	// Use this for initialization
 	void Start ()
 	{
         splitAmount = 1;
 		source = gameObject.AddComponent<AudioSource> ();
 		hasExploded = false;
+        player = GameObject.Find("MainCharacter");
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        if (Input.GetAxis("Fire2") > 0)
+	void Update ()
+    {
+        if ((player.GetComponent<MainCharacterController>().PS4Controller && Input.GetAxis("PS4Fire2") > 0) || (player.GetComponent<MainCharacterController>().XBoxController && Input.GetAxis("Fire2") > 0))
         {
 			if (splitAmount == 1 && !hasExploded)
             {

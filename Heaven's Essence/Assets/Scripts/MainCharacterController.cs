@@ -20,6 +20,7 @@ public class MainCharacterController : MonoBehaviour
 	public bool useController;
     public bool PS4Controller;
     public bool XBoxController;
+    public GameObject reticle;
 
     private AudioSource source;
 	private int currentHealth;
@@ -30,10 +31,9 @@ public class MainCharacterController : MonoBehaviour
 	private List<string> attackTypes = new List<string>();
 	private float timeForFlashRed = .1f;
 	private float timeForFlashGreen = .25f;
-
-	private bool laserActivated = false;
-
+    private bool laserActivated = false;
 	private List<GameObject> pools;
+    private GameObject aimReticle;
 
 	// Use this for initialization
 	void Start()
@@ -59,7 +59,8 @@ public class MainCharacterController : MonoBehaviour
 		pools.Add(GameObject.FindGameObjectWithTag("PoolBoom"));
         PS4Controller = false;
         XBoxController = false;
-
+        //aimReticle = (GameObject)Instantiate(reticle, this.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        //aimReticle.SetActive(false);
 	}
 
 	// Update is called once per frame
@@ -160,6 +161,7 @@ public class MainCharacterController : MonoBehaviour
             }
             else
             {
+                
                 if (XBoxController)
                 {
                     Vector3 playerDirection = new Vector3(10 * Input.GetAxis("XBoxRHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("XBoxRVertical") + this.transform.position.y, 0);
@@ -210,9 +212,13 @@ public class MainCharacterController : MonoBehaviour
                 else if(PS4Controller)
                 {
                     Vector3 playerDirection = new Vector3(10 * Input.GetAxis("PS4RHorizontal") + this.transform.position.x, (-10) * Input.GetAxis("PS4RVertical") + this.transform.position.y, 0);
-
+                    
                     if (Input.GetAxis("PS4RHorizontal") != 0 || Input.GetAxis("PS4RVertical") != 0)
                     {
+                        //aimReticle.transform.position = playerDirection;
+                        //aimReticle.transform.localScale = new Vector3(5,5,1);
+                        //aimReticle.SetActive(true);
+                        
                         this.GetComponent<Attack>().Aim(playerDirection);
                         this.GetComponent<Attack>().Fire();
                         laserActivated = true;
@@ -222,6 +228,7 @@ public class MainCharacterController : MonoBehaviour
                     {
                         this.GetComponent<Attack>().DeactivateLaser();
                         laserActivated = false;
+                        //aimReticle.SetActive(false);
                     }
                     //square button and energy attack
                     if (Input.GetKeyUp(KeyCode.JoystickButton0))

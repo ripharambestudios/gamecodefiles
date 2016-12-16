@@ -10,6 +10,7 @@ public class MainMenuButtonController : MonoBehaviour
 
     public GameObject StoredSelected;
 
+
     // Use this for initialization
     void Start()
     {
@@ -19,6 +20,7 @@ public class MainMenuButtonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (mainPanel.activeInHierarchy)
         {
             if (EventSystem.current.GetComponent<EventSystem>().currentSelectedGameObject != StoredSelected)
@@ -31,6 +33,7 @@ public class MainMenuButtonController : MonoBehaviour
                 }
             }
         }
+
     }
 
     public void deactivatePanel()
