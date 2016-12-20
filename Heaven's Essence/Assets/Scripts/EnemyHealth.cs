@@ -28,7 +28,7 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth = startHealth;
         enemyManager = GameObject.FindGameObjectWithTag("Enemy Manager");
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.Find("MainCharacter");
         source = gameObject.AddComponent<AudioSource>();
         pool = GameObject.FindGameObjectWithTag(poolName);
         this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
@@ -61,7 +61,7 @@ public class EnemyHealth : MonoBehaviour
             if (currentHealth <= 0)
             {
                 enemyManager.GetComponent<EnemySpawner>().decrementNumOfEnemies();
-                player.SendMessage("UpdateScore", scoreValue, SendMessageOptions.DontRequireReceiver);
+                player.SendMessage("UpdateScore", scoreValue);
                 int numOfObjects = this.transform.childCount;
                 for (int i = 0; i < numOfObjects; i++)
                 {
