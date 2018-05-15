@@ -59,6 +59,7 @@ public class DistantShooterAI : MonoBehaviour
                 distanceToTarget = Vector2.Distance(this.transform.position, target.transform.position);
                 Vector2 tether = new Vector2(target.transform.position.x - this.transform.position.x, target.transform.position.y - this.transform.position.y);
                 float tetherMagnitude = Mathf.Sqrt((tether.x * tether.x) + (tether.y * tether.y));
+                this.GetComponent<EnemyHealth>().Flash();
 
                 if (tetherMagnitude <= sightRadius && !isAttacking && (!this.GetComponent<EnemyHealth>().IsBelowThirtyFivePercent() || weakenedOnce) && canAttack && gameObject.activeSelf)
                 {
@@ -90,6 +91,8 @@ public class DistantShooterAI : MonoBehaviour
                         this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                     }
                 }
+                
+                  
             }
         }
     }

@@ -13,13 +13,17 @@ public class EnemyHealth : MonoBehaviour
 
     private int currentHealth;
     private GameObject player;
-
+    private new ParticleSystem particleSystem; 
     public GameObject pool;
-    private bool pulseGold;
+    private bool pulse = true;
     private float timeForFlashRed = .1f;
     private float timeForInvinciblity = 0;
     private bool invincible;
+    private bool soul; 
     public string poolName;
+    public GameObject Soul;
+    public Color spriteColor; 
+    
 
 
 
@@ -33,14 +37,23 @@ public class EnemyHealth : MonoBehaviour
         pool = GameObject.FindGameObjectWithTag(poolName);
         this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         invincible = false;
+        Soul.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, .5f); 
+        Soul.SetActive(false);
+        if (this.gameObject.tag != "EnemyBoom")
+        {
+            particleSystem = GetComponentInChildren<ParticleSystem>();
+        }
     }
 
     // Message sent from player that does damage to enemy
     public void DealDamage(int damage)
     {
+
+        
         if (IsBelowThirtyFivePercent() && !invincible)
         {
             timeForInvinciblity = 1f;
+            Flash(); 
 
         }
         invincible = true;
@@ -71,7 +84,7 @@ public class EnemyHealth : MonoBehaviour
                     }
                 }
                 currentHealth = startHealth;
-                this.gameObject.GetComponentInChildren<Light>().intensity = 0f;
+
                 pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
             }
 
@@ -100,29 +113,61 @@ public class EnemyHealth : MonoBehaviour
         int aTenth = startHealth / 10;
         if (currentHealth <= aTenth * 3.5f)
         {
+            Soul.SetActive(true);
+            if (this.gameObject.tag != "EnemyBoom")
+            {
+                particleSystem.Stop();
+
+            }
             if (timeForInvinciblity <= 0)
+            {
                 this.gameObject.GetComponent<SpriteRenderer>().color = new Color(.5f, .5f, .5f, 1);
-
-            if (pulseGold == true)
-            {
-
-                this.gameObject.GetComponentInChildren<Light>().intensity += .1f;
-
-                if (this.gameObject.GetComponentInChildren<Light>().intensity >= 1.5f)
-                    pulseGold = false;
+                
+                
             }
-            else
-            {
-                this.gameObject.GetComponentInChildren<Light>().intensity -= .1f;
 
-                if (this.gameObject.GetComponentInChildren<Light>().intensity <= 0)
-                    pulseGold = true;
-            }
+            Flash();
+
             return true;
         }
         else
         {
             return false;
+        }
+    }
+    public void Flash()
+    {
+       if (pulse == true) {
+
+            if(Soul.GetComponent<SpriteRenderer>().color.a >= 1)
+            {
+                pulse = false;
+                Soul.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, Soul.GetComponent<SpriteRenderer>().color.a - .1f);
+
+
+            }
+            else
+
+                Soul.GetComponent<SpriteRenderer>().color = new Color (spriteColor.r, spriteColor.g, spriteColor.b, Soul.GetComponent<SpriteRenderer>().color.a +.1f);
+        
+               
+        }
+        else
+        {
+            if (Soul.GetComponent<SpriteRenderer>().color.a <= .2f) {
+                pulse = true;
+                Soul.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, Soul.GetComponent<SpriteRenderer>().color.a + .1f);
+
+            }
+
+            else
+                Soul.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, Soul.GetComponent<SpriteRenderer>().color.a - .1f);
+
+
+
+
+
+
         }
     }
 
