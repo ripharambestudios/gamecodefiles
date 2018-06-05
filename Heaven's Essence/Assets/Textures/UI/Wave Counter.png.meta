@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 332c50d0bcb4ce049b7fb52982df75e9
-timeCreated: 1528147620
+guid: ee7fe2527abd1c84a877d406fbc8cfcf
+timeCreated: 1528223823
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Wave Counter clone clone (2)_0
-    21300002: Wave Counter clone clone (2)_1
-    21300004: Wave Counter clone clone (2)_2
-    21300006: Wave Counter clone clone (2)_3
+    21300000: Wave Counter_0
+    21300002: Wave Counter_1
+    21300004: Wave Counter_2
+    21300006: Wave Counter_3
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -82,7 +82,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Wave Counter clone clone (2)_0
+      name: Wave Counter_0
       rect:
         serializedVersion: 2
         x: 0
@@ -96,7 +96,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wave Counter clone clone (2)_1
+      name: Wave Counter_1
       rect:
         serializedVersion: 2
         x: 64
@@ -110,7 +110,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wave Counter clone clone (2)_2
+      name: Wave Counter_2
       rect:
         serializedVersion: 2
         x: 0
@@ -124,7 +124,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Wave Counter clone clone (2)_3
+      name: Wave Counter_3
       rect:
         serializedVersion: 2
         x: 64
