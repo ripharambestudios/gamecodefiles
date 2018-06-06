@@ -3,12 +3,14 @@ guid: bec8c4d81aa31324885a14c4776c9256
 timeCreated: 1479175619
 licenseType: Free
 TrueTypeFontImporter:
+  externalObjects: {}
   serializedVersion: 4
   fontSize: 16
   forceTextureCase: -2
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
+  fontName: Ludlow Strong Ale
   fontNames:
   - Ludlow Strong Ale
   fallbackFontReferences: []
