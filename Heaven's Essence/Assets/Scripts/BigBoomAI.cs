@@ -97,7 +97,7 @@ public class BigBoomAI : MonoBehaviour
                 //add check if on top of other enemies to move off slightly
 				yield return new WaitForSeconds(waitTimeToExplode);
                 animator.SetInteger("Port", 1);
-                transform.localScale = new Vector3( 8.5f, 8.5f, 1);
+            
                 if (canAttack)
                 {
                     Instantiate(attackType, transform.position, Quaternion.identity);
@@ -109,7 +109,7 @@ public class BigBoomAI : MonoBehaviour
 
         }
         animator.SetInteger("Port", 2);
-        transform.localScale = new Vector3(8.5f, 8.5f, 1);
+
         yield return new WaitForSeconds(.5f);
         animator.SetInteger("Port", 0);
 		isAttacking = false;

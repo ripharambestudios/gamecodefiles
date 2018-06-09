@@ -85,6 +85,8 @@ public class EnemyHealth : MonoBehaviour
                 }
                 currentHealth = startHealth;
 
+
+                
                 pool.GetComponent<PoolingSystem>().returnToPool(gameObject);
             }
 
@@ -190,6 +192,8 @@ public class EnemyHealth : MonoBehaviour
         source = gameObject.AddComponent<AudioSource>();
         pool = GameObject.FindGameObjectWithTag(poolName);
         this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        Soul.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 0);
+        Soul.SetActive(false);
         invincible = false;
     }
 }
