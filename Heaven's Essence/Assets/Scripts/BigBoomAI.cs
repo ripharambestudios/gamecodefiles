@@ -96,19 +96,21 @@ public class BigBoomAI : MonoBehaviour
                 enemyPlacement();
                 //add check if on top of other enemies to move off slightly
 				yield return new WaitForSeconds(waitTimeToExplode);
-                animator.SetInteger("Port", 1);
+                
             
                 if (canAttack)
                 {
+                    animator.SetInteger("Port", 1);
                     Instantiate(attackType, transform.position, Quaternion.identity);
                     source.PlayOneShot(explodeSound, .075f);
+                    yield return new WaitForSeconds(.3f);
+                    animator.SetInteger("Port", 0);
                 }
                 timer = 0f;
             }
             yield return null;
 
         }
-        animator.SetInteger("Port", 2);
 
         yield return new WaitForSeconds(.5f);
         animator.SetInteger("Port", 0);
