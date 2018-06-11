@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: dc1d1c6f86caf6447a330dba84c78770
-timeCreated: 1528230946
+guid: 4b637613c66c5494585f76e02ff08696
+timeCreated: 1528752457
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -44,6 +44,7 @@ TextureImporter:
     21300074: Power up sprites_37
     21300076: Power up sprites_38
     21300078: Power up sprites_39
+    21300080: Power up sprites_40
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -100,7 +101,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -109,7 +110,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -668,6 +669,20 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Power up sprites_40
+      rect:
+        serializedVersion: 2
+        x: 256
         y: 0
         width: 64
         height: 64
