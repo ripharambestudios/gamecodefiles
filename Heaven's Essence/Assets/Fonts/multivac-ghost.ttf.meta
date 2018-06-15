@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 2e15978772157e04eba4e3c7d795f1d8
+timeCreated: 1528915417
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Multivac
+  fontNames:
+  - Multivac
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
