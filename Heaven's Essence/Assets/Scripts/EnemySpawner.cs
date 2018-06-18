@@ -15,6 +15,7 @@ public class EnemySpawner : MonoBehaviour {
 	public float demonicRadius = 216; // if map had box collider use x value times scale to get radius will cover larger y than necessary
 	
 	public Text waveText;
+    public Text scoreText;
 	public Text enemiesLeftText;
 
 	private System.Random randNum;
@@ -58,6 +59,7 @@ public class EnemySpawner : MonoBehaviour {
 		numberOfEnemies += numberOfEnemiesPerWave;
 											//this.GetComponent<TotalEnemies>().incrementNumEnemies (numberOfEnemiesPerWave);
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString();
+        scoreText.enabled = false;
         waveText.enabled = true;
 		waveText.text = "Wave " + waveNum;
 		yield return new WaitForSeconds (waveTime);
@@ -67,6 +69,7 @@ public class EnemySpawner : MonoBehaviour {
 			Spawn (typeOfEnemy);
 		}
         waveText.enabled = false;
+        scoreText.enabled = true;
         numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 7); //increases number of enemies quickly initially and then slows down as it gets further
 		waveNum++;
 	}
