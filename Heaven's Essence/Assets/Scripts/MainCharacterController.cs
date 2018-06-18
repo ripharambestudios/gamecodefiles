@@ -328,7 +328,7 @@ public class MainCharacterController : MonoBehaviour
 		{
 			//float normalizedHealth = (float)currentHealth / (float)health;
 			//healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2(currentHealth, 32);
-			healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2(healthStartVector.x * currentHealth / health, 32);
+			healthBar.GetComponent<RectTransform>().sizeDelta = new Vector2(healthStartVector.x * currentHealth / health, 22.34f);
 			//float lostHealth = health - currentHealth;
 		}
 		else
