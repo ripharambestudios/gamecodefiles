@@ -20,7 +20,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private System.Random randNum;
 	static private int numberOfEnemies;
-	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
+	private List<char> enemyPossibilities = new List<char>() { 's', 's', 's', 'b', 'b', 'g', 'g', 'g', 'f', 'f' }; //'s', 's', 's', 's', 'b', 'b', 'b', 'g', 'g', 'f'
     static private int waveNum;
     private int numberOfEnemiesPerWave = 4;
 
@@ -41,7 +41,7 @@ public class EnemySpawner : MonoBehaviour {
 		waveNum = 1;
 		enemiesLeftText.text = "Enemies Remaining: " + numberOfEnemies.ToString ();
 		waveText.text = "";
-        numberOfEnemiesPerWave = (int)(8 * Math.Log(waveNum, Math.E) + 7); // what you add is the first round amount
+        numberOfEnemiesPerWave = (int)(7 * Math.Log(waveNum, Math.E) + 5); // what you add is the first round amount
         demonicPool = GameObject.FindGameObjectWithTag("PoolDemonic");
     }
 

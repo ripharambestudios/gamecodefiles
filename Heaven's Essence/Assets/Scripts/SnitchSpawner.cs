@@ -55,10 +55,10 @@ public class SnitchSpawner : MonoBehaviour {
 		Vector2 spawnLocation = new Vector2 (player.transform.position.x + randNum.Next (-20, 20), player.transform.position.y + randNum.Next (-20, 20));
         //Vector2 arrowSpawnLocation = player.transform.position + new Vector3(0,0,0);
         //create new enemy and spawn him in somewhere random
-        if(waveText.text == "Wave 1" || waveText.text == "Wave 2")
-        {
+        //if(waveText.text == "Wave 1" || waveText.text == "Wave 2")
+        //{
             ArrowSpawned = (GameObject)Instantiate(ArrowType, player.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-        }
+        //}
         
 		snitchSpawned = (GameObject)Instantiate (snitchType, spawnLocation, Quaternion.Euler (new Vector3 (0, 0, 0)));
 

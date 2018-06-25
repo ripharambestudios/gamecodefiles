@@ -77,7 +77,35 @@ public class EdgeWrapping : MonoBehaviour {
 				StartCoroutine(BounceOff(coll.gameObject, randomDegree));
 			}
 		}
-	}
+
+        if (coll.tag == "Snitch")
+        {
+            Rigidbody2D rigid = coll.GetComponent<Rigidbody2D>();
+            //Debug.Log ("Crossed boundary: name is " + rigid.name + "X: " + rigid.transform.position.x + " Y: " + rigid.transform.position.y);
+            if (rigid != null && rigid.tag == "Snitch")
+            {
+                if (rigid.transform.position.y >= edgeY)
+                {
+                    rigid.transform.position = new Vector3(rigid.transform.position.x, rigid.transform.position.y * -1, 0);
+                }
+                else if (rigid.transform.position.y <= -edgeY)
+                {
+                    rigid.transform.position = new Vector3(rigid.transform.position.x, rigid.transform.position.y * -1 - 2, 0);
+                }
+
+                if (rigid.transform.position.x >= edgeX)
+                {
+                    rigid.transform.position = new Vector3(rigid.transform.position.x * -1, rigid.transform.position.y, 0);
+                }
+                else if (rigid.transform.position.x <= -edgeX)
+                {
+                    rigid.transform.position = new Vector3(rigid.transform.position.x * -1 - 4, rigid.transform.position.y, 0);
+                }
+            }
+        }
+
+
+    }
 
 	IEnumerator BounceOff(GameObject enemy, int randomDegree)
 	{
