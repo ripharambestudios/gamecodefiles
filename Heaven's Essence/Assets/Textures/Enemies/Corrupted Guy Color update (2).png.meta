@@ -1,49 +1,53 @@
 fileFormatVersion: 2
-guid: cce1e19e3fa324349a0c6b9d33e11016
-timeCreated: 1475736930
+guid: fec3409c99d7017429091abf945841f4
+timeCreated: 1531427845
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: SpookyGuyIdleRLFBShoot_0
-    21300002: SpookyGuyIdleRLFBShoot_1
-    21300004: SpookyGuyIdleRLFBShoot_2
-    21300006: SpookyGuyIdleRLFBShoot_3
-    21300008: SpookyGuyIdleRLFBShoot_4
-    21300010: SpookyGuyIdleRLFBShoot_5
-    21300012: SpookyGuyIdleRLFBShoot_6
-    21300014: SpookyGuyIdleRLFBShoot_7
-    21300016: SpookyGuyIdleRLFBShoot_8
-    21300018: SpookyGuyIdleRLFBShoot_9
-    21300020: SpookyGuyIdleRLFBShoot_10
-    21300022: SpookyGuyIdleRLFBShoot_11
-    21300024: SpookyGuyIdleRLFBShoot_12
-    21300026: SpookyGuyIdleRLFBShoot_13
-    21300028: SpookyGuyIdleRLFBShoot_14
-    21300030: SpookyGuyIdleRLFBShoot_15
-    21300032: SpookyGuyIdleRLFBShoot_16
-    21300034: SpookyGuyIdleRLFBShoot_17
-    21300036: SpookyGuyIdleRLFBShoot_18
-    21300038: SpookyGuyIdleRLFBShoot_19
-    21300040: SpookyGuyIdleRLFBShoot_20
-    21300042: SpookyGuyIdleRLFBShoot_21
-    21300044: SpookyGuyIdleRLFBShoot_22
-    21300046: SpookyGuyIdleRLFBShoot_23
-    21300048: SpookyGuyIdleRLFBShoot_24
-    21300050: SpookyGuyIdleRLFBShoot_25
-    21300052: SpookyGuyIdleRLFBShoot_26
-    21300054: SpookyGuyIdleRLFBShoot_27
-    21300056: SpookyGuyIdleRLFBShoot_28
-    21300058: SpookyGuyIdleRLFBShoot_29
-    21300060: SpookyGuyIdleRLFBShoot_30
-    21300062: SpookyGuyIdleRLFBShoot_31
-  serializedVersion: 2
+    21300000: Corrupted Guy Color update (2)_0
+    21300002: Corrupted Guy Color update (2)_1
+    21300004: Corrupted Guy Color update (2)_2
+    21300006: Corrupted Guy Color update (2)_3
+    21300008: Corrupted Guy Color update (2)_4
+    21300010: Corrupted Guy Color update (2)_5
+    21300012: Corrupted Guy Color update (2)_6
+    21300014: Corrupted Guy Color update (2)_7
+    21300016: Corrupted Guy Color update (2)_8
+    21300018: Corrupted Guy Color update (2)_9
+    21300020: Corrupted Guy Color update (2)_10
+    21300022: Corrupted Guy Color update (2)_11
+    21300024: Corrupted Guy Color update (2)_12
+    21300026: Corrupted Guy Color update (2)_13
+    21300028: Corrupted Guy Color update (2)_14
+    21300030: Corrupted Guy Color update (2)_15
+    21300032: Corrupted Guy Color update (2)_16
+    21300034: Corrupted Guy Color update (2)_17
+    21300036: Corrupted Guy Color update (2)_18
+    21300038: Corrupted Guy Color update (2)_19
+    21300040: Corrupted Guy Color update (2)_20
+    21300042: Corrupted Guy Color update (2)_21
+    21300044: Corrupted Guy Color update (2)_22
+    21300046: Corrupted Guy Color update (2)_23
+    21300048: Corrupted Guy Color update (2)_24
+    21300050: Corrupted Guy Color update (2)_25
+    21300052: Corrupted Guy Color update (2)_26
+    21300054: Corrupted Guy Color update (2)_27
+    21300056: Corrupted Guy Color update (2)_28
+    21300058: Corrupted Guy Color update (2)_29
+    21300060: Corrupted Guy Color update (2)_30
+    21300062: Corrupted Guy Color update (2)_31
+    21300064: Corrupted Guy Color update (2)_32
+  externalObjects: {}
+  serializedVersion: 4
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -53,23 +57,22 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
-    aniso: 16
+    aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
@@ -77,15 +80,38 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_0
+      name: Corrupted Guy Color update (2)_0
       rect:
         serializedVersion: 2
         x: 0
@@ -93,12 +119,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_1
+      name: Corrupted Guy Color update (2)_1
       rect:
         serializedVersion: 2
         x: 74
@@ -106,12 +133,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_2
+      name: Corrupted Guy Color update (2)_2
       rect:
         serializedVersion: 2
         x: 148
@@ -119,12 +147,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_3
+      name: Corrupted Guy Color update (2)_3
       rect:
         serializedVersion: 2
         x: 222
@@ -132,12 +161,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_4
+      name: Corrupted Guy Color update (2)_4
       rect:
         serializedVersion: 2
         x: 296
@@ -145,12 +175,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_5
+      name: Corrupted Guy Color update (2)_5
       rect:
         serializedVersion: 2
         x: 370
@@ -158,12 +189,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_6
+      name: Corrupted Guy Color update (2)_6
       rect:
         serializedVersion: 2
         x: 0
@@ -171,12 +203,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_7
+      name: Corrupted Guy Color update (2)_7
       rect:
         serializedVersion: 2
         x: 74
@@ -184,12 +217,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_8
+      name: Corrupted Guy Color update (2)_8
       rect:
         serializedVersion: 2
         x: 148
@@ -197,12 +231,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_9
+      name: Corrupted Guy Color update (2)_9
       rect:
         serializedVersion: 2
         x: 222
@@ -210,12 +245,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_10
+      name: Corrupted Guy Color update (2)_10
       rect:
         serializedVersion: 2
         x: 296
@@ -223,12 +259,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_11
+      name: Corrupted Guy Color update (2)_11
       rect:
         serializedVersion: 2
         x: 370
@@ -236,12 +273,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_12
+      name: Corrupted Guy Color update (2)_12
       rect:
         serializedVersion: 2
         x: 0
@@ -249,12 +287,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_13
+      name: Corrupted Guy Color update (2)_13
       rect:
         serializedVersion: 2
         x: 74
@@ -262,12 +301,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_14
+      name: Corrupted Guy Color update (2)_14
       rect:
         serializedVersion: 2
         x: 148
@@ -275,12 +315,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_15
+      name: Corrupted Guy Color update (2)_15
       rect:
         serializedVersion: 2
         x: 222
@@ -288,12 +329,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_16
+      name: Corrupted Guy Color update (2)_16
       rect:
         serializedVersion: 2
         x: 296
@@ -301,12 +343,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_17
+      name: Corrupted Guy Color update (2)_17
       rect:
         serializedVersion: 2
         x: 370
@@ -314,12 +357,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_18
+      name: Corrupted Guy Color update (2)_18
       rect:
         serializedVersion: 2
         x: 0
@@ -327,12 +371,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_19
+      name: Corrupted Guy Color update (2)_19
       rect:
         serializedVersion: 2
         x: 74
@@ -340,12 +385,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_20
+      name: Corrupted Guy Color update (2)_20
       rect:
         serializedVersion: 2
         x: 148
@@ -353,12 +399,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_21
+      name: Corrupted Guy Color update (2)_21
       rect:
         serializedVersion: 2
         x: 222
@@ -366,12 +413,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_22
+      name: Corrupted Guy Color update (2)_22
       rect:
         serializedVersion: 2
         x: 296
@@ -379,12 +427,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_23
+      name: Corrupted Guy Color update (2)_23
       rect:
         serializedVersion: 2
         x: 370
@@ -392,12 +441,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_24
+      name: Corrupted Guy Color update (2)_24
       rect:
         serializedVersion: 2
         x: 0
@@ -405,12 +455,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_25
+      name: Corrupted Guy Color update (2)_25
       rect:
         serializedVersion: 2
         x: 74
@@ -418,12 +469,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_26
+      name: Corrupted Guy Color update (2)_26
       rect:
         serializedVersion: 2
         x: 148
@@ -431,12 +483,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_27
+      name: Corrupted Guy Color update (2)_27
       rect:
         serializedVersion: 2
         x: 222
@@ -444,12 +497,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_28
+      name: Corrupted Guy Color update (2)_28
       rect:
         serializedVersion: 2
         x: 296
@@ -457,12 +511,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_29
+      name: Corrupted Guy Color update (2)_29
       rect:
         serializedVersion: 2
         x: 370
@@ -470,12 +525,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_30
+      name: Corrupted Guy Color update (2)_30
       rect:
         serializedVersion: 2
         x: 0
@@ -483,12 +539,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: SpookyGuyIdleRLFBShoot_31
+      name: Corrupted Guy Color update (2)_31
       rect:
         serializedVersion: 2
         x: 74
@@ -496,11 +553,13 @@ TextureImporter:
         width: 74
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     outline: []
+    physicsShape: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

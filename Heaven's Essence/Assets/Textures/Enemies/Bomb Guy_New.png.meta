@@ -1,17 +1,17 @@
 fileFormatVersion: 2
-guid: ddaa6e258cc59d6498394226abec4e46
-timeCreated: 1528668071
+guid: d993b3ca01c2f154a9b90b55e1a0d69e
+timeCreated: 1531407047
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Bomb Guy_New 1_0
-    21300002: Bomb Guy_New 1_1
-    21300004: Bomb Guy_New 1_2
-    21300006: Bomb Guy_New 1_3
-    21300008: Bomb Guy_New 1_4
-    21300010: Bomb Guy_New 1_5
-    21300012: Bomb Guy_New 1_6
-    21300014: Bomb Guy_New 1_7
+    21300000: Bomb Guy_New_0
+    21300002: Bomb Guy_New_1
+    21300004: Bomb Guy_New_2
+    21300006: Bomb Guy_New_3
+    21300008: Bomb Guy_New_4
+    21300010: Bomb Guy_New_5
+    21300012: Bomb Guy_New_6
+    21300014: Bomb Guy_New_7
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -68,7 +68,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -77,7 +77,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -86,7 +86,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bomb Guy_New 1_0
+      name: Bomb Guy_New_0
       rect:
         serializedVersion: 2
         x: 0
@@ -100,7 +100,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Bomb Guy_New 1_1
+      name: Bomb Guy_New_1
       rect:
         serializedVersion: 2
         x: 64
@@ -114,7 +114,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Bomb Guy_New 1_2
+      name: Bomb Guy_New_2
       rect:
         serializedVersion: 2
         x: 128
@@ -128,7 +128,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Bomb Guy_New 1_3
+      name: Bomb Guy_New_3
       rect:
         serializedVersion: 2
         x: 0
@@ -142,7 +142,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Bomb Guy_New 1_4
+      name: Bomb Guy_New_4
       rect:
         serializedVersion: 2
         x: 64
@@ -156,7 +156,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Bomb Guy_New 1_5
+      name: Bomb Guy_New_5
       rect:
         serializedVersion: 2
         x: 128
@@ -170,7 +170,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Bomb Guy_New 1_6
+      name: Bomb Guy_New_6
       rect:
         serializedVersion: 2
         x: 0
@@ -184,7 +184,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Bomb Guy_New 1_7
+      name: Bomb Guy_New_7
       rect:
         serializedVersion: 2
         x: 64

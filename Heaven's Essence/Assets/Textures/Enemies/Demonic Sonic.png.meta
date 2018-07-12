@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: 32525f70067c3044fb254e43b1ced903
-timeCreated: 1526667703
+guid: 18c2b4c7b5de49d45af0a3cab8ad0405
+timeCreated: 1531407331
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Demonic Sonic (3)_0
-    21300002: Demonic Sonic (3)_1
-    21300004: Demonic Sonic (3)_2
-    21300006: Demonic Sonic (3)_3
-    21300008: Demonic Sonic (3)_4
-    21300010: Demonic Sonic (3)_5
+    21300000: Demonic Sonic_0
+    21300002: Demonic Sonic_1
+    21300004: Demonic Sonic_2
+    21300006: Demonic Sonic_3
+    21300008: Demonic Sonic_4
+    21300010: Demonic Sonic_5
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -84,7 +84,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Demonic Sonic (3)_0
+      name: Demonic Sonic_0
       rect:
         serializedVersion: 2
         x: 0
@@ -98,7 +98,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Demonic Sonic (3)_1
+      name: Demonic Sonic_1
       rect:
         serializedVersion: 2
         x: 64
@@ -112,7 +112,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Demonic Sonic (3)_2
+      name: Demonic Sonic_2
       rect:
         serializedVersion: 2
         x: 0
@@ -126,7 +126,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Demonic Sonic (3)_3
+      name: Demonic Sonic_3
       rect:
         serializedVersion: 2
         x: 64
@@ -140,7 +140,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Demonic Sonic (3)_4
+      name: Demonic Sonic_4
       rect:
         serializedVersion: 2
         x: 0
@@ -154,7 +154,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Demonic Sonic (3)_5
+      name: Demonic Sonic_5
       rect:
         serializedVersion: 2
         x: 64
