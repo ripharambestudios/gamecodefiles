@@ -77,11 +77,11 @@ public class Attack : MonoBehaviour
     private int shotgunSouls = 0;
     private int speedSouls = 0;
     //attack power of the different attacks
-    private int energyAttackLevel = 1;
-    private int beamAttackLevel = 0;
-    private int bombAttackLevel = 0;
-    private int shotgunAttackLevel = 0;
-    private int speedAttackLevel = 0;
+    public  int energyAttackLevel = 1;
+    public  int beamAttackLevel = 1;
+    public  int bombAttackLevel = 1;
+    public  int shotgunAttackLevel = 1;
+    public  int speedAttackLevel = 1;
     //upgrade cost for each attack
     private int energyUpgradeCost = 5;
     private int beamUpgradeCost = 2;
